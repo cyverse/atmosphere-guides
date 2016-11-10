@@ -1,0 +1,45 @@
+site_name: Atmosphere Guides
+
+pages:
+- Home: 'index.md'
+- InstallationGuide:
+  - 'How to properly fill out build env file': 'install_guide/initial_configuration.md'
+  - 'How to install Atmosphere & Troposphere with Ratchet': 'install_guide/ratchet_install.md'
+  - 'How to upgrade Atmosphere & Troposphere to the latest version': 'install_guide/ratchet_upgrade.md'
+  - 'How to configure Atmosphere after install': 'install_guide/atmosphere_configure.md'
+  - 'How to configure Troposphere after install': 'install_guide/troposphere_configure.md'
+  - 'How to deploy BadgeKit with Swish': 'install_guide/badge_kit_swish.md'
+  - 'How to configure BadgeKit': 'install_guide/badge_kit_configure.md'
+- UserGuide:
+  - 'Logging in to Atmosphere': 'user_guide/login.md'
+  - 'Launching an Instance': 'user_guide/launch.md'
+  - 'Creating a Machine Request': 'user_guide/imaging.md'
+  - 'Creating a Boot Script': 'user_guide/boot_script.md'
+  - 'Requesting more Quota or Allocation(AU)': 'user_guide/allocation.md'
+  - 'Attaching and detaching a volume': 'staff_guide/volume.md'
+  - ImagingGuide:
+    - 'Things to know before imaging': 'imaging_guide/starting.md'
+    - 'Making an Image private and adding members': 'imaging_guide/privacy_and_membership.md'
+- UserSupportGuide:
+  - 'Logging in to the Admin panel': 'staff_guide/login.md'
+  - 'Emulating a user': 'staff_guide/emulate.md'
+  - 'Approving/Restarting Machine Requests': 'staff_guide/imaging.md'
+  - 'Approving more Quota or Allocation(AU)': 'staff_guide/allocation.md'
+  - ImagingGuide:
+    - 'Approving a Machine Request': 'imaging_guide/staff_approval.md'
+    - 'Making a private image public': 'imaging_guide/staff_add_public.md'
+    - 'Making a public image private and adding members': 'imaging_guide/staff_add_privacy_and_membership.md'
+- CloudSupportGuide:
+  - TroubleshootingAtmosphere:
+    - 'Checking Flower': 'staff_guide/flower.md'
+    - 'Checking the logs': 'staff_guide/logs.md'
+    - 'Reporting a problem to Atmosphere Support': 'staff_guide/reporting.md'
+  - TroubleshootingInstances:
+    - 'Instance launch status is error': 'staff_guide/error_instance_launch.md'
+    - 'Instance is "Stuck in active - networking"': 'staff_guide/instance_networking_issues.md'
+    - 'Instance is "Stuck in active - deploying"': 'staff_guide/instance_deployment_issues.md'
+    - 'The Cloud is at 100% Capacity': 'staff_guide/cloud_at_capacity.md'
+  - TroubleshootingVolumes:
+    - 'Diagnosing volume attach/detach problems': 'staff_guide/volume.md'
+
+copyright: Copyright &copy; 2016

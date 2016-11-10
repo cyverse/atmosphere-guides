@@ -1,0 +1,63 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="generator" content="pandoc" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      $for(author-meta)$
+          <meta name="author" content="$author-meta$" />
+      $endfor$
+      $if(date-meta)$
+          <meta name="date" content="$date-meta$" />
+      $endif$
+        <title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$</title>
+        <style type="text/css">code{white-space: pre;}</style>
+      $if(quotes)$
+        <style type="text/css">q { quotes: "“" "”" "‘" "’"; }</style>
+      $endif$
+      $if(highlighting-css)$
+        <style type="text/css">
+      $highlighting-css$
+        </style>
+      $endif$
+      $for(css)$
+        <link rel="stylesheet" href="$css$" $if(html5)$$else$type="text/css" $endif$/>
+      $endfor$
+      $for(header-includes)$
+        $header-includes$
+      $endfor$
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        $for(include-before)$
+        $include-before$
+        $endfor$
+
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+              <!-- TABLE OF CONTENTS -->
+                $if(toc)$
+                  <aside>
+                      <h3> TABLE OF CONTENTS </h3>
+                      $toc$
+                  </aside>
+                $endif$
+              <!-- MAIN CONTENT -->
+              <article>
+              $body$
+              </article>
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+        $for(include-after)$
+        $include-after$
+        $endfor$
+    </body>
+</html>

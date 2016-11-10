@@ -1,0 +1,155 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="generator" content="pandoc" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+                    <title></title>
+        <style type="text/css">code{white-space: pre;}</style>
+                          <link rel="stylesheet" href="./themes/cyverse/templates/main.css" type="text/css" />
+                    <link rel="icon" href="themes/cyverse/media/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="themes/cyverse/media/css/normalize.min.css">
+        <link rel="stylesheet" href="themes/cyverse/media/css/main.css">
+        <script src="themes/cyverse/media/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+          </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+                <div class="header-container">
+            <header class="wrapper clearfix">
+                <div class="logo"><img src="themes/cyverse/media/cyverse_logo.png" alt="Staff Guide"></div>
+                <h1 class="title"></h1>
+            </header>
+        </div>
+        
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+              <!-- TABLE OF CONTENTS -->
+                                  <aside>
+                      <h3> TABLE OF CONTENTS </h3>
+                      <ul>
+                      <li><a href="#making-your-application-private">Making your application private</a></li>
+                      <li><a href="#adding-membership">Adding Membership</a></li>
+                      <li><a href="#imaging-and-machine-requests">Imaging and Machine Requests</a></li>
+                      <li><a href="#before-you-create-your-machine-request">Before you create your machine request!</a></li>
+                      <li><a href="#creating-a-machine-request">Creating a Machine Request</a></li>
+                      <li><a href="#viewing-your-machine-requests">Viewing your Machine Requests</a></li>
+                      </ul>
+                  </aside>
+                              <!-- MAIN CONTENT -->
+              <article>
+              <p>This will take you through how to add members to your private machine request.</p>
+              <h1 id="making-your-application-private">Making your application private</h1>
+              <p>To make your application private, select ‘Private’ or ‘Select’ in the visibility section. [SCREENSHOT]</p>
+              <h1 id="adding-membership">Adding Membership</h1>
+              <p>To add members to your application, start typing their username and select the user you would like to add to your image. [SCREENSHOT]</p>
+              <p>This will take you through how to create a machine request in Troposphere.</p>
+              <h1 id="imaging-and-machine-requests">Imaging and Machine Requests</h1>
+              <p>An image is a type of template for a virtual machine.</p>
+              <p>Images are created by launching an instance, installing the software and files that you want to use, and creating a Machine Request. After the image is created, you will be able to launch instances of it. This makes it easier to create reproducible science or distribute commonly used software to other users.</p>
+              <p>Images save resources, since you can relaunch an instance of your image at any time instead of having to keep the instance running when you don’t need to use it.</p>
+              <p>After submitting your form, the support staff may review your submission and ask for additional information before approving the request.</p>
+              <p>Advanced functionality optionally included in your Machine Request: * Include ‘Licensing’ information that will inform users intending to launch your image what is implied and agreed upon. * Include ‘Boot Scripts’ that will allow you to make changes for each user who launches your image at run time. (For example: To update the permissions to the launching user)</p>
+              <h1 id="before-you-create-your-machine-request">Before you create your machine request!</h1>
+              <p>These steps must be completed in order to ensure the image that is created is compatible with Atmosphere: * Remove any non-purchased, licensed software that does not allow for free and open use in the cloud. * Software in which the licensing otherwise prevents the use within a cloud or virtualized environment. * Do <em>NOT</em> install software in these directories, as they will be destroyed during the imaging process: * * /home/ - All files, directories, and icons located under /home/<username>/Desktop will be deleted. To preserve them, you can use /etc/skel which is the directory that will be <em>COPIED</em> to <em>each new user</em> of the VM. Note that these should be small files or starter directories. * * /mnt * * /tmp * * /var/log - All files and directories will be <em>emptied</em> but not destroyed, as part of the imaging process. * * /root - All files and directories under /root/ will be destroyed as part of the imaging process. * Volumes will <em>NOT</em> be copied to a new image. The files must exist on the disk. * Modifications to these files will be destroyed as part of the imaging process: * * /etc/fstab * * /etc/fstaf * * /etc/group * * /etc/host.allow * * /etc/host.conf * * /etc/host.deny * * /etc/hosts * * /etc/ldap.conf * * /etc/passwd * * /etc/resolve.conf * * /etc/shadow * * /etc/sshd/ * * /etc/sysconfig/iptables * If you install software that logs <em>outside</em> of /var/log, be sure to <em>empty the file</em> especially if it contains secrets or otherwise confidential information about your account <em>prior</em> to making a Machine Request for imaging. * NOTE: The permissions of the operating system are NOT affected by the imaging process. If you install software as <code>username:groupname</code> and you intend to provide that software to other users who launch your image, you will need to <em>include a Boot Script</em> that will change the permissions of the directory.</p>
+              <h1 id="creating-a-machine-request">Creating a Machine Request</h1>
+              <ol style="list-style-type: decimal">
+              <li>Click Projects on the menu bar and open the project with the instance to use for the new image.</li>
+              <li>Click the instance name. The instance must be in Active status.</li>
+              <li>In the Actions list on the right, click Image.</li>
+              <li>On the Image Request form, enter the necessary information:</li>
+              </ol>
+              <ul>
+              <li>New Image Name: Enter the name, up to 30 characters, to assign to the new image.</li>
+              <li>Description of the Image: Enter the description of the image as it will appear in Atmosphere. The description should include key words that concisely describe the tools installed, the purpose of the tools (e.g., This image performs X analysis), and the initial intent of the machine image (e.g. designed for XYZ workshop).</li>
+              <li>Image Tags: (Optional) Click in the field and select tags that will enhance search results for this image. You can add and remove tags later, if needed.</li>
+              </ul>
+              <ol start="5" style="list-style-type: decimal">
+              <li>Click Next.</li>
+              <li>In the second screen:</li>
+              </ol>
+              <ul>
+              <li>New Version Name: Enter the new (unique) name or number of the tool to distinguish this tool from others with a similar name.</li>
+              <li>Change Log: Enter a brief description of the changes you made to this version of the tool.</li>
+              </ul>
+              <ol start="7" style="list-style-type: decimal">
+              <li>Click Next.</li>
+              <li>In the Cloud for Deployment screen:</li>
+              </ol>
+              <ul>
+              <li>Select the cloud provider to use for the image. The choices depend on the providers to which you have been granted access.</li>
+              </ul>
+              <ol start="9" style="list-style-type: decimal">
+              <li>Click Next.</li>
+              <li>In the Image Visibility screen:</li>
+              </ol>
+              <ul>
+              <li>Select the visibility for the image.</li>
+              <li>Public: Makes the image visible to and launchable by everyone.</li>
+              <li>Private: Allows only you to view and launch the image.</li>
+              <li>Specific Users: Makes the image visible to and launchable only specified users. If you chose Specific Users, select the users who will be able to launch the image.</li>
+              </ul>
+              <ol start="11" style="list-style-type: decimal">
+              <li>To access advanced options, including excluding directories from the image, adding deployment scripts that execute when the image is launched or the status changes, or requiring the user to verify understanding of any license restrictions, click Advanced Options:</li>
+              <li>To exclude files from the image, list each file to exclude on a separate line and then click Next. (This step is optional. To skip this step, just click Next.)</li>
+              <li>To add a deployment script, click in the search field and search for the title of the script.</li>
+              </ol>
+              <ul>
+              <li>To create a new deployment script:
+              <ul>
+              <li>Click Create New Script, enter a title for the script, and then either click URL and enter the URL to the script, or click Full Text and enter the deployment script.</li>
+              <li>URL Option: URLs must start with http[s]://</li>
+              <li>Full Text Option: It is expected that your script will include a shebang line ex: #!/bin/bash</li>
+              <li>When done, click Create and Add, and then click Next. (Just click Next to continue to the next screen without adding a new script).</li>
+              </ul></li>
+              </ul>
+              <ol start="14" style="list-style-type: decimal">
+              <li>To list any licensed software used in the image and require users to agree to the license agreement before launching, click in the search field and search for the license title.</li>
+              </ol>
+              <ul>
+              <li>To create a new license:
+              <ul>
+              <li>Click Create New License, enter a title for the license, and then either click URL and enter the URL to the license, or click Full Text and enter the full license text.</li>
+              <li>When done, click Create and Add, and then click Next. (Just click Next to continue to the next screen without adding a new script).</li>
+              </ul></li>
+              </ul>
+              <ol start="15" style="list-style-type: decimal">
+              <li>In the Review screen, click the checkbox certifying that the license does not contain any license-restricted software.</li>
+              <li>Click request image.</li>
+              </ol>
+              <h1 id="viewing-your-machine-requests">Viewing your Machine Requests</h1>
+              <p>In the current UI, you can view your lists of images and image requests.</p>
+              <ol style="list-style-type: decimal">
+              <li>In the Atmosphere current UI, click Images on the top menu bar.</li>
+              <li>Click My Images tab at the top of the screen.</li>
+              </ol>
+              </article>
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+                <div class="footer-container">
+            <footer class="wrapper">
+                    <footer class="footer"> <!-- Needs to be a `include-after` -->
+          		<div class="container">
+          		  <div class="region region-footer">
+          		    <section id="block-block-25" class="block block-block clearfix">
+          		      <p><img alt="Cyverse" src="./media/cyverse_icon_transp2.png" style="width: 25px; height: 24px;">&nbsp;<a href="http://www.cyverse.org/">CyVerse</a> | <a href="http://www.cyverse.org/open-source">Open Source</a> | <img alt="NSF" src="./media/nsf1.gif" style="width: 25px; height: 25px;">&nbsp;</p>
+          		    </section>
+          		  </div>
+          		</div>
+        	    </footer>
+            </footer>
+        </div>
+        <!-- Included at the end of body -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="themes/cyverse/media/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        
+        <script src="themes/cyverse/media/js/main.js"></script>
+            </body>
+</html>

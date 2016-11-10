@@ -1,0 +1,189 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="generator" content="pandoc" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+                    <title></title>
+        <style type="text/css">code{white-space: pre;}</style>
+                          <link rel="stylesheet" href="./themes/cyverse/templates/main.css" type="text/css" />
+                    <link rel="icon" href="themes/cyverse/media/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="themes/cyverse/media/css/normalize.min.css">
+        <link rel="stylesheet" href="themes/cyverse/media/css/main.css">
+        <script src="themes/cyverse/media/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+          </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+                <div class="header-container">
+            <header class="wrapper clearfix">
+                <div class="logo"><img src="themes/cyverse/media/cyverse_logo.png" alt="Staff Guide"></div>
+                <h1 class="title"></h1>
+            </header>
+        </div>
+        
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+              <!-- TABLE OF CONTENTS -->
+                                  <aside>
+                      <h3> TABLE OF CONTENTS </h3>
+                      <ul>
+                      <li><a href="#navigate-to-the-request-form">Navigate to the request form</a></li>
+                      <li><a href="#requesting-more-resources">Requesting more resources</a></li>
+                      <li><a href="#calculating-desired-au">Calculating desired AU <a name="calculate-au">🔗</a></a></li>
+                      <li><a href="#what-is-a-boot-script-and-why-would-you-use-it">What is a Boot Script and why would you use it</a></li>
+                      <li><a href="#variables-that-are-included-in-your-boot-script">Variables that are included in your boot script</a></li>
+                      <li><a href="#examples-of-a-full-text-boot-script">Examples of a ‘Full Text’ boot script</a></li>
+                      <li><a href="#examples-of-a-url-boot-script">Examples of a ‘URL’ boot script</a></li>
+                      <li><a href="#about-requesting-an-image">About requesting an image</a></li>
+                      <li><a href="#navigate-to-the-request-form-1">Navigate to the request form</a></li>
+                      <li><a href="#submitting-an-imaging-request">Submitting an imaging request</a></li>
+                      <li><a href="#viewing-pending-image-requests">Viewing pending image requests</a></li>
+                      <li><a href="#logging-in">Logging in</a></li>
+                      </ul>
+                  </aside>
+                              <!-- MAIN CONTENT -->
+              <article>
+              <p>This will take you through the process of requesting additional resources.</p>
+              <h1 id="navigate-to-the-request-form">Navigate to the request form</h1>
+              <div class="figure">
+              <img src="./media/navigate_to_resource_request_form.gif" />
+              
+              </div>
+              <h1 id="requesting-more-resources">Requesting more resources</h1>
+              <p>There are two forms of resources: <strong>Allocation</strong> and <strong>Quota</strong>.</p>
+              <p><strong>Allocation</strong> is a monthly allotment of time that we allow your virtual machines to run. One of our allocation units (AU) is an hour per cpu of your machine. A 1 cpu machine will consume 1AU for every hour it is active. A 16 cpu machine will consume 16AU per hour. Keep in mind that larger machines need to be suspended often to conserve your AU budget. See <a href="#calculate-au">Calculating desired AU</a>. Allocation is reset every month (it does not carry over).</p>
+              <p><strong>Quota</strong> are constraints on resources that don’t change on a monthly basis.</p>
+              <ul>
+              <li>maximum total cpus</li>
+              <li>maximum total volume storage (GB)</li>
+              <li>maximum total memory (GB)</li>
+              <li>maximum # of volumes</li>
+              <li>maximum # of suspended instances</li>
+              </ul>
+              <p>You can request an increase of Allocation and Quota to the discretion of the support staff. Motivate why the additonal resources are needed in the form above.</p>
+              <p>After you submit the form, support will get in touch with you about the status of your request.</p>
+              <h1 id="calculating-desired-au">Calculating desired AU <a name="calculate-au">🔗</a></h1>
+              <div class="figure">
+              <img src="./media/au-calculator.gif" />
+              
+              </div>
+              <h1 id="what-is-a-boot-script-and-why-would-you-use-it">What is a Boot Script and why would you use it</h1>
+              <p>Boot scripts are a way to dynamically modify the environment of your VM at run time.</p>
+              <p>Boot scripts can be created for a specific instance Boot scripts can also be created to execute on a new machine (via Machine Request) for all users who launch that VM.</p>
+              <p>Boot scripts are executed by the Atmosphere system as the <em>final</em> step of the deployment process.</p>
+              <p>These scripts can be used to: - execute a daemon/background processes - change permissions of a directory to match the active running user, rather than your own account.</p>
+              <p>These scripts should <em>NOT</em> be used to: - Install new dependencies (Instead, install the software you want and create a Machine Request)</p>
+              <p>NOTE: A failure of a boot script may cause your VM to behave in an unexpected way, but time will still be counted against you. Make sure that you test your boot scripts multiple times before distributing it with your VM.</p>
+              <h1 id="variables-that-are-included-in-your-boot-script">Variables that are included in your boot script</h1>
+              <ul>
+              <li>ATMO_USER: This is the username of the account that is running your Image/Instance.</li>
+              </ul>
+              <h1 id="examples-of-a-full-text-boot-script">Examples of a ‘Full Text’ boot script</h1>
+              <p>A Full text boot script should include a shebang line to tell the bash console what program to use. The script will be executed directly.</p>
+              <p>Using the templated variables above can be very helpful for creating dynamic boot scripts.</p>
+              <pre><code>#!/bin/bash -x
+              
+              # Permissions Granting Script - v1.0
+              #
+              # This is a basic &#39;permissions granting&#39; script to be used as a template
+              # for image creators, to ensure that their UID is not left on directories
+              # critical to the success of their image.
+              
+              main ()
+              {
+                  #
+                  # This is the main function -- These lines will be executed each run
+                  #
+              
+                  inject_atmo_vars
+                  set_directory
+              }
+              
+              inject_atmo_vars ()
+              {
+                  #
+                  #
+                  #NOTE: For now, only $ATMO_USER will be provided to script templates (In addition to the standard &#39;env&#39;)
+                  #
+                  #
+              
+                  # Source the .bashrc -- this contains $ATMO_USER
+                  PS1=&#39;HACK to avoid early-exit in .bashrc&#39;
+                  . ~/.bashrc
+                  if [ -z &quot;$ATMO_USER&quot; ]; then
+                      echo &#39;Variable $ATMO_USER is not set in .bashrc! Abort!&#39;
+                      exit 1 # 1 - ATMO_USER is not set!
+                  fi
+                  echo &quot;Found user: $ATMO_USER&quot;
+              }
+              
+              set_directory ()
+              {
+                  # Set directory (via recursive `chown`)
+                  #TODO: Create a &#39;chown&#39; line for each directory that should be re-assigned to the current user:
+                  #
+                chown -R $ATMO_USER:iplant-everyone &quot;/opt&quot;
+                exit 0
+              }
+              
+              # This line will start the execution of the script
+              main</code></pre>
+              <h1 id="examples-of-a-url-boot-script">Examples of a ‘URL’ boot script</h1>
+              <p>A URL boot script should start with http or https. A URL boot script should point to the <em>RAW</em> file The file the boot script points to should follow all rules listed in <em>Examples of a Full Text boot script</em></p>
+              <pre><code>https://raw.githubusercontent.com/iPlantCollaborativeOpenSource/atmosphere/master/core/examples/boot_scripts/grant_permissions.sh</code></pre>
+              <p>This will take you through the process of creating an image.</p>
+              <h1 id="about-requesting-an-image">About requesting an image</h1>
+              <p>An image is a type of template for a virtual machine. You can launch an instance and install the software and files you want to use, then request an image of the instance using the Request Imaging from within Atmosphere, as outlined below. This allows you to retain a complete copy of all of the changes and updates you made to the instance so you can reuse it again later, much like a template.</p>
+              <p><strong>WARNING: <span style="color:red;">It is easy to include sensitive data in a public image.</span></strong></p>
+              <p>For other security concerns consult this <a href="https://pods.iplantcollaborative.org/wiki/display/atmman/Requesting+an+Image+of+an+Instance">guide</a>.</p>
+              <h1 id="navigate-to-the-request-form-1">Navigate to the request form</h1>
+              <div class="figure">
+              <img src="./media/navigate-to-image-request.gif" />
+              
+              </div>
+              <h1 id="submitting-an-imaging-request">Submitting an imaging request</h1>
+              <p>Each step has accompanying instructions. After your request has been submitted. Support will get in touch with you about the status of your image request. For more comprehensive documentation consult this <a href="https://pods.iplantcollaborative.org/wiki/display/atmman/Requesting+an+Image+of+an+Instance">guide</a>.</p>
+              <h1 id="viewing-pending-image-requests">Viewing pending image requests</h1>
+              <p>This animation illustrates viewing a recently submitted request.</p>
+              <div class="figure">
+              <img src="./media/submit-image-request-and-view-pending-requests.gif" />
+              
+              </div>
+              <p>This will take you through the login process.</p>
+              <h1 id="logging-in">Logging in</h1>
+              <p>Navigate to the home page, click login.</p>
+              <div class="figure">
+              <img src="./media/login.gif" />
+              
+              </div>
+              </article>
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+                <div class="footer-container">
+            <footer class="wrapper">
+                    <footer class="footer"> <!-- Needs to be a `include-after` -->
+          		<div class="container">
+          		  <div class="region region-footer">
+          		    <section id="block-block-25" class="block block-block clearfix">
+          		      <p><img alt="Cyverse" src="./media/cyverse_icon_transp2.png" style="width: 25px; height: 24px;">&nbsp;<a href="http://www.cyverse.org/">CyVerse</a> | <a href="http://www.cyverse.org/open-source">Open Source</a> | <img alt="NSF" src="./media/nsf1.gif" style="width: 25px; height: 25px;">&nbsp;</p>
+          		    </section>
+          		  </div>
+          		</div>
+        	    </footer>
+            </footer>
+        </div>
+        <!-- Included at the end of body -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="themes/cyverse/media/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        
+        <script src="themes/cyverse/media/js/main.js"></script>
+            </body>
+</html>

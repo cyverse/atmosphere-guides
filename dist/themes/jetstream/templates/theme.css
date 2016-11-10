@@ -1,0 +1,108 @@
+/* =========================================================
+    UI elements 
+============================================================ */
+a {
+  color: #0971ab;
+  border-bottom: 1px solid transparent; }
+  a:hover {
+    color: #06517b; }
+
+ul li span, ul li a {
+  padding: 5px 10px;
+  border-radius: 3px;
+  color: black;
+  border: 0; }
+
+button {
+  color: #fff;
+  background-color: #0971ab;
+  border-color: #06517b; }
+
+button:focus,
+button.focus {
+  color: #fff;
+  background-color: #0971ab;
+  border-color: #06517b; }
+
+button:hover {
+  color: #fff;
+  background-color: #06517b;
+  border-color: #04314a; }
+
+button:active,
+button.active,
+.open > button.dropdown-toggle {
+  color: #fff;
+  background-color: #0971ab;
+  border-color: #06517b; }
+
+button:active:hover,
+button:active:focus,
+button:active.focus,
+button.active:hover,
+button.active:focus,
+button.active.focus,
+.open > button.dropdown-toggle:hover,
+.open > button.dropdown-toggle:focus,
+.open > button.dropdown-toggle.focus {
+  color: #fff;
+  background-color: #0971ab;
+  border-color: #06517b; }
+
+button:active,
+button.active,
+.open > button.dropdown-toggle {
+  background-image: none; }
+
+button.disabled,
+button.disabled:hover,
+button.disabled:focus,
+button.disabled.focus,
+button.disabled:active,
+button.disabled.active,
+button[disabled],
+button[disabled]:hover,
+button[disabled]:focus,
+button[disabled].focus,
+button[disabled]:active,
+button[disabled].active,
+fieldset[disabled] button,
+fieldset[disabled] button:hover,
+fieldset[disabled] button:focus,
+fieldset[disabled] button.focus,
+fieldset[disabled] button:active,
+fieldset[disabled] button.active {
+  color: #fff;
+  background-color: #0971ab;
+  border-color: #06517b; }
+
+button .badge {
+  color: #56AA21;
+  background-color: #fff; }
+
+body .option {
+  font-size: 13px !important;
+  font-family: Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: #FFF;
+  box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  border: 1px solid #f1f1f1 !important;
+  padding: 20px;
+  text-align: center !important;
+  margin-bottom: 20px;
+  color: #555 !important;
+  font-weight: normal !important;
+  text-decoration: none;
+  display: block;
+  line-height: 16px;
+  min-height: 230px; }
+  body .option img {
+    width: 50px;
+    text-align: center !important;
+    margin-bottom: 10px; }
+  body .option strong {
+    color: #0971ab;
+    font-weight: normal; }
+  body .option hr {
+    border: 1px solid #EEE !important; }
+
