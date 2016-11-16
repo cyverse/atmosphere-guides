@@ -22,8 +22,6 @@ images.
 
 ## How to Contribute
 
-See CONTRIBUTING.md for more details not covered here.
-
 ### How to Write Docs
 Guides are written in Markdown. You may want to use a tool to render your Markdown. [livedown](https://github.com/shime/livedown) works with a few editors to hot-load your changes.
 
@@ -39,7 +37,12 @@ If you create a new guide, you will also need to update the Makefile so that `to
 
 Finally, to compile the docs, run `make` from the root of this repository.
 
-## Notes for CyVerse Document writers
-Don't forget to dog food the existing wiki, It is *verbose* and was actually kept up to date for a long period of time.
+See CONTRIBUTING.md for Pandoc-specific details not covered here.
 
-https://pods.iplantcollaborative.org/wiki/display/atmman/Atmosphere+Manual+Table+of+Contents
+### Notice for CyVerse Documenters
+A lot of Atmosphere documentation lives on the [CyVerse Wiki](https://pods.iplantcollaborative.org/wiki/dashboard.action), some in the [Atmosphere Manual](https://pods.iplantcollaborative.org/wiki/display/atmman/Atmosphere+Manual+Table+of+Contents) and some in private spaces. Going forward, documentation should be maintained as follows:
+
+- Docs for Atmosphere(1) as *the open-source platform for cloud computing* should be hosted here on [atmosphere-guides](https://cyverse.github.io/atmosphere-guides), and what exists on the CyVerse wiki should be migrated here.
+- Docs for Atmosphere(0) as *CyVerse's cloud computing service for bioscience research* should remain on the CyVerse wiki, in [Atmosphere Manual](https://pods.iplantcollaborative.org/wiki/display/atmman/Atmosphere+Manual+Table+of+Contents) or other spaces as appropriate.
+
+When you do migrate content from the CyVerse wiki to atmosphere-guides, please *remove the content from the wiki* and *leave a link to the new guide in its place*. This way, we avoid maintaining parallel documentation on multiple platforms, while helping others find information in its new location.
