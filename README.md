@@ -33,16 +33,13 @@ http://recordit.co/
 ### How to Compile Docs
 After making changes, you need to compile them (so they will show up in GitHub Pages).
 
-To do this, cd to this directory and run:
-```
-make
-```
+First, you must have [pandoc](http://pandoc.org/) installed and in your executable path -- see [Installing Pandoc](http://pandoc.org/installing.html).
 
-If you create a new guide, you will need to update the Makefile so that `to_html_template.sh` builds HTML for your new guide.
+If you create a new guide, you will also need to update the Makefile so that `to_html_template.sh` builds HTML for your new guide.
+
+Finally, to compile the docs, run `make` from the root of this repository.
 
 ## Notes for CyVerse Document writers
 Don't forget to dog food the existing wiki, It is *verbose* and was actually kept up to date for a long period of time.
 
 https://pods.iplantcollaborative.org/wiki/display/atmman/Atmosphere+Manual+Table+of+Contents
-
-
