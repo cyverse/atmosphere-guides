@@ -44,7 +44,7 @@
                       <li><a href="#what-to-do-after-installing-clank">What to do after installing Clank</a><ul>
                       <li><a href="#starting-the-atmosphere-service-and-logging-in">Starting the Atmosphere service and logging in</a></li>
                       <li><a href="#setting-your-user-as-staff-and-superuser">Setting your user as staff and superuser</a></li>
-                      <li><a href="#connecting-to-a-new-cloud-provider">Connecting to a new Cloud Provider</a></li>
+                      <li><a href="#connecting-to-a-cloud-provider">Connecting to a Cloud Provider</a></li>
                       <li><a href="#creating-accounts-using-troposphere">Creating Accounts using Troposphere</a><ul>
                       <li><a href="#describing-the-create-account-modal">Describing the ‘Create Account’ modal:</a></li>
                       <li><a href="#adding-the-admin-account-to-your-new-provider">Adding the admin account to your new provider</a></li>
@@ -110,7 +110,7 @@
               <pre><code># SSH KEYS
               CREATE_SSH_KEYS: false                     # Set this to false if you wish to pass in your own ssh keys     
               ID_RSA:  /location/to/my/id_rsa_key/my_key_id_rsa                      #Absolute Path Recommended
-              ID_RSA_PUB: /location/to/my/id_rsa_public_key/my_key_id_rsa.pub        #Absolute Path Recommended </code></pre>
+              ID_RSA_PUB: /location/to/my/id_rsa_public_key/my_key_id_rsa.pub        #Absolute Path Recommended</code></pre>
               <h5 id="tags">Tags</h5>
               <p>You are able to isolate which portions of clank you want to run specifically. To do this you can pass in the tags flag to the <code>clank.py</code> script:</p>
               <pre><code>python clank.py --env_file $VARIABLES_YML_FILE --tags atmosphere # Runs only the installation of atmosphere</code></pre>
@@ -136,38 +136,8 @@
               user.is_superuser = True
               user.is_staff = True
               user.save()</code></pre>
-              <h3 id="connecting-to-a-new-cloud-provider">Connecting to a new Cloud Provider</h3>
-              <p>Now that you have logged in and marked your user an administrator, you are ready to connect to the cloud.</p>
-              <p>Upon page refresh, you should see a new tab ‘admin’. Select the ‘admin’ tab, and just below that, select ‘Manage Accounts’.</p>
-              <p>To create a new cloud provider, select ‘Create New Provider’. You will be required to answer some cloud-specific questions about the new provider, including the Providers Credentials and CloudConfig.</p>
-              <p>Looking for some useful defaults? Try these:</p>
-              <pre><code>&quot;name&quot;: &quot;New Cloud connected to Atmosphere&quot;,
-              &quot;timezone&quot;: &quot;America/Phoenix&quot;,
-              &quot;description&quot;: &quot;This is a test of cloud connectivity&quot;,
-              &quot;cloud_config&quot;: {
-                  &quot;deploy&quot;: {},
-                  &quot;network&quot;: {
-                      &quot;dns_nameservers&quot;: [&quot;8.8.8.8&quot;, &quot;8.8.4.4&quot;],
-                      &quot;topology&quot;: &quot;External Router Topology&quot;
-                  },
-                  &quot;user&quot;: {
-                      &quot;domain&quot;: &quot;default&quot;,
-                      &quot;admin_role_name&quot;: &quot;admin&quot;,
-                      &quot;user_role_name&quot;: &quot;_member_&quot;,
-                      &quot;secret&quot;: &quot;&lt;UNIQUE_STRING_REDACTED&gt;&quot;
-                  }
-              },
-              &quot;credentials&quot;: [
-                  {&quot;key&quot;: &quot;admin_url&quot;, &quot;value&quot;: &quot;http://your.openstack.cloud:35357&quot;},
-                  {&quot;key&quot;: &quot;auth_url&quot;, &quot;value&quot;: &quot;http://your.openstack.cloud:5000&quot;},
-                  {&quot;key&quot;: &quot;public_routers&quot;, &quot;value&quot;: &quot;public_router&quot;},
-                  {&quot;key&quot;: &quot;region_name&quot;, &quot;value&quot;: &quot;RegionName&quot;},
-                  {&quot;key&quot;: &quot;ex_force_auth_version&quot;, &quot;value&quot;: &quot;2.0_password&quot;}  # NOTE: new clouds &gt; havana will use 3.x_password here
-              ]</code></pre>
-              <div class="figure">
-              <img src="./media/troposphere_create_provider.gif" alt="Create Provider in Troposphere" />
-              <p class="caption">Create Provider in Troposphere</p>
-              </div>
+              <h3 id="connecting-to-a-cloud-provider">Connecting to a Cloud Provider</h3>
+              <p>Now that you have logged in and marked your user an administrator, you are ready to connect to the cloud. See <a href="./connecting_cloud_provider.html">Connecting a Cloud Provider</a>.</p>
               <h3 id="creating-accounts-using-troposphere">Creating Accounts using Troposphere</h3>
               <p>To Add an account with Troposphere, select ‘Create New Account’ from the ‘admin’-&gt;‘Manage Accounts’ tabs in Troposphere. A modal should appear asking for some information about the user:</p>
               <h4 id="describing-the-create-account-modal">Describing the ‘Create Account’ modal:</h4>
