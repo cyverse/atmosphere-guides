@@ -1,16 +1,6 @@
-# Running Pandoc
+## Running Pandoc
 
-## Generating the Imaging Guide:
-  See [Generating the Staff Guide](#staff_guide)
-
-## Generating the Operators Guide:
-  See [Generating the Staff Guide](#staff_guide)
-
-## Generating the User Guide:
-  See [Generating the Staff Guide](#staff_guide)
-
-## Generating the Staff Guide:
-  <a name="staff_guide"></a>
+These steps don't typically need to be followed to make updates -- see "How to Contribute" section of README.md.
 
 ### Preparing to run pandoc
 
