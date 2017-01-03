@@ -342,7 +342,7 @@ monitor_machines_for(8)
 monitor_instances_for(8)  # Only necessary if `nova boot` was done out-of-band
 ```
 
-#### Update atmosphere-ansible hosts file
+#### Update atmosphere-ansible hosts file and group_vars
 
 Ensure that the hostnames of all your VMs are in `/opt/dev/atmosphere-ansible/ansible/hosts`, e.g.:
 
@@ -353,6 +353,8 @@ atmosphere-mytestcloud
 [atmosphere-mytestcloud]
 vm7.mytestcloud.cyverse.org ansible_host=128.196.171.7 ansible_port=22
 ```
+
+Also ensure that you have appropriate group_vars defined in `/opt/dev/atmosphere-ansible/ansible/group/vars/name-of-your-cloud`.
 
 #### Test Atmosphere!
 
