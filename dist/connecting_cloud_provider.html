@@ -34,6 +34,7 @@
                                   <aside>
                       <h3> TABLE OF CONTENTS </h3>
                       <ul>
+                      <li><a href="#connecting-a-cloud-provider-to-atmosphere">Connecting a Cloud Provider to Atmosphere</a><ul>
                       <li><a href="#overview">Overview</a></li>
                       <li><a href="#prerequisites">Prerequisites</a></li>
                       <li><a href="#procedure">Procedure</a><ul>
@@ -50,14 +51,16 @@
                       <li><a href="#grant-staffsuperuser-privileges">Grant Staff/Superuser Privileges</a></li>
                       <li><a href="#choose-an-allocation-strategy">Choose an Allocation Strategy</a></li>
                       <li><a href="#add-openstacks-imagesinstancessizes-to-atmosphere">Add OpenStack’s Images/Instances/Sizes to Atmosphere</a></li>
-                      <li><a href="#update-atmosphere-ansible-hosts-file">Update atmosphere-ansible hosts file</a></li>
+                      <li><a href="#update-atmosphere-ansible-hosts-file-and-group_vars">Update atmosphere-ansible hosts file and group_vars</a></li>
                       <li><a href="#test-atmosphere">Test Atmosphere!</a></li>
+                      </ul></li>
                       </ul></li>
                       </ul></li>
                       </ul>
                   </aside>
                               <!-- MAIN CONTENT -->
               <article>
+              <h1 id="connecting-a-cloud-provider-to-atmosphere">Connecting a Cloud Provider to Atmosphere</h1>
               <h2 id="overview">Overview</h2>
               <p>This guide will help you connect Atmosphere to an OpenStack cloud. Atmosphere connects to OpenStack APIs using both LibCloud and the OpenStack client tools.</p>
               <p>This is a work in progress, see Chris Martin or Steve Gregory with questions.</p>
@@ -335,13 +338,14 @@
               monitor_sizes_for(8)
               monitor_machines_for(8)
               monitor_instances_for(8)  # Only necessary if `nova boot` was done out-of-band</code></pre>
-              <h4 id="update-atmosphere-ansible-hosts-file">Update atmosphere-ansible hosts file</h4>
+              <h4 id="update-atmosphere-ansible-hosts-file-and-group_vars">Update atmosphere-ansible hosts file and group_vars</h4>
               <p>Ensure that the hostnames of all your VMs are in <code>/opt/dev/atmosphere-ansible/ansible/hosts</code>, e.g.:</p>
               <pre><code>[atmosphere:children]
               atmosphere-mytestcloud
               
               [atmosphere-mytestcloud]
               vm7.mytestcloud.cyverse.org ansible_host=128.196.171.7 ansible_port=22</code></pre>
+              <p>Also ensure that you have appropriate group_vars defined in <code>/opt/dev/atmosphere-ansible/ansible/group/vars/name-of-your-cloud</code>.</p>
               <h4 id="test-atmosphere">Test Atmosphere!</h4>
               <p>In Atmosphere, try logging into the Troposphere UI as the account you added, selecting an image, and launching an instance.</p>
               </article>
