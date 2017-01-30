@@ -73,11 +73,19 @@
                       <ul>
                       <li><a href="#atmosphere-contribution-guide">Atmosphere Contribution Guide</a><ul>
                       <li><a href="#overview">Overview</a><ul>
+                      <li><a href="#general-guidelines">General Guidelines</a></li>
                       <li><a href="#python-style-guidelines">Python Style Guidelines</a><ul>
                       <li><a href="#import-ordering">Import ordering</a></li>
                       </ul></li>
                       </ul></li>
-                      <li><a href="#ansible-style-guidelines">Ansible Style Guidelines</a></li>
+                      <li><a href="#ansible-style-guidelines">Ansible Style Guidelines</a><ul>
+                      <li><a href="#optionally-defined-variables">Optionally Defined Variables</a></li>
+                      <li><a href="#ansible-galaxy-roles">Ansible Galaxy Roles</a><ul>
+                      <li><a href="#identifying-and-working-with-galaxy-roles">Identifying and Working With Galaxy Roles</a></li>
+                      <li><a href="#installing-consuming-galaxy-roles-in-another-project">Installing (Consuming) Galaxy Roles in Another Project</a></li>
+                      <li><a href="#importing-contributing-a-role-to-galaxy">Importing (Contributing) a Role to Galaxy</a></li>
+                      </ul></li>
+                      </ul></li>
                       </ul></li>
                       </ul>
                   </aside>
@@ -85,6 +93,12 @@
               <article>
               <h1 id="atmosphere-contribution-guide">Atmosphere Contribution Guide</h1>
               <h2 id="overview">Overview</h2>
+              <p>These guidelines will improve the consistency and comprehensibility of our code.</p>
+              <p>New contributions to “the Atmosphere projects” (atmosphere, troposphere, atmosphere-ansible, clank, etc) are generally expected to follow these guidelines, and future pull requests will be checked for adherence.</p>
+              <h3 id="general-guidelines">General Guidelines</h3>
+              <ul>
+              <li><a href="https://late.am/post/2016/04/28/delete-your-dead-code.html">Delete your dead code</a>. If you know that code is not run, don’t comment it out, instead remove it completely. Old code remains in version control and we can dig into the past if needed.</li>
+              </ul>
               <h3 id="python-style-guidelines">Python Style Guidelines</h3>
               <ul>
               <li>Use 4 space indentation</li>
@@ -108,6 +122,22 @@
               <li>Local libraries</li>
               </ol>
               <h2 id="ansible-style-guidelines">Ansible Style Guidelines</h2>
+              <p>These apply to repos like clank and atmosphere-ansible (collectively, “the Ansible projects”).</p>
+              <h3 id="optionally-defined-variables">Optionally Defined Variables</h3>
+              <p>Instead of using the <code>| default()</code></p>
+              <h3 id="ansible-galaxy-roles">Ansible Galaxy Roles</h3>
+              <p>The Ansible projects will use similar code to perform very similar tasks, so there is an effort to structure our code into modular, re-usable roles. These roles are generally hosted in the <a href="https://github.com/cyverse-ansible">CyVerse-Ansible</a> organization and consumed via <a href="https://galaxy.ansible.com/">Ansible Galaxy</a>. This will centralize the development/maintenance effort and provide easy consumption by any interested groups. New Ansible contributors are encouraged to read <a href="https://galaxy.ansible.com/intro">Ansible Galaxy Intro</a>.</p>
+              <h4 id="identifying-and-working-with-galaxy-roles">Identifying and Working With Galaxy Roles</h4>
+              <p>The Ansible projects include a mix of roles installed from Galaxy and roles defined locally. The following clues should indicate that a given role was installed from Galaxy.</p>
+              <ul>
+              <li>The role is defined in the project’s <code>requirements.yml</code></li>
+              <li>The role contains <code>meta/galaxy_install_info</code> and <code>meta/main.yml</code></li>
+              </ul>
+              <p>There is a clear concept of “upstream” (roles) and “downstream” (projects that consume them), so generally we should <em>avoid making persistent changes</em> to a role which has been installed from Galaxy <em>inside a repository that consumes it</em>. Such changes will 1. not propagate back upstream to the role repository, and 2. be overwritten the next time the role is updated from Galaxy. Instead, make your changes in the upstream Ansible role (see below), re-import it, and install the new version in the consuming repository.</p>
+              <h4 id="installing-consuming-galaxy-roles-in-another-project">Installing (Consuming) Galaxy Roles in Another Project</h4>
+              <p>The Ansible projects use a <code>requirements.yml</code> file to define the Galaxy roles we are consuming. Install new roles and update existing roles in a repo by running <code>ansible-galaxy install -f -r requirements.yml -p roles/</code> from the <code>ansible</code> folder. Then, the desired roles will be copied into your project, and you can call them from Playbooks like any other role.</p>
+              <h4 id="importing-contributing-a-role-to-galaxy">Importing (Contributing) a Role to Galaxy</h4>
+              <p>Follow the instructions in <a href="https://github.com/CyVerse-Ansible/ansible-role-template">this template</a> to publish an Ansible role to Galaxy and set up automated testing with Travis CI; then you can install the role into other projects.</p>
               </article>
             </div> <!-- #main -->
         </div> <!-- #main-container -->
