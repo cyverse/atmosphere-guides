@@ -8,3 +8,4 @@ This site is intended to provide guides for how Atmosphere should be used. Both 
 - [Staff Guide](./staff_guide.html)
 - [User Guide](./user_guide.html)
 - [Imaging Guide](./imaging_guide.html)
+- [Atmosphere Contribution Guide](./contribution_guide.html)
