@@ -79,12 +79,18 @@
                       </ul></li>
                       </ul></li>
                       <li><a href="#ansible-style-guidelines">Ansible Style Guidelines</a><ul>
-                      <li><a href="#optionally-defined-variables">Optionally Defined Variables</a></li>
-                      <li><a href="#ansible-galaxy-roles">Ansible Galaxy Roles</a><ul>
+                      <li><a href="#yaml-files-and-formatting">YAML Files and Formatting</a></li>
+                      <li><a href="#variables">Variables</a></li>
+                      <li><a href="#conditional-logic">Conditional Logic</a></li>
+                      <li><a href="#modules">Modules</a></li>
+                      <li><a href="#files-and-installation-packages">Files and Installation Packages</a></li>
+                      <li><a href="#ansible-security-guidelines">Ansible Security Guidelines</a></li>
+                      <li><a href="#maybe-guidelines-things-to-discuss">Maybe Guidelines? Things to discuss?</a></li>
+                      </ul></li>
+                      <li><a href="#about-ansible-galaxy-roles">About Ansible Galaxy Roles</a><ul>
                       <li><a href="#identifying-and-working-with-galaxy-roles">Identifying and Working With Galaxy Roles</a></li>
                       <li><a href="#installing-consuming-galaxy-roles-in-another-project">Installing (Consuming) Galaxy Roles in Another Project</a></li>
                       <li><a href="#importing-contributing-a-role-to-galaxy">Importing (Contributing) a Role to Galaxy</a></li>
-                      </ul></li>
                       </ul></li>
                       </ul></li>
                       </ul>
@@ -122,10 +128,38 @@
               <li>Local libraries</li>
               </ol>
               <h2 id="ansible-style-guidelines">Ansible Style Guidelines</h2>
-              <p>These apply to repos like clank and atmosphere-ansible (collectively, “the Ansible projects”).</p>
-              <h3 id="optionally-defined-variables">Optionally Defined Variables</h3>
-              <p>Instead of using the <code>| default()</code></p>
-              <h3 id="ansible-galaxy-roles">Ansible Galaxy Roles</h3>
+              <p>These apply to repos like clank and atmosphere-ansible (collectively, “the Ansible projects”). Some are borrowed from <a href="https://openedx.atlassian.net/wiki/display/OpenOPS/Ansible+Code+Conventions">Open edX Operations</a> and <a href="http://docs.openstack.org/developer/openstack-ansible/developer-docs/contribute.html">OpenStack-Ansible</a>.</p>
+              <h3 id="yaml-files-and-formatting">YAML Files and Formatting</h3>
+              <p>YAML files should: - Have a name ending in <code>.yml</code> - Begin with three dashes followed by a blank line - Use 2-space indents - Use YAML dictionary format ratner than in-line module arguments. So, this: <code>- name: foo     file:       src: /tmp/bar       dest: /tmp/baz       state: present</code> Not this: <code>- name: foo src=/tmp/bar dest=/tmp/baz state=present</code> - Use YAML <a href="http://yaml.org/spec/1.2/spec.html#id2796251">folded style</a> for long lines: <code>- shell: &gt;             python a very long command --with=very --long-options=foo             --and-even=more_options --like-these</code></p>
+              <h3 id="variables">Variables</h3>
+              <ul>
+              <li>Use spaces between double-braces and variable names: <code>{{ var }}</code> instead of <code>{{var}}</code></li>
+              <li>Bare variables in YAML must be quoted, e.g. ```</li>
+              <li>foo: “{{ bar }}” ```</li>
+              <li><p>For variables that have some default and are optionally overridden by a consumer/deployer: define the variable’s default value in the role <code>defaults/</code> instead of using the <code>| default()</code> jinja2 filter. This keeps configuration separate from code.</p></li>
+              <li><p>Prefix task names with the role name?</p></li>
+              </ul>
+              <h3 id="conditional-logic">Conditional Logic</h3>
+              <ul>
+              <li>To conditionally include or exclude a role, use the following syntax in a playbook: <code>roles: - { role: ldap, when: CONFIGURE_LDAP == true }</code> Avoid applying the same tag to every task in a role and expecting a user to skip a role with <code>--skip-tags</code>.</li>
+              </ul>
+              <h3 id="modules">Modules</h3>
+              <ul>
+              <li>Use <code>command</code> rather than <code>shell</code> unless shell is explicitly required (<a href="http://docs.ansible.com/ansible/shell_module.html#notes">source 0</a> <a href="https://blog.confirm.ch/ansible-modules-shell-vs-command/">source 1</a>).</li>
+              </ul>
+              <h3 id="files-and-installation-packages">Files and Installation Packages</h3>
+              <p>Avoid storing large binary files or installation packages in Ansible projects / version control. Instead, host it externally (e.g. CyVerse’s S3 account) and download from there, or download from the publisher.</p>
+              <h3 id="ansible-security-guidelines">Ansible Security Guidelines</h3>
+              <p>Do not store anything secret or sensitive (e.g. passwords, SSH private keys, license keys) in public version control. Any secrets stored in private version control should be encrypted with Ansible Vault, and Vault passphrases should not be stored in plaintext.</p>
+              <p>Any installation packages should be downloaded in a secure way that prevents man-in-the-middle attacks from changing the contents (e.g. HTTPS, or APT packages signed with a GPG key).</p>
+              <p>Avoid disabling SSH host key checking.</p>
+              <h3 id="maybe-guidelines-things-to-discuss">Maybe Guidelines? Things to discuss?</h3>
+              <ul>
+              <li><p>Variables that are internal to a role should be in lowercase? Variables that are environment-specific and should be overridden in UPPERCASE?</p></li>
+              <li><p>Prefix all variables defined in a role with the name of the role? Since Ansible doesn’t really have variable scoping?</p></li>
+              <li><p>Separate words in role names with dashes (<code>my-role</code>)?</p></li>
+              </ul>
+              <h2 id="about-ansible-galaxy-roles">About Ansible Galaxy Roles</h2>
               <p>The Ansible projects will use similar code to perform very similar tasks, so there is an effort to structure our code into modular, re-usable roles. These roles are generally hosted in the <a href="https://github.com/cyverse-ansible">CyVerse-Ansible</a> organization and consumed via <a href="https://galaxy.ansible.com/">Ansible Galaxy</a>. This will centralize the development/maintenance effort and provide easy consumption by any interested groups. New Ansible contributors are encouraged to read <a href="https://galaxy.ansible.com/intro">Ansible Galaxy Intro</a>.</p>
               <h4 id="identifying-and-working-with-galaxy-roles">Identifying and Working With Galaxy Roles</h4>
               <p>The Ansible projects include a mix of roles installed from Galaxy and roles defined locally. The following clues should indicate that a given role was installed from Galaxy.</p>
