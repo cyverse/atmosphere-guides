@@ -1,5 +1,5 @@
-Python
-======
+Python Style Guidelines
+=======================
 
 This Python style guide is largely copied from 
 [Center for Open Science](http://cosdev.readthedocs.io/en/latest/style_guides/python.html)
