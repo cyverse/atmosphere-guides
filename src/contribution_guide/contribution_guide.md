@@ -6,10 +6,6 @@ These guidelines will improve the consistency and comprehensibility of our code.
 
 - [Delete your dead code](https://late.am/post/2016/04/28/delete-your-dead-code.html). If you know that code is not run, don't comment it out, instead remove it completely. Old code remains in version control and we can dig into the past if needed.
 
-### Python Style Guidelines
-
-See [Python](python.html)
-
 ### Ansible Style Guidelines
 
 These apply to repos such as clank and atmosphere-ansible (collectively, "the Ansible projects"). Some are borrowed from [Open edX Operations](https://openedx.atlassian.net/wiki/display/OpenOPS/Ansible+Code+Conventions) and [OpenStack-Ansible](http://docs.openstack.org/developer/openstack-ansible/developer-docs/contribute.html).

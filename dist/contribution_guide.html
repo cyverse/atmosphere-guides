@@ -73,9 +73,6 @@
                       <ul>
                       <li><a href="#atmosphere-contribution-guide">Atmosphere Contribution Guide</a><ul>
                       <li><a href="#code-guidelines">Code Guidelines</a><ul>
-                      <li><a href="#python-style-guidelines">Python Style Guidelines</a><ul>
-                      <li><a href="#import-ordering">Import ordering</a></li>
-                      </ul></li>
                       <li><a href="#ansible-style-guidelines">Ansible Style Guidelines</a><ul>
                       <li><a href="#yaml-files-and-formatting">YAML Files and Formatting</a></li>
                       <li><a href="#variables">Variables</a></li>
@@ -90,6 +87,23 @@
                       <li><a href="#contribution-guide-contribution-guide">Contribution Guide Contribution Guide</a></li>
                       <li><a href="#further-reading">Further Reading</a></li>
                       </ul></li>
+                      <li><a href="#python">Python</a><ul>
+                      <li><a href="#naming">Naming</a><ul>
+                      <li><a href="#general-naming-guidelines">General Naming Guidelines</a></li>
+                      </ul></li>
+                      <li><a href="#indentation">Indentation</a></li>
+                      <li><a href="#imports">Imports</a></li>
+                      <li><a href="#string-formatting">String formatting</a></li>
+                      <li><a href="#print-statements">Print statements</a></li>
+                      <li><a href="#documentation">Documentation</a></li>
+                      <li><a href="#on-comments">On Comments</a><ul>
+                      <li><a href="#method-overrides">Method Overrides</a></li>
+                      </ul></li>
+                      <li><a href="#calling-superclasses-methods">Calling Superclasses’ Methods</a></li>
+                      <li><a href="#line-lengths">Line lengths</a></li>
+                      <li><a href="#recommended-syntax-checkers">Recommended Syntax Checkers</a></li>
+                      <li><a href="#credits">Credits</a></li>
+                      </ul></li>
                       </ul>
                   </aside>
                               <!-- MAIN CONTENT -->
@@ -100,28 +114,6 @@
               <ul>
               <li><a href="https://late.am/post/2016/04/28/delete-your-dead-code.html">Delete your dead code</a>. If you know that code is not run, don’t comment it out, instead remove it completely. Old code remains in version control and we can dig into the past if needed.</li>
               </ul>
-              <h3 id="python-style-guidelines">Python Style Guidelines</h3>
-              <ul>
-              <li>Use 4 space indentation</li>
-              <li>Limit lines to 79 characters</li>
-              <li>Remove unused imports</li>
-              <li>Remove trailing whitespace</li>
-              <li>See <a href="https://www.python.org/dev/peps/pep-0008/">PEP8 - Style Guide for Python Code</a></li>
-              </ul>
-              <p>It is recommended that you use the git <code>pre-commit</code> hook to ensure your code is compliant with our style guide.</p>
-              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -s <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>/contrib/pre-commit.hook <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>/.git/hooks/pre-commit</code></pre></div>
-              <p>To automate running tests before a push use the git <code>pre-push</code> hook to ensure your code passes all the tests.</p>
-              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -s <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>/contrib/pre-push.hook <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>.git/hooks/pre-push</code></pre></div>
-              <p>When master is pulled, it’s helpful to know if a <code>pip install</code> or a <code>manage.py migrate</code> is necessary. To get other helpful warnings:</p>
-              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -s <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>/contrib/post-merge.hook <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>/.git/hooks/post-merge</code></pre></div>
-              <h4 id="import-ordering">Import ordering</h4>
-              <p>Imports should be grouped into the sections below and in sorted order.</p>
-              <ol style="list-style-type: decimal">
-              <li>Standard libraries</li>
-              <li>Third-party libraries</li>
-              <li>External project libraries</li>
-              <li>Local libraries</li>
-              </ol>
               <h3 id="ansible-style-guidelines">Ansible Style Guidelines</h3>
               <p>These apply to repos such as clank and atmosphere-ansible (collectively, “the Ansible projects”). Some are borrowed from <a href="https://openedx.atlassian.net/wiki/display/OpenOPS/Ansible+Code+Conventions">Open edX Operations</a> and <a href="http://docs.openstack.org/developer/openstack-ansible/developer-docs/contribute.html">OpenStack-Ansible</a>.</p>
               <h4 id="yaml-files-and-formatting">YAML Files and Formatting</h4>
@@ -213,6 +205,217 @@
               <h2 id="further-reading">Further Reading</h2>
               <ul>
               <li><a href="http://wiki.c2.com/?CodeSmell">Code Smells</a></li>
+              </ul>
+              <h1 id="python">Python</h1>
+              <p>This Python style guide is largely copied from <a href="http://cosdev.readthedocs.io/en/latest/style_guides/python.html">Center for Open Science</a></p>
+              <p>Follow <a href="http://www.python.org/dev/peps/pep-0008/">PEP8</a>, when sensible.</p>
+              <h2 id="naming">Naming</h2>
+              <ul>
+              <li>Variables, functions, methods, packages, modules
+              <ul>
+              <li><code>lower_case_with_underscores</code></li>
+              </ul></li>
+              <li>Classes and Exceptions
+              <ul>
+              <li><code>CapWords</code></li>
+              </ul></li>
+              <li>Protected methods and internal functions
+              <ul>
+              <li><code>_single_leading_underscore(self, ...)</code></li>
+              </ul></li>
+              <li>Private methods
+              <ul>
+              <li><code>__double_leading_underscore(self, ...)</code></li>
+              </ul></li>
+              <li>Constants
+              <ul>
+              <li><code>ALL_CAPS_WITH_UNDERSCORES</code></li>
+              </ul></li>
+              </ul>
+              <h3 id="general-naming-guidelines">General Naming Guidelines</h3>
+              <p>Use singlequotes for strings, unless doing so requires lots of escaping.</p>
+              <p>Avoid one-letter variables (esp. <code>l</code>, <code>O</code>, <code>I</code>).</p>
+              <p><em>Exception</em>: In very short blocks, when the meaning is clearly visible from the immediate context</p>
+              <pre class="sourcecode"><code>for e in elements:
+                  e.mutate()</code></pre>
+              <p>Avoid redundant labeling.</p>
+              <pre class="sourcecode"><code># Yes
+              import audio
+              
+              core = audio.Core()
+              controller = audio.Controller()
+              
+              # No
+              import audio
+              
+              core = audio.AudioCore()
+              controller = audio.AudioController()</code></pre>
+              <p>Prefer “reverse notation”.</p>
+              <pre class="sourcecode"><code># Yes
+              elements = ...
+              elements_active = ...
+              elements_defunct = ...
+              
+              # No
+              elements = ...
+              active_elements = ...
+              defunct_elements ...</code></pre>
+              <p>Avoid getter and setter methods.</p>
+              <pre class="sourcecode"><code># Yes
+              person.age = 42
+              
+              # No
+              person.set_age(42)</code></pre>
+              <h2 id="indentation">Indentation</h2>
+              <p>Use 4 spaces–never tabs. You may need to change the settings in your text editor of choice.</p>
+              <h2 id="imports">Imports</h2>
+              <p>Import entire modules instead of individual symbols within a module. For example, for a top-level module canteen that has a file canteen/sessions.py,</p>
+              <pre class="sourcecode"><code># Yes
+              
+              import canteen
+              import canteen.sessions
+              from canteen import sessions
+              
+              # No
+              from canteen import get_user  # Symbol from canteen/__init__.py
+              from canteen.sessions import get_session  # Symbol from canteen/sessions.py</code></pre>
+              <p><em>Exception</em>: For third-party code where documentation explicitly says to import individual symbols.</p>
+              <p><em>Rationale</em>: Avoids circular imports. See <a href="https://sites.google.com/a/khanacademy.org/forge/for-developers/styleguide/python#TOC-Imports">here</a>.</p>
+              <p>Put all imports at the top of the page with three sections, each separated by a blank line, in this order:</p>
+              <ol style="list-style-type: decimal">
+              <li>System imports</li>
+              <li>Third-party imports</li>
+              <li>Local source tree imports</li>
+              </ol>
+              <p><em>Rationale</em>: Makes it clear where each module is coming from.</p>
+              <p>If you have intentionally have an unused import that exists only to make imports less verbose, be explicit about it. This will make sure that someone doesn’t accidentally remove the import (not to mention that it keeps linters happy)</p>
+              <pre class="sourcecode"><code>from my.very.distant.module import Frob
+              
+              Frob = Frob</code></pre>
+              <h2 id="string-formatting">String formatting</h2>
+              <p>Prefer <code>str.format</code> to “%-style” formatting.</p>
+              <pre class="sourcecode"><code># Yes
+              &#39;Hello {}&#39;.format(&#39;World&#39;)
+               # OR
+              &#39;Hello {name}&#39;.format(name=&#39;World&#39;)
+              
+              # No
+              
+              &#39;Hello %s&#39; % (&#39;World&#39;, )</code></pre>
+              <h2 id="print-statements">Print statements</h2>
+              <p>Use the <code>print()</code> function rather than the <code>print</code> keyword (even if you’re using Python 2).</p>
+              <pre class="sourcecode"><code># Yes
+              print(&#39;Hello {}&#39;.format(name))
+              
+              # No
+              print &#39;Hello %s &#39; % name</code></pre>
+              <h2 id="documentation">Documentation</h2>
+              <p>Follow <a href="http://www.python.org/dev/peps/pep-0257/">PEP257</a>’s docstring guidelines. <a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">reStructured Text</a> and <a href="http://sphinx-doc.org/">Sphinx</a> can help to enforce these standards.</p>
+              <p>All functions should have a docstring - for very simple functions, one line may be enough:</p>
+              <pre><code>&quot;&quot;&quot;Return the pathname of ``foo``.&quot;&quot;&quot;</code></pre>
+              <p>Multiline docstrings should include:</p>
+              <ul>
+              <li>Summary line</li>
+              <li>Use case, if appropriate</li>
+              <li>Args</li>
+              <li>Return type and semantics, unless <code>None</code> is returned</li>
+              </ul>
+              <!-- -->
+              <pre><code>&quot;&quot;&quot;Train a model to classify Foos and Bars.
+              
+              Usage::
+              
+                  &gt;&gt;&gt; import klassify
+                  &gt;&gt;&gt; data = [(&quot;green&quot;, &quot;foo&quot;), (&quot;orange&quot;, &quot;bar&quot;)]
+                  &gt;&gt;&gt; classifier = klassify.train(data)
+              
+              :param train_data: A list of tuples of the form ``(color, label)``.
+              :return: A trained :class:`Classifier &lt;Classifier&gt;`
+              &quot;&quot;&quot;</code></pre>
+              <p>Notes</p>
+              <ul>
+              <li>Use action words (“Return”) rather than descriptions (“Returns”).</li>
+              <li>Document <code>__init__</code> methods in the docstring for the class.</li>
+              </ul>
+              <pre class="sourcecode"><code>class Person(object):
+                  &quot;&quot;&quot;A simple representation of a human being.
+              
+                  :param name: A string, the person&#39;s name.
+                  :param age: An int, the person&#39;s age.
+                  &quot;&quot;&quot;
+                  def __init__(self, name, age):
+                      self.name = name
+                      self.age = age</code></pre>
+              <h2 id="on-comments">On Comments</h2>
+              <p>Use them sparingly. Prefer code readability to writing a lot of comments. Often, small methods and functions are more effective than comments.</p>
+              <pre class="sourcecode"><code># Yes
+              def is_stop_sign(sign):
+                  return sign.color == &#39;red&#39; and sign.sides == 8
+              
+              if is_stop_sign(sign):
+                  stop()
+              
+              # No
+              # If the sign is a stop sign
+              if sign.color == &#39;red&#39; and sign.sides == 8:
+                  stop()</code></pre>
+              <p>When you do write comments, use them to explain <em>why</em> a piece code was used, not <em>what</em> it does.</p>
+              <h3 id="method-overrides">Method Overrides</h3>
+              <p>One useful place for comments are method overrides.</p>
+              <pre class="sourcecode"><code>class UserDetail(generics.RetrieveUpdateAPIView, UserMixin):
+              
+                  # overrides RetrieveUpdateAPIView
+                  def get_serializer_context(self):
+                      return {&#39;request&#39;: self.request}</code></pre>
+              <h2 id="calling-superclasses-methods">Calling Superclasses’ Methods</h2>
+              <p>Use super when there is only one superclass.</p>
+              <pre class="sourcecode"><code>class Employee(Person):
+              
+                  def __init__(self, name):
+                      super(Employee, self).__init__(name)
+                      # or super().__init__(name) in Python 3
+                      # ...</code></pre>
+              <p>Call the method directly when there are multiple superclasses.</p>
+              <pre class="sourcecode"><code>class DevOps(Developer, Operations):
+              
+                  def __init__(self):
+                      Developer.__init__(self)
+                      # ...</code></pre>
+              <h2 id="line-lengths">Line lengths</h2>
+              <p>Don’t stress over it. 80-100 characters is fine.</p>
+              <p>Use parentheses for line continuations.</p>
+              <pre class="sourcecode"><code>wiki = (
+                  &quot;The Colt Python is a .357 Magnum caliber revolver formerly manufactured &quot;
+                  &quot;by Colt&#39;s Manufacturing Company of Hartford, Connecticut. It is sometimes &quot;
+                  &#39;referred to as a &quot;Combat Magnum&quot;. It was first introduced in 1955, the &#39;
+                  &quot;same year as Smith &amp; Wesson&#39;s M29 .44 Magnum.&quot;
+              )</code></pre>
+              <h2 id="recommended-syntax-checkers">Recommended Syntax Checkers</h2>
+              <p>We recommend using a syntax checker to help you find errors quickly and easily format your code to abide by the guidelines above. <a href="http://flake8.readthedocs.org/en/latest/">Flake8</a> is our recommended checker for Python. It will check for both syntax and style errors and is easily configurable. It can be installed with pip: :</p>
+              <pre><code>$ pip install flake8</code></pre>
+              <p>Once installed, you can run a check with: :</p>
+              <pre><code>$ flake8</code></pre>
+              <p>There are a number of plugins for integrating Flake8 with your preferred text editor.</p>
+              <p>Vim</p>
+              <ul>
+              <li><a href="https://github.com/scrooloose/syntastic">syntastic</a> (multi-language)</li>
+              </ul>
+              <p>Sublime Text</p>
+              <ul>
+              <li><a href="https://sublime.wbond.net/packages/SublimeLinter">Sublime Linter</a> with <a href="https://sublime.wbond.net/packages/SublimeLinter-flake8">SublimeLinter-flake8</a> (must install both)</li>
+              </ul>
+              <p>It is recommended that you use the git <code>pre-commit</code> hook to ensure your code is compliant with our style guide.</p>
+              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">ln</span> -s <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/contrib/pre-commit.hook <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/.git/hooks/pre-commit</code></pre></div>
+              <p>To automate running tests before a push use the git <code>pre-push</code> hook to ensure your code passes all the tests.</p>
+              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">ln</span> -s <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/contrib/pre-push.hook <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>.git/hooks/pre-push</code></pre></div>
+              <p>When master is pulled, it’s helpful to know if a <code>pip install</code> or a <code>manage.py migrate</code> is necessary. To get other helpful warnings:</p>
+              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">ln</span> -s <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/contrib/post-merge.hook <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/.git/hooks/post-merge</code></pre></div>
+              <h2 id="credits">Credits</h2>
+              <ul>
+              <li><a href="http://cosdev.readthedocs.io/en/latest/style_guides/python.html">Center for Open Science</a></li>
+              <li><a href="http://www.python.org/dev/peps/pep-0008/">PEP8</a> (Style Guide for Python)</li>
+              <li><a href="http://www.nilunder.com/blog/2013/08/03/pythonic-sensibilities/">Pythonic Sensibilities</a></li>
+              <li><a href="http://youtu.be/GZNUfkVIHAY">Python Best Practice Patterns</a></li>
               </ul>
               </article>
             </div> <!-- #main -->
