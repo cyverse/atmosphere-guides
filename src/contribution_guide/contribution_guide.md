@@ -55,7 +55,7 @@ YAML files should:
 - Have a name ending in `.yml`
 - Begin with three dashes followed by a blank line
 - Use 2-space indents
-- Use YAML dictionary format ratner than in-line module arguments. So, this:
+- Use YAML dictionary format rather than in-line module arguments. So, this:
 
 ```
 - name: foo
