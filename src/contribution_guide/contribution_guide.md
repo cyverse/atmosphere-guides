@@ -17,7 +17,7 @@ YAML files should:
 - Have a name ending in `.yml`
 - Begin with three dashes followed by a blank line
 - Use 2-space indents
-- Use YAML dictionary format rather than in-line module arguments. So, this:
+- Use YAML dictionary format rather than in-line `key=value`s. It's easier to read and reduces changeset collisions in version control. So, do this:
 
 ```
 - name: foo
@@ -45,6 +45,7 @@ Not this:
 #### Variables
 
 - Use spaces between double-braces and variable names: `{{ var }}` instead of `{{var}}`
+- For boolean variables, use un-quoted `true` and `false`
 - Bare variables in YAML must be quoted, e.g.
 
 ```
@@ -80,6 +81,10 @@ Matching is most-specific to least-specific, so with the above example, a role t
 
 Role-specific variables that do not vary per-distro can still be defined in `vars/main.yml` or `defaults/main.yml`.
 
+#### Tasks
+
+Name your tasks to reflect the completed action in the past tense: `denyhosts stopped and disabled` rather than `stop and disable denyhosts`. This reinforces the goal of defining a series of idempotent steps to either reach or confirm a desired end state.
+
 #### Conditional Logic
 - To conditionally include or exclude a role, use the following syntax in a playbook:
 
@@ -100,7 +105,9 @@ Avoid storing large binary files or installation packages in Ansible projects / 
 
 #### Possible Ansible Guidelines - Things to Discuss
 
-- Variables that are internal to a role should be in lowercase? Variables that are environment-specific and should be overridden in UPPERCASE?
+- [Quote all strings and prefer single quotes over double quotes](https://github.com/whitecloud/ansible-styleguide#quotes)?
+- Define a [general order for a task declaration](https://github.com/whitecloud/ansible-styleguide#task-declaration)?
+- Variables that are internal to a role should be in snake_case? Variables that are environment-specific and should be overridden in UPPERCASE?
 - When to use a role's `vars/` vs. `defaults/` directory? `vars/` for things internal to the role (e.g. distro-specific), `defaults/` for things expected to be overridden by a consumer?
 - Prefix all variables defined in a role with the name of the role to avoid collisions?
 - Prefix task names with the role name, to ease human parsing of log output?

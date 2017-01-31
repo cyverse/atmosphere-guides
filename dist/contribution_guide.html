@@ -76,6 +76,7 @@
                       <li><a href="#ansible-style-guidelines">Ansible Style Guidelines</a><ul>
                       <li><a href="#yaml-files-and-formatting">YAML Files and Formatting</a></li>
                       <li><a href="#variables">Variables</a></li>
+                      <li><a href="#tasks">Tasks</a></li>
                       <li><a href="#conditional-logic">Conditional Logic</a></li>
                       <li><a href="#modules">Modules</a></li>
                       <li><a href="#files-and-installation-packages">Files and Installation Packages</a></li>
@@ -122,7 +123,7 @@
               <li>Have a name ending in <code>.yml</code></li>
               <li>Begin with three dashes followed by a blank line</li>
               <li>Use 2-space indents</li>
-              <li>Use YAML dictionary format rather than in-line module arguments. So, this:</li>
+              <li>Use YAML dictionary format rather than in-line <code>key=value</code>s. It’s easier to read and reduces changeset collisions in version control. So, do this:</li>
               </ul>
               <pre><code>- name: foo
                 file:
@@ -141,6 +142,7 @@
               <h4 id="variables">Variables</h4>
               <ul>
               <li>Use spaces between double-braces and variable names: <code>{{ var }}</code> instead of <code>{{var}}</code></li>
+              <li>For boolean variables, use un-quoted <code>true</code> and <code>false</code></li>
               <li>Bare variables in YAML must be quoted, e.g.</li>
               </ul>
               <pre><code>- foo: &quot;{{ bar }}&quot;</code></pre>
@@ -163,6 +165,8 @@
                   - &quot;{{ ansible_distribution }}.yml&quot;</code></pre>
               <p>Matching is most-specific to least-specific, so with the above example, a role targeting an Ubuntu 16.04 system would include the variables defined in Ubuntu-16.yml, while a role targeting Ubuntu 14.04 would include the variables defined in Ubuntu.yml. Also, only one file will match and there is no concept of inheritance (so usually, the same variables should be defined in each file).</p>
               <p>Role-specific variables that do not vary per-distro can still be defined in <code>vars/main.yml</code> or <code>defaults/main.yml</code>.</p>
+              <h4 id="tasks">Tasks</h4>
+              <p>Name your tasks to reflect the completed action in the past tense: <code>denyhosts stopped and disabled</code> rather than <code>stop and disable denyhosts</code>. This reinforces the goal of defining a series of idempotent steps to either reach or confirm a desired end state.</p>
               <h4 id="conditional-logic">Conditional Logic</h4>
               <ul>
               <li>To conditionally include or exclude a role, use the following syntax in a playbook:</li>
@@ -177,7 +181,9 @@
               <p>Avoid storing large binary files or installation packages in Ansible projects / version control. Instead, host it externally (e.g. CyVerse’s S3 account) and download from there, or download from the publisher.</p>
               <h4 id="possible-ansible-guidelines---things-to-discuss">Possible Ansible Guidelines - Things to Discuss</h4>
               <ul>
-              <li>Variables that are internal to a role should be in lowercase? Variables that are environment-specific and should be overridden in UPPERCASE?</li>
+              <li><a href="https://github.com/whitecloud/ansible-styleguide#quotes">Quote all strings and prefer single quotes over double quotes</a>?</li>
+              <li>Define a <a href="https://github.com/whitecloud/ansible-styleguide#task-declaration">general order for a task declaration</a>?</li>
+              <li>Variables that are internal to a role should be in snake_case? Variables that are environment-specific and should be overridden in UPPERCASE?</li>
               <li>When to use a role’s <code>vars/</code> vs. <code>defaults/</code> directory? <code>vars/</code> for things internal to the role (e.g. distro-specific), <code>defaults/</code> for things expected to be overridden by a consumer?</li>
               <li>Prefix all variables defined in a role with the name of the role to avoid collisions?</li>
               <li>Prefix task names with the role name, to ease human parsing of log output?</li>
@@ -405,11 +411,11 @@
               <li><a href="https://sublime.wbond.net/packages/SublimeLinter">Sublime Linter</a> with <a href="https://sublime.wbond.net/packages/SublimeLinter-flake8">SublimeLinter-flake8</a> (must install both)</li>
               </ul>
               <p>It is recommended that you use the git <code>pre-commit</code> hook to ensure your code is compliant with our style guide.</p>
-              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">ln</span> -s <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/contrib/pre-commit.hook <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/.git/hooks/pre-commit</code></pre></div>
+              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -s <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>/contrib/pre-commit.hook <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>/.git/hooks/pre-commit</code></pre></div>
               <p>To automate running tests before a push use the git <code>pre-push</code> hook to ensure your code passes all the tests.</p>
-              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">ln</span> -s <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/contrib/pre-push.hook <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>.git/hooks/pre-push</code></pre></div>
+              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -s <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>/contrib/pre-push.hook <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>.git/hooks/pre-push</code></pre></div>
               <p>When master is pulled, it’s helpful to know if a <code>pip install</code> or a <code>manage.py migrate</code> is necessary. To get other helpful warnings:</p>
-              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">ln</span> -s <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/contrib/post-merge.hook <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/.git/hooks/post-merge</code></pre></div>
+              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -s <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>/contrib/post-merge.hook <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>/.git/hooks/post-merge</code></pre></div>
               <h2 id="credits">Credits</h2>
               <ul>
               <li><a href="http://cosdev.readthedocs.io/en/latest/style_guides/python.html">Center for Open Science</a></li>
