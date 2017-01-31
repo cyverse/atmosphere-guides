@@ -77,6 +77,7 @@ Not this:
 - shell: >
        	python a very long command --with=very --long-options=foo
        	--and-even=more_options --like-these
+
 ```
 
 #### Variables
