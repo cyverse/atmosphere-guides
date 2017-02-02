@@ -105,7 +105,7 @@ Avoid storing large binary files or installation packages in Ansible projects / 
 
 #### Possible Ansible Guidelines - Things to Discuss
 
-- [Quote all strings and prefer single quotes over double quotes](https://github.com/whitecloud/ansible-styleguide#quotes)?
+- [Quote all strings and prefer single quotes over double quotes](https://github.com/whitecloud/ansible-styleguide#quotes)? This makes clear what is a string and what refers to a variable
 - Define a [general order for a task declaration](https://github.com/whitecloud/ansible-styleguide#task-declaration)?
 - Variables that are internal to a role should be in snake_case? Variables that are environment-specific and should be overridden in UPPERCASE?
 - When to use a role's `vars/` vs. `defaults/` directory? `vars/` for things internal to the role (e.g. distro-specific), `defaults/` for things expected to be overridden by a consumer?
