@@ -1,0 +1,222 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="generator" content="pandoc" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+                    <title></title>
+        <style type="text/css">code{white-space: pre;}</style>
+                          <link rel="stylesheet" href="./themes/cyverse/templates/main.css" type="text/css" />
+                    <link rel="icon" href="themes/cyverse/media/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="themes/cyverse/media/css/normalize.min.css">
+        <link rel="stylesheet" href="themes/cyverse/media/css/main.css">
+        <script src="themes/cyverse/media/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+          </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+                <div class="header-container">
+            <header class="wrapper clearfix">
+                <div class="logo"><img src="themes/cyverse/media/cyverse_logo.png" alt="Staff Guide"></div>
+                <h1 class="title"></h1>
+            </header>
+        </div>
+        
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+              <!-- TABLE OF CONTENTS -->
+                                  <aside>
+                      <h3> TABLE OF CONTENTS </h3>
+                      <ul>
+                      <li><a href="#contributing-to-atmosphere">Contributing to Atmosphere</a><ul>
+                      <li><a href="#what-is-atmosphere">What is Atmosphere?</a></li>
+                      <li><a href="#where-is-atmosphere-deployed">Where is Atmosphere Deployed?</a></li>
+                      <li><a href="#where-is-the-code">Where is the Code?</a><ul>
+                      <li><a href="#repositories-on-github">Repositories on Github</a></li>
+                      </ul></li>
+                      <li><a href="#resources-and-docs-for-new-contributors">Resources and Docs for New Contributors</a></li>
+                      <li><a href="#key-terms">Key Terms</a></li>
+                      <li><a href="#testing-and-deployment-workflows">Testing and Deployment Workflows</a><ul>
+                      <li><a href="#how-atmosphere-is-tested">How Atmosphere is Tested</a><ul>
+                      <li><a href="#django-tests-in-atmosphere2">Django tests in Atmosphere(2)</a></li>
+                      <li><a href="#travis-ci-running-style-bundlecompile-tests-for-troposphere"><a href="https://travis-ci.org/">Travis CI</a> running style &amp; bundle/compile tests for Troposphere</a></li>
+                      <li><a href="#qa-team-tests-using-robot-framework-and-jmeter">QA Team tests using Robot Framework and JMeter</a></li>
+                      <li><a href="#operation-sanity-behavioral-testing"><a href="https://github.com/cyverse/operation-sanity">Operation Sanity</a> behavioral testing</a></li>
+                      </ul></li>
+                      </ul></li>
+                      <li><a href="#clouds">Clouds</a></li>
+                      <li><a href="#tools-and-workflows">Tools and Workflows</a><ul>
+                      <li><a href="#common-technologies-and-tools">Common Technologies and Tools</a></li>
+                      <li><a href="#local-development-environment">Local Development Environment</a></li>
+                      <li><a href="#issue-tracking-systems">Issue Tracking Systems</a></li>
+                      <li><a href="#contributing-code">Contributing Code</a><ul>
+                      <li><a href="#on-github">On Github</a></li>
+                      </ul></li>
+                      </ul></li>
+                      </ul></li>
+                      </ul>
+                  </aside>
+                              <!-- MAIN CONTENT -->
+              <article>
+              <h1 id="contributing-to-atmosphere">Contributing to Atmosphere</h1>
+              <p>This page is recovering from major surgery (Atmosphere(0)-related content was left on the CyVerse wiki). The broken links will be fixed soon.</p>
+              <p>This guide is intended to orient community members who are interested in contributing to Atmosphere. Welcome to the project!</p>
+              <h2 id="what-is-atmosphere">What is Atmosphere?</h2>
+              <p>Atmosphere or ‘atmo’ can refer to several different things:</p>
+              <ul>
+              <li><a href="https://atmo.cyverse.org/application">Atmosphere</a>(0), CyVerse’s “cloud computing for scientists” service</li>
+              <li><a href="/wiki/display/csmgmt/Atmosphere+Technology+Stack+Overview">Atmosphere</a>(1), <strong>the free, open-source software project</strong> which powers the above service (and is the primary focus of these guides) (TODO fix broken link)</li>
+              <li><a href="https://github.com/iPlantCollaborativeOpenSource/atmosphere">Atmosphere</a>(2), the API and back-end component of the above software project</li>
+              </ul>
+              <p>For clarity, this page will disambiguate all uses of “Atmosphere”.</p>
+              <h2 id="where-is-atmosphere-deployed">Where is Atmosphere Deployed?</h2>
+              <p>Atmosphere(1) is deployed at CyVerse as Atmosphere(0), but also at several other organizations known by different names:</p>
+              <ul>
+              <li><a href="http://jetstream-cloud.org/">Jetstream Cloud</a> (partnership of Indiana University, TACC, &amp; CyVerse - Jetstream GitHub Organization: <a href="https://github.com/jetstream-cloud">jetstream-cloud</a>)</li>
+              <li>MOC (Massechusetts Open Cloud) (Jonathan Bell: <a href="https://github.com/lokI8">github-profile</a>, Lucas H. Xu: <a href="https://github.com/xuhang57">github-profile</a>)</li>
+              <li>Duke University / Duke Center for Genomic &amp; Computational Biology (<a href="https://github.com/Duke-GCB">Duke GCB</a>) (Darren Boss: <a href="https://genome.duke.edu/directory/gcb-staff/darren-boss">gcb-profile</a>; <a href="https://github.com/netscruff">github-profile</a>)</li>
+              </ul>
+              <h2 id="where-is-the-code">Where is the Code?</h2>
+              <h3 id="repositories-on-github">Repositories on Github</h3>
+              <ul>
+              <li><a href="https://github.com/iplantcollaborativeopensource/atmosphere">atmosphere</a>(2), and supporting projects:
+              <ul>
+              <li><a href="https://github.com/iPlantCollaborativeOpenSource/django-iplant-auth">django-iplant-auth</a> (used by Django backends of Atmosphere &amp; Troposphere)</li>
+              <li><a href="https://github.com/iPlantCollaborativeOpenSource/subspace">subspace</a> (runs the Ansible for instance deploys)</li>
+              <li><a href="https://github.com/iPlantCollaborativeOpenSource/rtwo">rtwo</a></li>
+              <li><a href="https://github.com/iPlantCollaborativeOpenSource/chromogenic">chromogenic</a> (Imaging using in Atmosphere)</li>
+              <li><a href="https://github.com/jmatt/threepio">threepio</a> (will be replaced as Django logging has improved since it was created)</li>
+              <li><a href="https://github.com/iPlantCollaborativeOpenSource/atmosphere-v2-apiary-docs">atmosphere-v2-apiary-docs</a>, some API documentation?</li>
+              <li><a href="https://github.com/iPlantCollaborativeOpenSource/atmosphere-apiary-docs">atmosphere-apiary-docs</a>, some old API documentation?</li>
+              </ul></li>
+              <li><a href="https://github.com/iplantcollaborativeopensource/troposphere">troposphere</a>, and supporting projects:
+              <ul>
+              <li><a href="https://github.com/cyverse/troposphere-ui">troposphere-ui,</a> soon to be used by Troposphere</li>
+              </ul></li>
+              <li><a href="https://github.com/iPlantCollaborativeOpenSource/atmosphere-ansible">atmosphere-ansible</a></li>
+              <li><a href="https://github.com/iPlantCollaborativeOpenSource/clank">clank</a>, Ansible-based automation which deploys Atmosphere(1)</li>
+              <li><a href="https://github.com/cyverse/nginx_novnc_auth">nginx_novnc_auth</a></li>
+              <li><a href="https://github.com/edwins/GateOne">edwins/GateOne</a></li>
+              <li><a href="https://github.com/cyverse/atmosphere-guides">ansible-gateone-server</a></li>
+              <li><a href="https://github.com/cyverse/atmosphere-guides">atmosphere-guides</a> documentation for Atmosphere(1)</li>
+              </ul>
+              <h2 id="resources-and-docs-for-new-contributors">Resources and Docs for New Contributors</h2>
+              <p>Familiarize yourself with the following links and use them as a reference.</p>
+              <ul>
+              <li><a href="/wiki/display/csmgmt/Atmosphere+Technology+Stack+Overview">Atmosphere Technology Stack Overview</a> (TODO fix broken link)</li>
+              <li><a href="/wiki/display/csmgmt/Atmosphere+Troubleshooting+Orientation">Atmosphere Troubleshooting Orientation</a> (TODO fix broken link)</li>
+              <li><a href="http://docs.atmospherev2.apiary.io/">Atmosphere(2) API docs on Apiary</a></li>
+              <li><a href="/wiki/display/csmgmt/Atmosphere+Staff+Manual">Atmosphere Staff Manual</a> containing information on releases (TODO fix broken link, incorporate that stuff here)</li>
+              <li><a href="/wiki/display/csmgmt/Approach+to+tagging+releases">Approach to tagging releases</a> (TODO fix broken link)</li>
+              </ul>
+              <h2 id="key-terms">Key Terms</h2>
+              <p>You’ll hear these a lot on the Atmosphere project:</p>
+              <ul>
+              <li><em>Instance</em>: a Virtual Machine (VM) or “cloud computer” running on Atmosphere(0) / OpenStack.</li>
+              <li><em>Image:</em> a <a href="https://en.wikipedia.org/wiki/Disk_image">disk image</a> of a Virtual Machine (with some metadata) from which instances are created.</li>
+              <li><em>Allocation</em>: the amount of “CPU time” that a user is allotted, measured in AUs (see below).</li>
+              <li><em>Allocation Unit</em> <em>(AU)</em>: “roughly equivalent to using one CPU-hour, or to using one CPU core for one hour.” (<a href="https://pods.iplantcollaborative.org/wiki/display/atmman/Requesting+More+Atmosphere+Resources">source</a>) (TODO fix broken link)</li>
+              <li><em>Modal</em>: a <a href="https://en.wikipedia.org/wiki/Modal_window">modal window</a> in a GUI; the Troposphere UI uses these extensively.</li>
+              </ul>
+              <h2 id="testing-and-deployment-workflows">Testing and Deployment Workflows</h2>
+              <h3 id="how-atmosphere-is-tested">How Atmosphere is Tested</h3>
+              <p>The stack is tested at various levels; test coverage and the testing process is a work in progress.</p>
+              <h4 id="django-tests-in-atmosphere2">Django tests in Atmosphere(2)</h4>
+              <p>Unit tests written by developers can be found throughout the codebase. These tests are not currently running as part of regular build/deploy workflow, but we could!</p>
+              <h4 id="travis-ci-running-style-bundlecompile-tests-for-troposphere"><a href="https://travis-ci.org/">Travis CI</a> running style &amp; bundle/compile tests for Troposphere</h4>
+              <ul>
+              <li>see <a href="https://github.com/iPlantCollaborativeOpenSource/troposphere/blob/master/.travis.yml">.travis.yml</a> in Troposphere for configuration</li>
+              <li><a href="https://travis-ci.org/iPlantCollaborativeOpenSource/troposphere">Troposphere test results on Travis CI</a></li>
+              </ul>
+              <h4 id="qa-team-tests-using-robot-framework-and-jmeter">QA Team tests using Robot Framework and JMeter</h4>
+              <p>Note that the following information describes processes performed by the QA Team at CyVerse who primarily support Atmosphere(0), but their effort certainly also benefits Atmosphere(1). This team is also responsible for testing other CyVerse products (e.g. Discovery Environment). Some resources described in this section are currently only accessiblt to members of CyVerse staff.</p>
+              <p>Tests are built based on QA team using and reverse engineering Atmosphere(1) on atmobeta.cyverse.org, and the history of internal JIRA issues. QA team does not currently receive product specifications or release notes.</p>
+              <p>Individual tests are tagged in a few dimensions:</p>
+              <ul>
+              <li>Type of test
+              <ul>
+              <li>Smoke tests, which confirm very basic communication/functionality/existence of API and UI objects</li>
+              <li>Functional tests, which confirm the actual functioning (“golden path”) of API endpoints and UI objects</li>
+              <li>Regression tests, which confirm that resolved issues do not recur and pushes boundaries</li>
+              </ul></li>
+              <li>Layer of stack under test
+              <ul>
+              <li>Atmosphere(2) API (HTTP calls using curl)</li>
+              <li>Troposphere UI (browser driven with Selenium)</li>
+              </ul></li>
+              </ul>
+              <p>atmobeta.cyverse.org is tested nightly, and test results can be found on <a href="https://shimerdas.iplantcollaborative.org:8443" class="uri">https://shimerdas.iplantcollaborative.org:8443</a>. (You must be a member of CyVerse staff and on an internal network to access shimerdas Jenkins server.) Only atmobeta is targeted during <em>regression</em> testing.</p>
+              <p>atmo-dev.cyverse.org is tested as part of each continuous deployment. Jenkins runs tests against atmo-dev in two jobs (these links are only accessible to CyVerse staff):</p>
+              <ul>
+              <li><a href="https://atmo-dev.cyverse.org/jenkins/job/Test_Atmosphere/">Test_Atmosphere</a> (API tests)</li>
+              <li><a href="https://atmo-dev.cyverse.org/jenkins/job/Test_Troposphere/">Test_Troposphere</a> (GUI tests)</li>
+              </ul>
+              <p>Test coverage is greater for the Atmosphere(2) API than for the Troposphere UI. QA team’s tests do not currently confirm that instances launch, nor do they execute the various instance access workflows (e.g. Web Shell and Web Desktop), but it is possible for this coverage to be added.</p>
+              <p>If a test fails repeatedly, QA team files a JIRA ticket, tags the test with the JIRA number, and disables that test until the issue is resolved.</p>
+              <p>More information on the QA team’s work can be found on <a href="http://qa-4.cyverse.org">qa-4.cyverse.org</a>, including the <a href="http://qa-4.cyverse.org/Atmosphere/">automated test suites</a> and how to run test suites locally (<a href="http://qa-4.cyverse.org/robotframework/misc/html/RobotFramework_and_iPlant.txt">1</a>, <a href="http://qa-4.cyverse.org/robotframework/misc/html/RobotFramework_Setup_for_iPlant-OLD.txt">2</a>). (Only accessible to CyVerse staff.) Note that much of the information is for other CyVerse projects, and some test framework dependencies are unnecessary if you are only testing Atmosphere.</p>
+              <h4 id="operation-sanity-behavioral-testing"><a href="https://github.com/cyverse/operation-sanity">Operation Sanity</a> behavioral testing</h4>
+              <p>Operation Sanity is a set of test suites written using behave, which drive a browser using Selenium. Operation Sanity exercises common Atmosphere workflows as a user: launches several instances against multiple cloud providers, ensures that those instances launch, creates and attaches volumes, and so forth. It is intended to run these tests in parallel so that long operations (e.g. waiting for an instance to launch) do not block execution.</p>
+              <p>Operation Sanity is currently in a “proof of concept” state, and is currently not run automatically. There is some intended functionality (e.g. testing launch of Web Shell and Web Desktop) which needs to be built.</p>
+              <h2 id="clouds">Clouds</h2>
+              <p>Atmosphere(0, 1, 2) provisions virtual machines on several ‘clouds’ which actually host the instances and computing infrastructure. Currently, all cloud providers use OpenStack. It is also possible for Atmosphere to provide access to commodity IaaS like Amazon Web Services (AWS), though this is not currently configured.</p>
+              <h2 id="tools-and-workflows">Tools and Workflows</h2>
+              <h3 id="common-technologies-and-tools">Common Technologies and Tools</h3>
+              <p>No matter your sub-specialty, you’ll work with most/all of these as a member of the Atmosphere Team.</p>
+              <ul>
+              <li>Python programming language, used for Atmosphere(2), Ansible, Subspace</li>
+              <li>Ansible, used for configuration management and infrastructure automation</li>
+              <li>YAML markup language, used for Ansible code and variables files</li>
+              <li>Markdown markup language, used for documentation</li>
+              <li>SSH, used for remotely accessing servers</li>
+              <li>git and Github, used for source control</li>
+              </ul>
+              <h3 id="local-development-environment">Local Development Environment</h3>
+              <p>The local development environment-in-a-box is not yet published for community consumption. Coming soon!</p>
+              <h3 id="issue-tracking-systems">Issue Tracking Systems</h3>
+              <p>The Atmosphere(0) team uses several internal systems to track development cycles and support issues. Unfortunately these are not accessible to community members. For now, please use the repository-specific Issues section in the appropriate GitHub repository (perhaps <a href="https://github.com/cyverse/atmosphere">atmosphere</a>(2)) to report an issue with Atmosphere(1,2).</p>
+              <p>If you are an Atmosphere(0) <em>user</em> seeking assistance and you ended up here for some reason, please log into <a href="https://atmo.cyverse.org/">Atmosphere</a> and click the “Feedback &amp; Support” link at the bottom of the page, or email support at cyverse dot org.</p>
+              <h3 id="contributing-code">Contributing Code</h3>
+              <p>Note that the following information may change soon as the Atmosphere(0) team refines the development process for Atmosphere(1).</p>
+              <h4 id="on-github">On Github</h4>
+              <p>Most of Atmosphere(1)’s code lives on GitHub. Contributions to these codebases should follow a fork-and-pull-request workflow.</p>
+              <ol style="list-style-type: decimal">
+              <li>Create your own fork of the repository, work on the code there, test it in your local development environment</li>
+              <li>Create a pull request</li>
+              <li>Have someone else review and merge your pull request; ideally two people will review it.</li>
+              </ol>
+              <p>Forward-facing projects that are critical to Atmosphere(1) have designated point maintainers. Pull requests to these projects should be approved by the point maintainer when possible:</p>
+              <ul>
+              <li><a href="https://github.com/iplantcollaborativeopensource/atmosphere">Atmosphere</a>(2): <a href="https://github.com/steve-gregory">Steve Gregory</a></li>
+              <li><a href="https://github.com/iPlantCollaborativeOpenSource/troposphere">Troposphere</a>: <a href="https://github.com/lenards">Andrew Lenards</a></li>
+              </ul>
+              <p>Ancillary projects have a wider set of individuals with write access, these are typically members of the Atmosphere(0) team at CyVerse.</p>
+              </article>
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+                <div class="footer-container">
+            <footer class="wrapper">
+                    <footer class="footer"> <!-- Needs to be a `include-after` -->
+          		<div class="container">
+          		  <div class="region region-footer">
+          		    <section id="block-block-25" class="block block-block clearfix">
+          		      <p><img alt="Cyverse" src="./media/cyverse_icon_transp2.png" style="width: 25px; height: 24px;">&nbsp;<a href="http://www.cyverse.org/">CyVerse</a> | <a href="http://www.cyverse.org/open-source">Open Source</a> | <img alt="NSF" src="./media/nsf1.gif" style="width: 25px; height: 25px;">&nbsp;</p>
+          		    </section>
+          		  </div>
+          		</div>
+        	    </footer>
+            </footer>
+        </div>
+        <!-- Included at the end of body -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="themes/cyverse/media/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        
+        <script src="themes/cyverse/media/js/main.js"></script>
+            </body>
+</html>
