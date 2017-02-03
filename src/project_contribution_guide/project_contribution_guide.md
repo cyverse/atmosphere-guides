@@ -4,6 +4,7 @@ This guide is intended to orient community members who are interested in contrib
 
 This page has a couple of broken links, having recently been migrated from an internal wiki -- they will be fixed soon once the linked content is migrated to atmosphere-guides.
 
+
 ## What is Atmosphere?
 
 Atmosphere or 'atmo' can refer to several different things:
@@ -13,6 +14,55 @@ Atmosphere or 'atmo' can refer to several different things:
 - [Atmosphere](https://github.com/iPlantCollaborativeOpenSource/atmosphere)(2), the API and back-end component of the above software project
 
 For clarity, this page will disambiguate all uses of "Atmosphere".
+
+## What are the steps to contributing to Atmosphere/Core services?
+
+Contribution to core-services products (usually) takes place in two different environments:
+
+1. [JIRA](https://pods.iplantcollaborative.org/jira/secure/Dashboard.jspa) - This is an external service where we document bugs, issues, and new features to be fixed.
+2. [Github](https://github.com/cyverse/) - This is where our codebase generally resides. See [Where is the code](#where-is-the-code) for more details.
+
+### The Atmosphere workflow for JIRA tickets
+    1.  Issues/Bugs/New Features that are found in the wild, during requirements gathering, etc. should be created as "JIRA Tickets" and assigned a **fixVersion** of **Release Backlog** or **Product Backlog**.
+        1.  **JIRA **Operations**-note:** At this time the form only lets you set **affectedVersion**, which is not quite the same. We should make this easier for specific users (if the workflow allows for it)
+2.  **JIRA Sprints and the Agile Board**
+    1.  **Tickets are assigned** to match with the **Release** and **Sprint **Schedule:
+    2.  Currently, core-services is on a **5 week** release schedule. There are **two 2-week sprints** and a **1-week sprint** **to prepare for and release** the branch to the production servers.
+    3.  JIRA Tickets for both 2-week sprints are regularly assigned at the beginning of each release.
+        1.  During the first sprint after a release, primarily 'Bug' tickets will be assigned. This is done to give time for the changes to "settle" on the beta server for a few weeks.
+        2.  During the second sprint, primarily "Improvements and new feature" tickets will be assigned.
+    4.  The third sprint, only one week long, will be split between preparing for deployment and finishing up any lingering tickets that extend past the sprint deadline.
+3.  **The Lifecycle of a ticket**
+    1.  **Starting work on a ticket**
+        1.  (If applicable) Tickets will move to `**Start Design**` and work with the design pipeline to gather requirements (See The Design Pipeline section for more details)
+        2.  Put the ticket into "**Start Progress**" and start writing Code to fix the bug/create the feature. 
+        3.  Tests are written for any new bug to verify the failure has been fixed and for any new feature to help with QA. (See the Testing the Code section for more details)
+        4.  Documentation is written (See the Documenting the Code section for more details)
+    2.  **Reviewing a ticket**
+        1.  Ensure that the checklist for your PR template is complete before requesting review. (see below for more details)
+        2.  Put the ticket into "**Review**" step and assign to a project lead. (See Reviewing Code section for more details)
+        3.  Upon merge, a project lead will move the ticket to **Resolved** and assigned to QA for final approval/confirmation. Notes should be included that point to the new tests/documentation as appropriate.
+
+### Using github to work on an issue/bug/feature
+1.  **Fork the repo you intend to work on**
+    1.  If this is your first time contributing to a core-services repository, you will want to create a new fork.<span style="color: rgb(34,34,34);"> </span>Forking a repository<span style="color: rgb(34,34,34);"> allows you to freely experiment with changes without affecting the original project.</span>
+    2.  <span style="color: rgb(34,34,34);">Github's documentation for working with forks is [available here](https://help.github.com/articles/fork-a-repo/).</span>
+2.  **<span style="color: rgb(34,34,34);">Creating a feature branch</span>**
+    1.  Before starting work on a new feature or bugfix, you should create a new branch. Creating branches for your work allows you to isolate your changes when they are ready for others to review. It also gives you the ability to change to another branch, to work on separate fixes or features as necessary.
+3.  **Submitting a Pull Request**
+    1.  It's a good idea to make pull requests early on. A pull request represents the start of a discussion, and doesn't necessarily need to be the final, finished submission.
+    2.  It's also useful to remember that if you have an outstanding pull request then pushing new commits to your GitHub repo will also automatically update the pull requests.
+    3.  **Specific to Core-services:** Pull requests will be reviewed **after** the "Check list" in the Pull Request template has been completed, this should include new tests and documentation!
+    4.  GitHub's documentation for working on pull requests is [available here](https://help.github.com/articles/using-pull-requests).
+
+
+#### Pull Request Templates
+
+The pull request template used by core-services can be found on the github of Atmosphere or Troposphere in .**/PULL_REQUEST_TEMPLATE**
+
+> <span style="color: rgb(255,0,0);">**NOTE:** Proposals for those PR templates can be found here, and can be updated prior to merge: [<span style="color: rgb(255,0,0);">https://github.com/cyverse/troposphere/pull/536</span>](https://github.com/cyverse/troposphere/pull/536) and [<span style="color: rgb(255,0,0);">https://github.com/cyverse/atmosphere/pull/250</span>](https://github.com/cyverse/atmosphere/pull/250)</span>
+
+See this article for including a pull request template in your repository: [https://help.github.com/articles/creating-a-pull-request-template-for-your-repository/](https://help.github.com/articles/creating-a-pull-request-template-for-your-repository/)
 
 ## Where is Atmosphere Deployed?
 
