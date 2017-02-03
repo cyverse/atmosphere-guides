@@ -42,14 +42,6 @@
                       </ul></li>
                       <li><a href="#resources-and-docs-for-new-contributors">Resources and Docs for New Contributors</a></li>
                       <li><a href="#key-terms">Key Terms</a></li>
-                      <li><a href="#testing-and-deployment-workflows">Testing and Deployment Workflows</a><ul>
-                      <li><a href="#how-atmosphere-is-tested">How Atmosphere is Tested</a><ul>
-                      <li><a href="#django-tests-in-atmosphere2">Django tests in Atmosphere(2)</a></li>
-                      <li><a href="#travis-ci-running-style-bundlecompile-tests-for-troposphere"><a href="https://travis-ci.org/">Travis CI</a> running style &amp; bundle/compile tests for Troposphere</a></li>
-                      <li><a href="#qa-team-tests-using-robot-framework-and-jmeter">QA Team tests using Robot Framework and JMeter</a></li>
-                      <li><a href="#operation-sanity-behavioral-testing"><a href="https://github.com/cyverse/operation-sanity">Operation Sanity</a> behavioral testing</a></li>
-                      </ul></li>
-                      </ul></li>
                       <li><a href="#clouds">Clouds</a></li>
                       <li><a href="#tools-and-workflows">Tools and Workflows</a><ul>
                       <li><a href="#common-technologies-and-tools">Common Technologies and Tools</a></li>
@@ -58,6 +50,25 @@
                       <li><a href="#contributing-code">Contributing Code</a><ul>
                       <li><a href="#on-github">On Github</a></li>
                       </ul></li>
+                      </ul></li>
+                      <li><a href="#how-atmosphere-is-tested">How Atmosphere is Tested</a><ul>
+                      <li><a href="#django-tests-in-atmosphere2">Django tests in Atmosphere(2)</a></li>
+                      <li><a href="#travis-ci-running-style-bundlecompile-tests-for-troposphere"><a href="https://travis-ci.org/">Travis CI</a> running style &amp; bundle/compile tests for Troposphere</a></li>
+                      <li><a href="#qa-team-tests-using-robot-framework-and-jmeter">QA Team tests using Robot Framework and JMeter</a></li>
+                      <li><a href="#operation-sanity-behavioral-testing"><a href="https://github.com/cyverse/operation-sanity">Operation Sanity</a> behavioral testing</a></li>
+                      </ul></li>
+                      <li><a href="#releases-and-development-cycles">Releases and Development Cycles</a><ul>
+                      <li><a href="#release-naming">Release Naming</a></li>
+                      <li><a href="#approach-to-tagging-releases">Approach to Tagging Releases</a><ul>
+                      <li><a href="#note-on-sequence">Note on “Sequence”</a></li>
+                      <li><a href="#what-should-be-tagged">What Should Be Tagged?</a></li>
+                      </ul></li>
+                      <li><a href="#release-structure">Release Structure</a><ul>
+                      <li><a href="#first-2-week-sprint">First 2-week Sprint</a></li>
+                      <li><a href="#second-2-week-sprint">Second 2-week Sprint</a></li>
+                      <li><a href="#third-1-week-sprint">Third 1-week Sprint</a></li>
+                      </ul></li>
+                      <li><a href="#code-branching-strategy">Code Branching Strategy</a></li>
                       </ul></li>
                       </ul></li>
                       </ul>
@@ -84,6 +95,7 @@
               </ul>
               <h2 id="where-is-the-code">Where is the Code?</h2>
               <h3 id="repositories-on-github">Repositories on Github</h3>
+              <p>(Should we make this a table of repo + link + purpose?)</p>
               <ul>
               <li><a href="https://github.com/iplantcollaborativeopensource/atmosphere">atmosphere</a>(2), and supporting projects:
               <ul>
@@ -112,8 +124,6 @@
               <li><a href="/wiki/display/csmgmt/Atmosphere+Technology+Stack+Overview">Atmosphere Technology Stack Overview</a> (TODO fix broken link)</li>
               <li><a href="/wiki/display/csmgmt/Atmosphere+Troubleshooting+Orientation">Atmosphere Troubleshooting Orientation</a> (TODO fix broken link)</li>
               <li><a href="http://docs.atmospherev2.apiary.io/">Atmosphere(2) API docs on Apiary</a></li>
-              <li><a href="/wiki/display/csmgmt/Atmosphere+Staff+Manual">Atmosphere Staff Manual</a> containing information on releases (TODO fix broken link, incorporate that stuff here)</li>
-              <li><a href="/wiki/display/csmgmt/Approach+to+tagging+releases">Approach to tagging releases</a> (TODO fix broken link)</li>
               </ul>
               <h2 id="key-terms">Key Terms</h2>
               <p>You’ll hear these a lot on the Atmosphere project:</p>
@@ -124,45 +134,6 @@
               <li><em>Allocation Unit</em> <em>(AU)</em>: “roughly equivalent to using one CPU-hour, or to using one CPU core for one hour.” (<a href="https://pods.iplantcollaborative.org/wiki/display/atmman/Requesting+More+Atmosphere+Resources">source</a>) (TODO fix broken link)</li>
               <li><em>Modal</em>: a <a href="https://en.wikipedia.org/wiki/Modal_window">modal window</a> in a GUI; the Troposphere UI uses these extensively.</li>
               </ul>
-              <h2 id="testing-and-deployment-workflows">Testing and Deployment Workflows</h2>
-              <h3 id="how-atmosphere-is-tested">How Atmosphere is Tested</h3>
-              <p>The stack is tested at various levels; test coverage and the testing process is a work in progress.</p>
-              <h4 id="django-tests-in-atmosphere2">Django tests in Atmosphere(2)</h4>
-              <p>Unit tests written by developers can be found throughout the codebase. These tests are not currently running as part of regular build/deploy workflow, but we could!</p>
-              <h4 id="travis-ci-running-style-bundlecompile-tests-for-troposphere"><a href="https://travis-ci.org/">Travis CI</a> running style &amp; bundle/compile tests for Troposphere</h4>
-              <ul>
-              <li>see <a href="https://github.com/iPlantCollaborativeOpenSource/troposphere/blob/master/.travis.yml">.travis.yml</a> in Troposphere for configuration</li>
-              <li><a href="https://travis-ci.org/iPlantCollaborativeOpenSource/troposphere">Troposphere test results on Travis CI</a></li>
-              </ul>
-              <h4 id="qa-team-tests-using-robot-framework-and-jmeter">QA Team tests using Robot Framework and JMeter</h4>
-              <p>Note that the following information describes processes performed by the QA Team at CyVerse who primarily support Atmosphere(0), but their effort certainly also benefits Atmosphere(1). This team is also responsible for testing other CyVerse products (e.g. Discovery Environment). Some resources described in this section are currently only accessiblt to members of CyVerse staff.</p>
-              <p>Tests are built based on QA team using and reverse engineering Atmosphere(1) on atmobeta.cyverse.org, and the history of internal JIRA issues. QA team does not currently receive product specifications or release notes.</p>
-              <p>Individual tests are tagged in a few dimensions:</p>
-              <ul>
-              <li>Type of test
-              <ul>
-              <li>Smoke tests, which confirm very basic communication/functionality/existence of API and UI objects</li>
-              <li>Functional tests, which confirm the actual functioning (“golden path”) of API endpoints and UI objects</li>
-              <li>Regression tests, which confirm that resolved issues do not recur and pushes boundaries</li>
-              </ul></li>
-              <li>Layer of stack under test
-              <ul>
-              <li>Atmosphere(2) API (HTTP calls using curl)</li>
-              <li>Troposphere UI (browser driven with Selenium)</li>
-              </ul></li>
-              </ul>
-              <p>atmobeta.cyverse.org is tested nightly, and test results can be found on <a href="https://shimerdas.iplantcollaborative.org:8443" class="uri">https://shimerdas.iplantcollaborative.org:8443</a>. (You must be a member of CyVerse staff and on an internal network to access shimerdas Jenkins server.) Only atmobeta is targeted during <em>regression</em> testing.</p>
-              <p>atmo-dev.cyverse.org is tested as part of each continuous deployment. Jenkins runs tests against atmo-dev in two jobs (these links are only accessible to CyVerse staff):</p>
-              <ul>
-              <li><a href="https://atmo-dev.cyverse.org/jenkins/job/Test_Atmosphere/">Test_Atmosphere</a> (API tests)</li>
-              <li><a href="https://atmo-dev.cyverse.org/jenkins/job/Test_Troposphere/">Test_Troposphere</a> (GUI tests)</li>
-              </ul>
-              <p>Test coverage is greater for the Atmosphere(2) API than for the Troposphere UI. QA team’s tests do not currently confirm that instances launch, nor do they execute the various instance access workflows (e.g. Web Shell and Web Desktop), but it is possible for this coverage to be added.</p>
-              <p>If a test fails repeatedly, QA team files a JIRA ticket, tags the test with the JIRA number, and disables that test until the issue is resolved.</p>
-              <p>More information on the QA team’s work can be found on <a href="http://qa-4.cyverse.org">qa-4.cyverse.org</a>, including the <a href="http://qa-4.cyverse.org/Atmosphere/">automated test suites</a> and how to run test suites locally (<a href="http://qa-4.cyverse.org/robotframework/misc/html/RobotFramework_and_iPlant.txt">1</a>, <a href="http://qa-4.cyverse.org/robotframework/misc/html/RobotFramework_Setup_for_iPlant-OLD.txt">2</a>). (Only accessible to CyVerse staff.) Note that much of the information is for other CyVerse projects, and some test framework dependencies are unnecessary if you are only testing Atmosphere.</p>
-              <h4 id="operation-sanity-behavioral-testing"><a href="https://github.com/cyverse/operation-sanity">Operation Sanity</a> behavioral testing</h4>
-              <p>Operation Sanity is a set of test suites written using behave, which drive a browser using Selenium. Operation Sanity exercises common Atmosphere workflows as a user: launches several instances against multiple cloud providers, ensures that those instances launch, creates and attaches volumes, and so forth. It is intended to run these tests in parallel so that long operations (e.g. waiting for an instance to launch) do not block execution.</p>
-              <p>Operation Sanity is currently in a “proof of concept” state, and is currently not run automatically. There is some intended functionality (e.g. testing launch of Web Shell and Web Desktop) which needs to be built.</p>
               <h2 id="clouds">Clouds</h2>
               <p>Atmosphere(0, 1, 2) provisions virtual machines on several ‘clouds’ which actually host the instances and computing infrastructure. Currently, all cloud providers use OpenStack. It is also possible for Atmosphere to provide access to commodity IaaS like Amazon Web Services (AWS), though this is not currently configured.</p>
               <h2 id="tools-and-workflows">Tools and Workflows</h2>
@@ -196,6 +167,109 @@
               <li><a href="https://github.com/iPlantCollaborativeOpenSource/troposphere">Troposphere</a>: <a href="https://github.com/lenards">Andrew Lenards</a></li>
               </ul>
               <p>Ancillary projects have a wider set of individuals with write access, these are typically members of the Atmosphere(0) team at CyVerse.</p>
+              <h2 id="how-atmosphere-is-tested">How Atmosphere is Tested</h2>
+              <p>The stack is tested at various levels; test coverage and the testing process is a work in progress.</p>
+              <h3 id="django-tests-in-atmosphere2">Django tests in Atmosphere(2)</h3>
+              <p>Unit tests written by developers can be found throughout the codebase. These tests are not currently running as part of regular build/deploy workflow, but we could!</p>
+              <h3 id="travis-ci-running-style-bundlecompile-tests-for-troposphere"><a href="https://travis-ci.org/">Travis CI</a> running style &amp; bundle/compile tests for Troposphere</h3>
+              <ul>
+              <li>see <a href="https://github.com/iPlantCollaborativeOpenSource/troposphere/blob/master/.travis.yml">.travis.yml</a> in Troposphere for configuration</li>
+              <li><a href="https://travis-ci.org/iPlantCollaborativeOpenSource/troposphere">Troposphere test results on Travis CI</a></li>
+              </ul>
+              <h3 id="qa-team-tests-using-robot-framework-and-jmeter">QA Team tests using Robot Framework and JMeter</h3>
+              <p>Note that the following information describes processes performed by the QA Team at CyVerse who primarily support Atmosphere(0), but their effort certainly also benefits Atmosphere(1). This team is also responsible for testing other CyVerse products (e.g. Discovery Environment). Some resources described in this section are currently only accessiblt to members of CyVerse staff.</p>
+              <p>Tests are built based on QA team using and reverse engineering Atmosphere(1) on atmobeta.cyverse.org, and the history of internal JIRA issues. QA team does not currently receive product specifications or release notes.</p>
+              <p>Individual tests are tagged in a few dimensions:</p>
+              <ul>
+              <li>Type of test
+              <ul>
+              <li>Smoke tests, which confirm very basic communication/functionality/existence of API and UI objects</li>
+              <li>Functional tests, which confirm the actual functioning (“golden path”) of API endpoints and UI objects</li>
+              <li>Regression tests, which confirm that resolved issues do not recur and pushes boundaries</li>
+              </ul></li>
+              <li>Layer of stack under test
+              <ul>
+              <li>Atmosphere(2) API (HTTP calls using curl)</li>
+              <li>Troposphere UI (browser driven with Selenium)</li>
+              </ul></li>
+              </ul>
+              <p>atmobeta.cyverse.org is tested nightly, and test results can be found on <a href="https://shimerdas.iplantcollaborative.org:8443" class="uri">https://shimerdas.iplantcollaborative.org:8443</a>. (You must be a member of CyVerse staff and on an internal network to access shimerdas Jenkins server.) Only atmobeta is targeted during <em>regression</em> testing.</p>
+              <p>atmo-dev.cyverse.org is tested as part of each continuous deployment. Jenkins runs tests against atmo-dev in two jobs (these links are only accessible to CyVerse staff):</p>
+              <ul>
+              <li><a href="https://atmo-dev.cyverse.org/jenkins/job/Test_Atmosphere/">Test_Atmosphere</a> (API tests)</li>
+              <li><a href="https://atmo-dev.cyverse.org/jenkins/job/Test_Troposphere/">Test_Troposphere</a> (GUI tests)</li>
+              </ul>
+              <p>Test coverage is greater for the Atmosphere(2) API than for the Troposphere UI. QA team’s tests do not currently confirm that instances launch, nor do they execute the various instance access workflows (e.g. Web Shell and Web Desktop), but it is possible for this coverage to be added.</p>
+              <p>If a test fails repeatedly, QA team files a JIRA ticket, tags the test with the JIRA number, and disables that test until the issue is resolved.</p>
+              <p>More information on the QA team’s work can be found on <a href="http://qa-4.cyverse.org">qa-4.cyverse.org</a>, including the <a href="http://qa-4.cyverse.org/Atmosphere/">automated test suites</a> and how to run test suites locally (<a href="http://qa-4.cyverse.org/robotframework/misc/html/RobotFramework_and_iPlant.txt">1</a>, <a href="http://qa-4.cyverse.org/robotframework/misc/html/RobotFramework_Setup_for_iPlant-OLD.txt">2</a>). (Only accessible to CyVerse staff.) Note that much of the information is for other CyVerse projects, and some test framework dependencies are unnecessary if you are only testing Atmosphere.</p>
+              <h3 id="operation-sanity-behavioral-testing"><a href="https://github.com/cyverse/operation-sanity">Operation Sanity</a> behavioral testing</h3>
+              <p>Operation Sanity is a set of test suites written using behave, which drive a browser using Selenium. Operation Sanity exercises common Atmosphere workflows as a user: launches several instances against multiple cloud providers, ensures that those instances launch, creates and attaches volumes, and so forth. It is intended to run these tests in parallel so that long operations (e.g. waiting for an instance to launch) do not block execution.</p>
+              <p>Operation Sanity is currently in a “proof of concept” state, and is currently not run automatically. There is some intended functionality (e.g. testing launch of Web Shell and Web Desktop) which needs to be built.</p>
+              <h2 id="releases-and-development-cycles">Releases and Development Cycles</h2>
+              <p>You can see a list of releases as branches in each GitHub repository, e.g. <a href="https://github.com/cyverse/atmosphere/branches">Atmosphere(2)</a>.</p>
+              <h3 id="release-naming">Release Naming</h3>
+              <p>Name should be two words, a hyphen will be added between them. Hyphenated bird names used to be the golden ticket (Abyssinian-nightjar,california-condor) but we now allow for alliterative adjective/verb and bird name combinations (ex: jamming-junglefowl, mystifying-merlin, nautical-nighthawk). Helpful Link: <a href="http://thewebsiteofeverything.com/animals/birds/beginning-with/A">Birds Beginning with Letters</a></p>
+              <h3 id="approach-to-tagging-releases">Approach to Tagging Releases</h3>
+              <p>In order to identify which release a repository is associated with, we need to “tag”, or annotate, the association. Currently, we name branches by release for Atmosphere &amp; Troposphere. However, there are dependencies in the instance deployment automation managed in Atmosphere-Ansible repository. This repo is used by “subspace” via Atmosphere API - yet, we are not explicitly denoting the Atmosphere-Ansible tested, verified, and deployed with an Atmosphere release.</p>
+              <p>I suggest that we use <a href="https://git-scm.com/book/en/v2/Git-Basics-Tagging#Annotated-Tags">“annotated-tags”</a> over lightweight tags; this allows for a “tag name” and a message.</p>
+              <p>Given that we use letter-based alliterations for release names, I suggest was use a two-digit year plus letter initials as our <em>annotation</em>. So, petrified-penguin would be 16.p-p as the initial release. If there was patches applied to release, then it would be incremental:</p>
+              <ul>
+              <li>16-p-p-1</li>
+              <li>16-p-p-2</li>
+              <li>16-q-q</li>
+              <li>16-q-q-1</li>
+              <li>16-r-r</li>
+              <li>16-r-r-1</li>
+              <li>16-r-r-2</li>
+              <li>16-s-s</li>
+              <li>16-t-t</li>
+              <li>17-u-u</li>
+              <li>17-u-u-1</li>
+              <li>17-v-v</li>
+              <li>17-v-v-1</li>
+              </ul>
+              <p>Applying an annotated tag to a repository would allow a tag-name and a message. We’d then push to the origin without specifying a branch:</p>
+              <pre><code>GIT_TAG=&quot;16-s-s&quot;
+              git tag -a $GIT_TAG -m &quot;Solitary-Snipe released.&quot; &amp;&amp; git push origin --tags&lt;/pre&gt;</code></pre>
+              <h4 id="note-on-sequence">Note on “Sequence”</h4>
+              <p>The tag-name should be “two-digit” year concatenated with “release initials” (ravenous-raven shortens to r-r). Only add an incremented integer if more than one tag for a release is needed.</p>
+              <h4 id="what-should-be-tagged">What Should Be Tagged?</h4>
+              <p>The repositories that <strong>should</strong> be tagged for a release are as follows:</p>
+              <ul>
+              <li>Atmosphere (&lt;<release-name>&gt; branch) - <a href="https://github.com/iPlantCollaborativeOpenSource/atmosphere">repo</a></li>
+              <li>Troposphere (&lt;<release-name>&gt; branch) - <a href="https://github.com/iPlantCollaborativeOpenSource/troposphere">repo</a></li>
+              <li>Atmosphere-Ansible (master) - <a href="https://github.com/iPlantCollaborativeOpenSource/atmosphere-ansible">repo</a></li>
+              <li>Clank (master - maybe a feature-branch) - <a href="https://github.com/iPlantCollaborativeOpenSource/clank">repo</a></li>
+              <li>nginx_novnc_auth (master) - <a href="https://github.com/cyverse/nginx_novnc_auth">repo</a></li>
+              </ul>
+              <p>We should consider tagging this fork - <a href="https://github.com/edwins/gateone" class="uri">https://github.com/edwins/gateone</a></p>
+              <h3 id="release-structure">Release Structure</h3>
+              <p>The structure of releases is inspired by <a href="http://blog.assembla.com/AssemblaBlog/tabid/12618/bid/36341/Secrets-of-rapid-release-cycles-from-the-Google-Chrome-team.aspx">Chrome/Chromium</a>. We aim to deliver new code to production every 5 weeks. Those 5 weeks are split into 3 sprints (2 sprints of 2-weeks and a single 1-week sprint).</p>
+              <h4 id="first-2-week-sprint">First 2-week Sprint</h4>
+              <ul>
+              <li>new feature development</li>
+              <li>upgrading dependencies</li>
+              <li>testing/verification</li>
+              </ul>
+              <h4 id="second-2-week-sprint">Second 2-week Sprint</h4>
+              <ul>
+              <li>Priority bug fixes</li>
+              <li>feature development <em>continued</em></li>
+              <li>testing/verification</li>
+              </ul>
+              <h4 id="third-1-week-sprint">Third 1-week Sprint</h4>
+              <ul>
+              <li>Any committed works left to finish</li>
+              <li>Priority/Critical tickets</li>
+              <li>testing/verification</li>
+              </ul>
+              <h3 id="code-branching-strategy">Code Branching Strategy</h3>
+              <p>(Note that the following section contains links to environments that are only accessible to members of CyVerse staff.)</p>
+              <p>The master branch collects new feature development and community contributions. <a href="http://atmo-dev.cyverse.org" class="uri">http://atmo-dev.cyverse.org</a> generally tracks master. Other feature branches are used as needed.</p>
+              <p>The ‘beta’ / ‘next release’ branch collects stability improvements and bug fixes; it does not typically receive new features. <a href="http://atmobeta.cyverse.org/">http://atmobeta.cyverse.org</a> generally tracks the next release.</p>
+              <p>Think of each five-week cycle as an effort to 1. develop new features on the master branch, and 2. stabilize the beta/release branch for deployment to production.</p>
+              <p>Bug fixes and other changes are regularly “trickled down” from the beta/release branch to the master branch, and when necessary, from production systems to beta/release.</p>
+              <p>Following each release, any changes in the release branch are merged back into master. Then, master is branched into the ‘next release’ and the cycle repeats.</p>
               </article>
             </div> <!-- #main -->
         </div> <!-- #main-container -->
