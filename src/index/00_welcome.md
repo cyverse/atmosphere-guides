@@ -9,6 +9,7 @@ This site hosts documentation for Atmosphere, the free, open-source cloud comput
 - [Install Guide](./install_guide.html)
 - [Connecting a Cloud Provider](./connecting_cloud_provider.html)
 - [Staff Guide](./staff_guide.html)
+- [Troubleshooting Guide](./troubleshooting_guide.html)
 
 ## For Users
 
