@@ -49,7 +49,6 @@ Atmosphere(1) is deployed at CyVerse as Atmosphere(0), but also at several other
 
 Familiarize yourself with the following links and use them as a reference.
 
-- [Atmosphere Technology Stack Overview](/wiki/display/csmgmt/Atmosphere+Technology+Stack+Overview) (TODO fix broken link)
 - [Atmosphere Troubleshooting Orientation](/wiki/display/csmgmt/Atmosphere+Troubleshooting+Orientation) (TODO fix broken link)
 - [Atmosphere(2) API docs on Apiary](http://docs.atmospherev2.apiary.io/)
 
@@ -62,6 +61,96 @@ You'll hear these a lot on the Atmosphere project:
 - _Allocation_: the amount of "CPU time" that a user is allotted, measured in AUs (see below).
 - _Allocation Unit_ _(AU)_: "roughly equivalent to using one CPU-hour, or to using one CPU core for one hour." ([source](https://pods.iplantcollaborative.org/wiki/display/atmman/Requesting+More+Atmosphere+Resources)) (TODO fix broken link)
 - _Modal_: a [modal window](https://en.wikipedia.org/wiki/Modal_window) in a GUI; the Troposphere UI uses these extensively.
+
+## Technology Stack Overview
+
+This is intended to be an orientation to the main components of Atmosphere(1), their purpose, and their supporting technologies.
+
+### Atmosphere(1)
+
+Atmosphere(1), broadly, is a web application which supports user-friendly access to (and management of) cloud computing resources, such as virtual machines (servers/workstations) and storage volumes.
+
+Atmosphere(1) has a "micro-services" architecture in that the back-end API is separated from the front-end UI, but all deployments to date contain all components on one operating system environment (server).
+
+#### Atmosphere(2) API and Back-End
+
+The API is written in Python using the [Django](https://www.djangoproject.com/) web framework, backed by a [PostgreSQL](https://en.wikipedia.org/wiki/PostgreSQL) database. As is typical for Django applications, Atmosphere(2) interacts with its database using Django's [object-relational mapper](https://en.wikipedia.org/wiki/Object-relational_mapping).
+
+Things that Atmosphere(2) does:
+
+- Interacts with cloud provider APIs to provision resources (instances, block storage volumes)
+- Initiates Ansible playbook runs on new and redeployed instances
+- Authenticates users
+- Keeps track of user [allocations](http://www.cyverse.org/service-level-agreement#AtmoAllo)
+
+The API is [apparently documented here](http://docs.atmospherev2.apiary.io/#reference).
+
+#### Troposphere UI
+
+[Troposphere](/wiki/display/csmgmt/Troposphere) is a separate front-end for Atmosphere(1), consisting of a Django application and JavaScript "single-page application" built with the [React](https://facebook.github.io/react/) front-end framework. Troposphere can be thought of as a JavaScript client which interacts with Atmosphere(2) via RESTful API.
+
+#### Web Server
+
+Both Atmosphere(2) and Troposphere are served by Nginx, which serves static assets directly and reverse proxies to uWSGI (etc.) for dynamically generated content.
+
+#### atmosphere-ansible
+
+atmosphere-ansible is the set of Ansible code that runs on newly provisioned cloud instances as part of the deployment process.
+
+##### Subspace
+
+[Subspace](https://github.com/iPlantCollaborativeOpenSource/subspace) is a Python project that programmatically runs Ansible playbooks; Atmosphere(2) uses it to run atmosphere-ansible.
+
+### Clank
+
+[Clank](https://github.com/iPlantCollaborativeOpenSource/clank) is the set of automations that deploy Atmosphere(1) and most of its components.
+
+Clank wraps the deployment process using Ansible, but significant parts are still automated with a mix of bash scripting, makefile, and a custom Python "configure" script which generates application configuration from jinja2 templates and .ini files. Also, unlike other Ansible code that you may have seen, Clank must be run locally on the destination server, not from a remote deployment host. The future direction is to refactor this into idiomatic Ansible and remove some layers of indirection.
+
+
+### Monitoring and Management
+
+These are optional integrations which are implemented for Atmosphere(0). They are not necessary for a successful Atmosphere(1) deployment.
+
+#### ELK
+
+[ELK stack](http://logz.io/learn/complete-guide-elk-stack/) (Elasticsearch, Logstash, Kibana) handles logging information from Atmosphere-Ansible.
+
+#### New Relic
+
+#### Sentry
+
+???
+
+### OpenStack
+
+Atmosphere(1) is intended to be agnostic of cloud provider type, but all current deployments use OpenStack as the cloud provider back-end. OpenStack is a collection of projects which, together, provide infrastructure-as-a-service or a 'cloud'.
+
+### Remote Access Methods
+
+Atmosphere(1) supports several means of users accessing their instances.
+
+#### SSH
+
+Users can create a secure shell to their VMs directly over the internet, authenticating either with their Atmosphere(0) credentials or with an SSH keypair. Atmosphere(1) is essentially uninvolved in this workflow, though it provides a way for users to automatically install their public SSH key on new and re-deployed instances.
+
+#### Web Shell
+
+Web Shell gets you a command line session in your browser, launched from the Troposphere UI. Web Shell uses [Gate One](https://liftoff.github.io/GateOne/About/index.html), a web-based terminal emulator. The Gate One server creates an SSH connection to the instance and exposes that shell to the user in a web interface, proxying the SSH traffic. For Atmosphere(0), the GateOne server is known as "bob" / "atmo-proxy".
+
+See [GateOne Background](/wiki/display/csmgmt/GateOne+Background) (TODO migrate the content and fix this link) for detailed design and troubleshooting information.
+
+#### Web Desktop
+
+Web Desktop gets you a graphical desktop session in your browser, launched from the Troposphere UI. Web Desktop uses [NoVNC](https://kanaka.github.io/noVNC), a web-based VNC client. This is brokered through webaccess.cyverse.org.
+
+[https://github.com/cyverse/nginx_novnc_auth](https://github.com/cyverse/nginx_novnc_auth)
+
+[https://github.com/cyverse/clank/blob/master/playbooks/utils/install_novnc_auth.yml](https://github.com/cyverse/clank/blob/master/playbooks/utils/install_novnc_auth.yml)
+
+#### Future: Guacamole
+
+[Guacamole](http://guacamole.incubator.apache.org/) is an HTML5 remote desktop gateway which provides both a command-line shell and a graphical desktop. Guacamole is planned as a replacement for Gate One and NoVNC, though this is not implemented in production yet.
 
 ## Clouds
 

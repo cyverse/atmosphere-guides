@@ -42,6 +42,27 @@
                       </ul></li>
                       <li><a href="#resources-and-docs-for-new-contributors">Resources and Docs for New Contributors</a></li>
                       <li><a href="#key-terms">Key Terms</a></li>
+                      <li><a href="#technology-stack-overview">Technology Stack Overview</a><ul>
+                      <li><a href="#atmosphere1">Atmosphere(1)</a><ul>
+                      <li><a href="#atmosphere2-api-and-back-end">Atmosphere(2) API and Back-End</a></li>
+                      <li><a href="#troposphere-ui">Troposphere UI</a></li>
+                      <li><a href="#web-server">Web Server</a></li>
+                      <li><a href="#atmosphere-ansible">atmosphere-ansible</a></li>
+                      </ul></li>
+                      <li><a href="#clank">Clank</a></li>
+                      <li><a href="#monitoring-and-management">Monitoring and Management</a><ul>
+                      <li><a href="#elk">ELK</a></li>
+                      <li><a href="#new-relic">New Relic</a></li>
+                      <li><a href="#sentry">Sentry</a></li>
+                      </ul></li>
+                      <li><a href="#openstack">OpenStack</a></li>
+                      <li><a href="#remote-access-methods">Remote Access Methods</a><ul>
+                      <li><a href="#ssh">SSH</a></li>
+                      <li><a href="#web-shell">Web Shell</a></li>
+                      <li><a href="#web-desktop">Web Desktop</a></li>
+                      <li><a href="#future-guacamole">Future: Guacamole</a></li>
+                      </ul></li>
+                      </ul></li>
                       <li><a href="#clouds">Clouds</a></li>
                       <li><a href="#tools-and-workflows">Tools and Workflows</a><ul>
                       <li><a href="#common-technologies-and-tools">Common Technologies and Tools</a></li>
@@ -121,7 +142,6 @@
               <h2 id="resources-and-docs-for-new-contributors">Resources and Docs for New Contributors</h2>
               <p>Familiarize yourself with the following links and use them as a reference.</p>
               <ul>
-              <li><a href="/wiki/display/csmgmt/Atmosphere+Technology+Stack+Overview">Atmosphere Technology Stack Overview</a> (TODO fix broken link)</li>
               <li><a href="/wiki/display/csmgmt/Atmosphere+Troubleshooting+Orientation">Atmosphere Troubleshooting Orientation</a> (TODO fix broken link)</li>
               <li><a href="http://docs.atmospherev2.apiary.io/">Atmosphere(2) API docs on Apiary</a></li>
               </ul>
@@ -134,6 +154,54 @@
               <li><em>Allocation Unit</em> <em>(AU)</em>: “roughly equivalent to using one CPU-hour, or to using one CPU core for one hour.” (<a href="https://pods.iplantcollaborative.org/wiki/display/atmman/Requesting+More+Atmosphere+Resources">source</a>) (TODO fix broken link)</li>
               <li><em>Modal</em>: a <a href="https://en.wikipedia.org/wiki/Modal_window">modal window</a> in a GUI; the Troposphere UI uses these extensively.</li>
               </ul>
+              <h2 id="technology-stack-overview">Technology Stack Overview</h2>
+              <p>This is intended to be an orientation to the main components of Atmosphere(1), their purpose, and their supporting technologies.</p>
+              <h3 id="atmosphere1">Atmosphere(1)</h3>
+              <p>Atmosphere(1), broadly, is a web application which supports user-friendly access to (and management of) cloud computing resources, such as virtual machines (servers/workstations) and storage volumes.</p>
+              <p>Atmosphere(1) has a “micro-services” architecture in that the back-end API is separated from the front-end UI, but all deployments to date contain all components on one operating system environment (server).</p>
+              <h4 id="atmosphere2-api-and-back-end">Atmosphere(2) API and Back-End</h4>
+              <p>The API is written in Python using the <a href="https://www.djangoproject.com/">Django</a> web framework, backed by a <a href="https://en.wikipedia.org/wiki/PostgreSQL">PostgreSQL</a> database. As is typical for Django applications, Atmosphere(2) interacts with its database using Django’s <a href="https://en.wikipedia.org/wiki/Object-relational_mapping">object-relational mapper</a>.</p>
+              <p>Things that Atmosphere(2) does:</p>
+              <ul>
+              <li>Interacts with cloud provider APIs to provision resources (instances, block storage volumes)</li>
+              <li>Initiates Ansible playbook runs on new and redeployed instances</li>
+              <li>Authenticates users</li>
+              <li>Keeps track of user <a href="http://www.cyverse.org/service-level-agreement#AtmoAllo">allocations</a></li>
+              </ul>
+              <p>The API is <a href="http://docs.atmospherev2.apiary.io/#reference">apparently documented here</a>.</p>
+              <h4 id="troposphere-ui">Troposphere UI</h4>
+              <p><a href="/wiki/display/csmgmt/Troposphere">Troposphere</a> is a separate front-end for Atmosphere(1), consisting of a Django application and JavaScript “single-page application” built with the <a href="https://facebook.github.io/react/">React</a> front-end framework. Troposphere can be thought of as a JavaScript client which interacts with Atmosphere(2) via RESTful API.</p>
+              <h4 id="web-server">Web Server</h4>
+              <p>Both Atmosphere(2) and Troposphere are served by Nginx, which serves static assets directly and reverse proxies to uWSGI (etc.) for dynamically generated content.</p>
+              <h4 id="atmosphere-ansible">atmosphere-ansible</h4>
+              <p>atmosphere-ansible is the set of Ansible code that runs on newly provisioned cloud instances as part of the deployment process.</p>
+              <h5 id="subspace">Subspace</h5>
+              <p><a href="https://github.com/iPlantCollaborativeOpenSource/subspace">Subspace</a> is a Python project that programmatically runs Ansible playbooks; Atmosphere(2) uses it to run atmosphere-ansible.</p>
+              <h3 id="clank">Clank</h3>
+              <p><a href="https://github.com/iPlantCollaborativeOpenSource/clank">Clank</a> is the set of automations that deploy Atmosphere(1) and most of its components.</p>
+              <p>Clank wraps the deployment process using Ansible, but significant parts are still automated with a mix of bash scripting, makefile, and a custom Python “configure” script which generates application configuration from jinja2 templates and .ini files. Also, unlike other Ansible code that you may have seen, Clank must be run locally on the destination server, not from a remote deployment host. The future direction is to refactor this into idiomatic Ansible and remove some layers of indirection.</p>
+              <h3 id="monitoring-and-management">Monitoring and Management</h3>
+              <p>These are optional integrations which are implemented for Atmosphere(0). They are not necessary for a successful Atmosphere(1) deployment.</p>
+              <h4 id="elk">ELK</h4>
+              <p><a href="http://logz.io/learn/complete-guide-elk-stack/">ELK stack</a> (Elasticsearch, Logstash, Kibana) handles logging information from Atmosphere-Ansible.</p>
+              <h4 id="new-relic">New Relic</h4>
+              <h4 id="sentry">Sentry</h4>
+              <p>???</p>
+              <h3 id="openstack">OpenStack</h3>
+              <p>Atmosphere(1) is intended to be agnostic of cloud provider type, but all current deployments use OpenStack as the cloud provider back-end. OpenStack is a collection of projects which, together, provide infrastructure-as-a-service or a ‘cloud’.</p>
+              <h3 id="remote-access-methods">Remote Access Methods</h3>
+              <p>Atmosphere(1) supports several means of users accessing their instances.</p>
+              <h4 id="ssh">SSH</h4>
+              <p>Users can create a secure shell to their VMs directly over the internet, authenticating either with their Atmosphere(0) credentials or with an SSH keypair. Atmosphere(1) is essentially uninvolved in this workflow, though it provides a way for users to automatically install their public SSH key on new and re-deployed instances.</p>
+              <h4 id="web-shell">Web Shell</h4>
+              <p>Web Shell gets you a command line session in your browser, launched from the Troposphere UI. Web Shell uses <a href="https://liftoff.github.io/GateOne/About/index.html">Gate One</a>, a web-based terminal emulator. The Gate One server creates an SSH connection to the instance and exposes that shell to the user in a web interface, proxying the SSH traffic. For Atmosphere(0), the GateOne server is known as “bob” / “atmo-proxy”.</p>
+              <p>See <a href="/wiki/display/csmgmt/GateOne+Background">GateOne Background</a> (TODO migrate the content and fix this link) for detailed design and troubleshooting information.</p>
+              <h4 id="web-desktop">Web Desktop</h4>
+              <p>Web Desktop gets you a graphical desktop session in your browser, launched from the Troposphere UI. Web Desktop uses <a href="https://kanaka.github.io/noVNC">NoVNC</a>, a web-based VNC client. This is brokered through webaccess.cyverse.org.</p>
+              <p><a href="https://github.com/cyverse/nginx_novnc_auth" class="uri">https://github.com/cyverse/nginx_novnc_auth</a></p>
+              <p><a href="https://github.com/cyverse/clank/blob/master/playbooks/utils/install_novnc_auth.yml" class="uri">https://github.com/cyverse/clank/blob/master/playbooks/utils/install_novnc_auth.yml</a></p>
+              <h4 id="future-guacamole">Future: Guacamole</h4>
+              <p><a href="http://guacamole.incubator.apache.org/">Guacamole</a> is an HTML5 remote desktop gateway which provides both a command-line shell and a graphical desktop. Guacamole is planned as a replacement for Gate One and NoVNC, though this is not implemented in production yet.</p>
               <h2 id="clouds">Clouds</h2>
               <p>Atmosphere(0, 1, 2) provisions virtual machines on several ‘clouds’ which actually host the instances and computing infrastructure. Currently, all cloud providers use OpenStack. It is also possible for Atmosphere to provide access to commodity IaaS like Amazon Web Services (AWS), though this is not currently configured.</p>
               <h2 id="tools-and-workflows">Tools and Workflows</h2>
