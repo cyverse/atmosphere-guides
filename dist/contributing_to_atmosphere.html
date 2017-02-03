@@ -103,7 +103,7 @@
               <p>Atmosphere or ‘atmo’ can refer to several different things:</p>
               <ul>
               <li><a href="https://atmo.cyverse.org/application">Atmosphere</a>(0), CyVerse’s “cloud computing for scientists” service</li>
-              <li><a href="/wiki/display/csmgmt/Atmosphere+Technology+Stack+Overview">Atmosphere</a>(1), <strong>the free, open-source software project</strong> which powers the above service (and is the primary focus of these guides) (TODO fix broken link)</li>
+              <li>Atmosphere(1), <strong>the free, open-source software project</strong> which powers the above service (and is the primary focus of these guides)</li>
               <li><a href="https://github.com/iPlantCollaborativeOpenSource/atmosphere">Atmosphere</a>(2), the API and back-end component of the above software project</li>
               </ul>
               <p>For clarity, this page will disambiguate all uses of “Atmosphere”.</p>
@@ -142,7 +142,7 @@
               <h2 id="resources-and-docs-for-new-contributors">Resources and Docs for New Contributors</h2>
               <p>Familiarize yourself with the following links and use them as a reference.</p>
               <ul>
-              <li><a href="/wiki/display/csmgmt/Atmosphere+Troubleshooting+Orientation">Atmosphere Troubleshooting Orientation</a> (TODO fix broken link)</li>
+              <li><a href="./troubleshooting_guide.html">Atmosphere Troubleshooting Guide</a></li>
               <li><a href="http://docs.atmospherev2.apiary.io/">Atmosphere(2) API docs on Apiary</a></li>
               </ul>
               <h2 id="key-terms">Key Terms</h2>
@@ -151,7 +151,7 @@
               <li><em>Instance</em>: a Virtual Machine (VM) or “cloud computer” running on Atmosphere(0) / OpenStack.</li>
               <li><em>Image:</em> a <a href="https://en.wikipedia.org/wiki/Disk_image">disk image</a> of a Virtual Machine (with some metadata) from which instances are created.</li>
               <li><em>Allocation</em>: the amount of “CPU time” that a user is allotted, measured in AUs (see below).</li>
-              <li><em>Allocation Unit</em> <em>(AU)</em>: “roughly equivalent to using one CPU-hour, or to using one CPU core for one hour.” (<a href="https://pods.iplantcollaborative.org/wiki/display/atmman/Requesting+More+Atmosphere+Resources">source</a>) (TODO fix broken link)</li>
+              <li><em>Allocation Unit</em> <em>(AU)</em>: “roughly equivalent to using one CPU-hour, or to using one CPU core for one hour.” (<a href="https://pods.iplantcollaborative.org/wiki/display/atmman/Requesting+More+Atmosphere+Resources">source</a>)</li>
               <li><em>Modal</em>: a <a href="https://en.wikipedia.org/wiki/Modal_window">modal window</a> in a GUI; the Troposphere UI uses these extensively.</li>
               </ul>
               <h2 id="technology-stack-overview">Technology Stack Overview</h2>
@@ -195,7 +195,7 @@
               <p>Users can create a secure shell to their VMs directly over the internet, authenticating either with their Atmosphere(0) credentials or with an SSH keypair. Atmosphere(1) is essentially uninvolved in this workflow, though it provides a way for users to automatically install their public SSH key on new and re-deployed instances.</p>
               <h4 id="web-shell">Web Shell</h4>
               <p>Web Shell gets you a command line session in your browser, launched from the Troposphere UI. Web Shell uses <a href="https://liftoff.github.io/GateOne/About/index.html">Gate One</a>, a web-based terminal emulator. The Gate One server creates an SSH connection to the instance and exposes that shell to the user in a web interface, proxying the SSH traffic. For Atmosphere(0), the GateOne server is known as “bob” / “atmo-proxy”.</p>
-              <p>See <a href="/wiki/display/csmgmt/GateOne+Background">GateOne Background</a> (TODO migrate the content and fix this link) for detailed design and troubleshooting information.</p>
+              <p>See <a href="/wiki/display/csmgmt/GateOne+Background">GateOne Background</a> (TODO fix this link once the content is migrated) for detailed design and troubleshooting information.</p>
               <h4 id="web-desktop">Web Desktop</h4>
               <p>Web Desktop gets you a graphical desktop session in your browser, launched from the Troposphere UI. Web Desktop uses <a href="https://kanaka.github.io/noVNC">NoVNC</a>, a web-based VNC client. This is brokered through webaccess.cyverse.org.</p>
               <p><a href="https://github.com/cyverse/nginx_novnc_auth" class="uri">https://github.com/cyverse/nginx_novnc_auth</a></p>

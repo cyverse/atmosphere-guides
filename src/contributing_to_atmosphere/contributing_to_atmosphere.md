@@ -9,7 +9,7 @@ This guide is intended to orient community members who are interested in contrib
 Atmosphere or 'atmo' can refer to several different things:
 
 - [Atmosphere](https://atmo.cyverse.org/application)(0), CyVerse's "cloud computing for scientists" service
-- [Atmosphere](/wiki/display/csmgmt/Atmosphere+Technology+Stack+Overview)(1), **the free, open-source software project** which powers the above service (and is the primary focus of these guides) (TODO fix broken link)
+- Atmosphere(1), **the free, open-source software project** which powers the above service (and is the primary focus of these guides)
 - [Atmosphere](https://github.com/iPlantCollaborativeOpenSource/atmosphere)(2), the API and back-end component of the above software project
 
 For clarity, this page will disambiguate all uses of "Atmosphere".
@@ -49,7 +49,7 @@ Atmosphere(1) is deployed at CyVerse as Atmosphere(0), but also at several other
 
 Familiarize yourself with the following links and use them as a reference.
 
-- [Atmosphere Troubleshooting Orientation](/wiki/display/csmgmt/Atmosphere+Troubleshooting+Orientation) (TODO fix broken link)
+- [Atmosphere Troubleshooting Guide](./troubleshooting_guide.html)
 - [Atmosphere(2) API docs on Apiary](http://docs.atmospherev2.apiary.io/)
 
 ## Key Terms
@@ -59,7 +59,7 @@ You'll hear these a lot on the Atmosphere project:
 - _Instance_: a Virtual Machine (VM) or "cloud computer" running on Atmosphere(0) / OpenStack.
 - _Image:_ a [disk image](https://en.wikipedia.org/wiki/Disk_image) of a Virtual Machine (with some metadata) from which instances are created.
 - _Allocation_: the amount of "CPU time" that a user is allotted, measured in AUs (see below).
-- _Allocation Unit_ _(AU)_: "roughly equivalent to using one CPU-hour, or to using one CPU core for one hour." ([source](https://pods.iplantcollaborative.org/wiki/display/atmman/Requesting+More+Atmosphere+Resources)) (TODO fix broken link)
+- _Allocation Unit_ _(AU)_: "roughly equivalent to using one CPU-hour, or to using one CPU core for one hour." ([source](https://pods.iplantcollaborative.org/wiki/display/atmman/Requesting+More+Atmosphere+Resources))
 - _Modal_: a [modal window](https://en.wikipedia.org/wiki/Modal_window) in a GUI; the Troposphere UI uses these extensively.
 
 ## Technology Stack Overview
@@ -138,7 +138,7 @@ Users can create a secure shell to their VMs directly over the internet, authent
 
 Web Shell gets you a command line session in your browser, launched from the Troposphere UI. Web Shell uses [Gate One](https://liftoff.github.io/GateOne/About/index.html), a web-based terminal emulator. The Gate One server creates an SSH connection to the instance and exposes that shell to the user in a web interface, proxying the SSH traffic. For Atmosphere(0), the GateOne server is known as "bob" / "atmo-proxy".
 
-See [GateOne Background](/wiki/display/csmgmt/GateOne+Background) (TODO migrate the content and fix this link) for detailed design and troubleshooting information.
+See [GateOne Background](/wiki/display/csmgmt/GateOne+Background) (TODO fix this link once the content is migrated) for detailed design and troubleshooting information.
 
 #### Web Desktop
 

@@ -1,6 +1,6 @@
 # Atmosphere Troubleshooting Guide
 
-Where to look and what to do when something is broken. See also [Taking care of the Atmosphere](/wiki/display/csmgmt/Taking+care+of+the+Atmosphere) (TODO fix link), and [Atmosphere Tips, Troubleshooting, Workarounds, and Solutions](/wiki/display/csmgmt/Atmosphere+Tips%2C+Troubleshooting%2C+Workarounds%2C+and+Solutions) (TODO fix link).
+Where to look and what to do when something is broken.
 
 ## Common Problems
 

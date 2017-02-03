@@ -18,4 +18,4 @@ This site hosts documentation for Atmosphere, the free, open-source cloud comput
 
 ## For Developers
 
-- [Contributing to Atmosphere](.contributing_to_atmosphere.html)
+- [Contributing to Atmosphere](./contributing_to_atmosphere.html)
