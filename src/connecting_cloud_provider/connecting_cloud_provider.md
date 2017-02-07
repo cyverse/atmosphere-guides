@@ -1,3 +1,5 @@
+# Connecting a Cloud Provider to Atmosphere
+
 ## Overview
 This guide will help you connect Atmosphere to an OpenStack cloud. Atmosphere connects to OpenStack APIs using both LibCloud and the OpenStack client tools.
 
