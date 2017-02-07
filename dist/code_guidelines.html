@@ -71,18 +71,22 @@
                                   <aside>
                       <h3> TABLE OF CONTENTS </h3>
                       <ul>
-                      <li><a href="#atmosphere-contribution-guide">Atmosphere Contribution Guide</a><ul>
-                      <li><a href="#code-guidelines">Code Guidelines</a><ul>
+                      <li><a href="#atmosphere-code-guidelines">Atmosphere Code Guidelines</a><ul>
                       <li><a href="#ansible-style-guidelines">Ansible Style Guidelines</a><ul>
                       <li><a href="#yaml-files-and-formatting">YAML Files and Formatting</a></li>
-                      <li><a href="#variables">Variables</a></li>
+                      <li><a href="#variables">Variables</a><ul>
+                      <li><a href="#distro-specific-variables">Distro-Specific Variables</a></li>
+                      </ul></li>
                       <li><a href="#tasks">Tasks</a></li>
                       <li><a href="#conditional-logic">Conditional Logic</a></li>
                       <li><a href="#modules">Modules</a></li>
                       <li><a href="#files-and-installation-packages">Files and Installation Packages</a></li>
                       <li><a href="#possible-ansible-guidelines---things-to-discuss">Possible Ansible Guidelines - Things to Discuss</a></li>
                       </ul></li>
-                      <li><a href="#ansible-galaxy-roles">Ansible Galaxy Roles</a></li>
+                      <li><a href="#ansible-galaxy-roles">Ansible Galaxy Roles</a><ul>
+                      <li><a href="#identifying-and-working-with-galaxy-roles">Identifying and Working With Galaxy Roles</a></li>
+                      <li><a href="#installing-consuming-galaxy-roles-in-another-project">Installing (Consuming) Galaxy Roles in Another Project</a></li>
+                      <li><a href="#importing-contributing-a-role-to-galaxy">Importing (Contributing) a Role to Galaxy</a></li>
                       </ul></li>
                       <li><a href="#security-guidelines">Security Guidelines</a></li>
                       <li><a href="#contribution-guide-contribution-guide">Contribution Guide Contribution Guide</a></li>
@@ -109,15 +113,14 @@
                   </aside>
                               <!-- MAIN CONTENT -->
               <article>
-              <h1 id="atmosphere-contribution-guide">Atmosphere Contribution Guide</h1>
-              <h2 id="code-guidelines">Code Guidelines</h2>
+              <h1 id="atmosphere-code-guidelines">Atmosphere Code Guidelines</h1>
               <p>These guidelines will improve the consistency and comprehensibility of our code. Contributions to “the Atmosphere projects” (atmosphere, troposphere, atmosphere-ansible, clank, etc) will be checked for adherence.</p>
               <ul>
               <li><a href="https://late.am/post/2016/04/28/delete-your-dead-code.html">Delete your dead code</a>. If you know that code is not run, don’t comment it out, instead remove it completely. Old code remains in version control and we can dig into the past if needed.</li>
               </ul>
-              <h3 id="ansible-style-guidelines">Ansible Style Guidelines</h3>
+              <h2 id="ansible-style-guidelines">Ansible Style Guidelines</h2>
               <p>These apply to repos such as clank and atmosphere-ansible (collectively, “the Ansible projects”). Some are borrowed from <a href="https://openedx.atlassian.net/wiki/display/OpenOPS/Ansible+Code+Conventions">Open edX Operations</a> and <a href="http://docs.openstack.org/developer/openstack-ansible/developer-docs/contribute.html">OpenStack-Ansible</a>.</p>
-              <h4 id="yaml-files-and-formatting">YAML Files and Formatting</h4>
+              <h3 id="yaml-files-and-formatting">YAML Files and Formatting</h3>
               <p>YAML files should:</p>
               <ul>
               <li>Have a name ending in <code>.yml</code></li>
@@ -139,7 +142,7 @@
                       python a very long command --with=very --long-options=foo
                       --and-even=more_options --like-these
               </code></pre>
-              <h4 id="variables">Variables</h4>
+              <h3 id="variables">Variables</h3>
               <ul>
               <li>Use spaces between double-braces and variable names: <code>{{ var }}</code> instead of <code>{{var}}</code></li>
               <li>For boolean variables, use un-quoted <code>true</code> and <code>false</code></li>
@@ -149,7 +152,7 @@
               <ul>
               <li>For variables that have some default and are optionally overridden by a consumer/deployer: define the variable’s default value in the role <code>defaults/</code> instead of using the <code>| default()</code> jinja2 filter. This keeps configuration separate from code.</li>
               </ul>
-              <h5 id="distro-specific-variables">Distro-Specific Variables</h5>
+              <h4 id="distro-specific-variables">Distro-Specific Variables</h4>
               <p>Many roles must take <em>differently-configured</em> actions to effect the same result, depending on the target’s operating system. Accomplish this configuration by defining your variables in files like so:</p>
               <pre><code>vars/
               ├── CentOS-5.yml
@@ -165,23 +168,23 @@
                   - &quot;{{ ansible_distribution }}.yml&quot;</code></pre>
               <p>Matching is most-specific to least-specific, so with the above example, a role targeting an Ubuntu 16.04 system would include the variables defined in Ubuntu-16.yml, while a role targeting Ubuntu 14.04 would include the variables defined in Ubuntu.yml. Also, only one file will match and there is no concept of inheritance (so usually, the same variables should be defined in each file).</p>
               <p>Role-specific variables that do not vary per-distro can still be defined in <code>vars/main.yml</code> or <code>defaults/main.yml</code>.</p>
-              <h4 id="tasks">Tasks</h4>
+              <h3 id="tasks">Tasks</h3>
               <p>Name your tasks to reflect the completed action in the past tense: <code>denyhosts stopped and disabled</code> rather than <code>stop and disable denyhosts</code>. This reinforces the goal of defining a series of idempotent steps to either reach or confirm a desired end state.</p>
-              <h4 id="conditional-logic">Conditional Logic</h4>
+              <h3 id="conditional-logic">Conditional Logic</h3>
               <ul>
               <li>To conditionally include or exclude a role, use the following syntax in a playbook:</li>
               </ul>
               <p><code>roles:     - { role: ldap, when: CONFIGURE_LDAP == true }</code></p>
               <p>Avoid applying the same tag to every task in a role and expecting a user to skip a role with <code>--skip-tags</code>.</p>
-              <h4 id="modules">Modules</h4>
+              <h3 id="modules">Modules</h3>
               <ul>
               <li>Use <code>command</code> rather than <code>shell</code> unless shell is explicitly required (<a href="http://docs.ansible.com/ansible/shell_module.html#notes">source 0</a> <a href="https://blog.confirm.ch/ansible-modules-shell-vs-command/">source 1</a>).</li>
               </ul>
-              <h4 id="files-and-installation-packages">Files and Installation Packages</h4>
+              <h3 id="files-and-installation-packages">Files and Installation Packages</h3>
               <p>Avoid storing large binary files or installation packages in Ansible projects / version control. Instead, host it externally (e.g. CyVerse’s S3 account) and download from there, or download from the publisher.</p>
-              <h4 id="possible-ansible-guidelines---things-to-discuss">Possible Ansible Guidelines - Things to Discuss</h4>
+              <h3 id="possible-ansible-guidelines---things-to-discuss">Possible Ansible Guidelines - Things to Discuss</h3>
               <ul>
-              <li><a href="https://github.com/whitecloud/ansible-styleguide#quotes">Quote all strings and prefer single quotes over double quotes</a>?</li>
+              <li><a href="https://github.com/whitecloud/ansible-styleguide#quotes">Quote all strings and prefer single quotes over double quotes</a>? This makes clear what is a string and what refers to a variable</li>
               <li>Define a <a href="https://github.com/whitecloud/ansible-styleguide#task-declaration">general order for a task declaration</a>?</li>
               <li>Variables that are internal to a role should be in snake_case? Variables that are environment-specific and should be overridden in UPPERCASE?</li>
               <li>When to use a role’s <code>vars/</code> vs. <code>defaults/</code> directory? <code>vars/</code> for things internal to the role (e.g. distro-specific), <code>defaults/</code> for things expected to be overridden by a consumer?</li>
@@ -189,18 +192,18 @@
               <li>Prefix task names with the role name, to ease human parsing of log output?</li>
               <li>Separate words in role names with dashes (<code>my-role</code>)?</li>
               </ul>
-              <h3 id="ansible-galaxy-roles">Ansible Galaxy Roles</h3>
+              <h2 id="ansible-galaxy-roles">Ansible Galaxy Roles</h2>
               <p>The Ansible projects will use similar code to perform very similar tasks, so there is an effort to structure our code into modular, re-usable roles. These roles are generally hosted in the <a href="https://github.com/cyverse-ansible">CyVerse-Ansible</a> organization and consumed via <a href="https://galaxy.ansible.com/">Ansible Galaxy</a>. This will centralize the development/maintenance effort and provide easy consumption by any interested groups. New Ansible contributors are encouraged to read <a href="https://galaxy.ansible.com/intro">Ansible Galaxy Intro</a>.</p>
-              <h5 id="identifying-and-working-with-galaxy-roles">Identifying and Working With Galaxy Roles</h5>
+              <h4 id="identifying-and-working-with-galaxy-roles">Identifying and Working With Galaxy Roles</h4>
               <p>The Ansible projects include a mix of roles installed from Galaxy and roles defined locally. The following clues should indicate that a given role was installed from Galaxy.</p>
               <ul>
               <li>The role is defined in the project’s <code>requirements.yml</code></li>
               <li>The role contains <code>meta/galaxy_install_info</code> and <code>meta/main.yml</code></li>
               </ul>
               <p>There is a clear concept of “upstream” (roles) and “downstream” (projects that consume them), so generally we should <em>avoid making persistent changes</em> to a role which has been installed from Galaxy <em>inside a repository that consumes it</em>. Such changes will 1. not propagate back upstream to the role repository, and 2. be overwritten the next time the role is updated from Galaxy. Instead, make your changes in the upstream Ansible role (see below), re-import it, and install the new version in the consuming repository.</p>
-              <h5 id="installing-consuming-galaxy-roles-in-another-project">Installing (Consuming) Galaxy Roles in Another Project</h5>
+              <h4 id="installing-consuming-galaxy-roles-in-another-project">Installing (Consuming) Galaxy Roles in Another Project</h4>
               <p>The Ansible projects use a <code>requirements.yml</code> file to define the Galaxy roles we are consuming. Install new roles and update existing roles in a repo by running <code>ansible-galaxy install -f -r requirements.yml -p roles/</code> from the <code>ansible</code> folder. Then, the desired roles will be copied into your project, and you can call them from Playbooks like any other role.</p>
-              <h5 id="importing-contributing-a-role-to-galaxy">Importing (Contributing) a Role to Galaxy</h5>
+              <h4 id="importing-contributing-a-role-to-galaxy">Importing (Contributing) a Role to Galaxy</h4>
               <p>Follow the instructions in <a href="https://github.com/CyVerse-Ansible/ansible-role-template">this template</a> to publish an Ansible role to Galaxy and set up automated testing with Travis CI; then you can install the role into other projects.</p>
               <h2 id="security-guidelines">Security Guidelines</h2>
               <p>Do not store anything secret or sensitive (e.g. passphrases, SSH private keys, license keys) in public version control. Environment-specific secrets can be encrypted with Ansible Vault and stored in private version control.</p>

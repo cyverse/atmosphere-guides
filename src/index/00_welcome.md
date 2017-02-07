@@ -2,8 +2,6 @@
 
 This site hosts documentation for Atmosphere, the free, open-source cloud computing project (as distinct from CyVerse's "cloud computing for scientists" service). It is intended for both "site operators" (groups interested in operating/supporting their own Atmosphere deployment), users (very incomplete), and developers who are interested in contributing to the project.
 
-# The Guides
-
 ## For Site Operators
 
 - [Install Guide](./install_guide.html)
@@ -18,5 +16,5 @@ This site hosts documentation for Atmosphere, the free, open-source cloud comput
 
 ## For Developers
 
-- [Code Contribution Guide](./contribution_guide.html)
-- [Contributing to Atmosphere](./contributing_to_atmosphere.html)
+- [Project Contribution Guide](./project_contribution_guide.html)
+- [Code Guidelines](./code_guidelines.html)

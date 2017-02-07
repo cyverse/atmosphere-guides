@@ -1,8 +1,8 @@
-# Contributing to Atmosphere
+# Atmosphere Project Contribution Guide
 
-This page is recovering from major surgery (Atmosphere(0)-related content was left on the CyVerse wiki). The broken links will be fixed soon.
+This guide is intended to orient community members who are interested in contributing to Atmosphere -- learn about our development process, our technology stack, and our release strategy. Welcome to the project!
 
-This guide is intended to orient community members who are interested in contributing to Atmosphere. Welcome to the project!
+This page has a couple of broken links, having recently been migrated from an internal wiki -- they will be fixed soon once the linked content is migrated to atmosphere-guides.
 
 ## What is Atmosphere?
 
@@ -21,6 +21,14 @@ Atmosphere(1) is deployed at CyVerse as Atmosphere(0), but also at several other
 - [Jetstream Cloud](http://jetstream-cloud.org/) (partnership of Indiana University, TACC, & CyVerse - Jetstream GitHub Organization: [jetstream-cloud](https://github.com/jetstream-cloud))
 - MOC (Massechusetts Open Cloud) (Jonathan Bell: [github-profile](https://github.com/lokI8), Lucas H. Xu: [github-profile](https://github.com/xuhang57))
 - Duke University / Duke Center for Genomic & Computational Biology ([Duke GCB](https://github.com/Duke-GCB)) (Darren Boss: [gcb-profile](https://genome.duke.edu/directory/gcb-staff/darren-boss); [github-profile](https://github.com/netscruff))
+
+## Resources and Docs for New Contributors
+
+Familiarize yourself with the following links and use them as a reference. (Also check out the other guides on this site!)
+
+- [Atmosphere Code Guidelines](./code_guidelines.html)
+- [Atmosphere Troubleshooting Guide](./troubleshooting_guide.html)
+- [Atmosphere(2) API docs on Apiary](http://docs.atmospherev2.apiary.io/)
 
 ## Where is the Code?
 
@@ -44,13 +52,6 @@ Atmosphere(1) is deployed at CyVerse as Atmosphere(0), but also at several other
 - [edwins/GateOne](https://github.com/edwins/GateOne)
 - [ansible-gateone-server](https://github.com/cyverse/atmosphere-guides)
 - [atmosphere-guides](https://github.com/cyverse/atmosphere-guides) documentation for Atmosphere(1)
-
-## Resources and Docs for New Contributors
-
-Familiarize yourself with the following links and use them as a reference.
-
-- [Atmosphere Troubleshooting Guide](./troubleshooting_guide.html)
-- [Atmosphere(2) API docs on Apiary](http://docs.atmospherev2.apiary.io/)
 
 ## Key Terms
 
