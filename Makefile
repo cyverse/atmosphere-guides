@@ -10,5 +10,4 @@ gh-pages-commit:
 	git subtree push --prefix dist origin gh-pages
 
 build_html:
-	./scripts/to_html_template.sh index install_guide staff_guide user_guide imaging_guide connecting_cloud_provider contribution_guide contributing_to_atmosphere troubleshooting_guide
-
+	./scripts/to_html_template.sh index install_guide staff_guide user_guide imaging_guide connecting_cloud_provider project_contribution_guide code_guidelines troubleshooting_guide
