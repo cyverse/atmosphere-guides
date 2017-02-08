@@ -3,27 +3,10 @@
 This repo contains multiple guides that are hosted on Github Pages:
 [https://cyverse.github.io/atmosphere-guides](https://cyverse.github.io/atmosphere-guides).
 
-## Guides Overview
-
-### User Guide
-
-This guide will explain how Atmosphere works from the perspective of the End
-User. (Don't mention Troposphere or other jargon for the End User).
-
-### Staff Guide
-
-This guide will explain how Atmosphere works from the perspective of a Staff
-user (With Admin privileges)
-
-### Imaging Guide
-
-This guide will contain handy information for End Users looking to create new
-images.
-
 ## How to Contribute
 
 ### How to Write Docs
-Guides are written in Markdown. You may want to use a tool to render your Markdown. [livedown](https://github.com/shime/livedown) works with a few editors to hot-load your changes.
+Guides are written in Markdown. You may want to use a tool to render your Markdown. [livedown](https://github.com/shime/livedown) works with a few editors to hot-load your changes. The [atom](https://atom.io/) editor also has built-in markdown preview.
 
 Here is another tool to make nice GIFs.
 http://recordit.co/
