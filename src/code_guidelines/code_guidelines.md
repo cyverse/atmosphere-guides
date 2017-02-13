@@ -136,6 +136,12 @@ Follow the instructions in [this template](https://github.com/CyVerse-Ansible/an
 
 Do not store anything secret or sensitive (e.g. passphrases, SSH private keys, license keys) in public version control. Environment-specific secrets can be encrypted with Ansible Vault and stored in private version control.
 
+When using `ansible-vault`, consider the following suggestions:
+* Use one password per repository
+* Vaulted file names should be pre-fixed or suffixed with _"vault"_
+  - `vault-sample-file-name.yml`
+  - `sample-file-name-vault.yml`
+
 Any REST API calls that handle privileged/sensitive information (or access to private resources) should use HTTPS endpoints. Also, any downloaded code that will be executed in a trusted context (e.g. scripts and installation packages) should be obtained in a way that verifies the other party's authenticity and prevents man-in-the-middle attacks from changing the contents. In practical terms, use HTTPS, or APT packages signed with a GPG key. Avoid disabling SSL certificate verification for any of the above.
 
 Avoid disabling SSH host key checking. When possible, learn a server's SSH host key out-of-band and verify it on first connection.
