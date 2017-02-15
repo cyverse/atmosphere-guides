@@ -300,6 +300,10 @@ The repositories that **should** be tagged for a release are as follows:
 We should consider tagging this fork
 - [https://github.com/edwins/gateone](https://github.com/edwins/gateone)
 
+#### Who Can Tag?
+
+You have to be an admin of a repository to be able to tag releases. Ask an admin to create the tag if you don't have access.
+
 ### Release Structure
 
 The structure of releases is inspired by [Chrome/Chromium](http://blog.assembla.com/AssemblaBlog/tabid/12618/bid/36341/Secrets-of-rapid-release-cycles-from-the-Google-Chrome-team.aspx). We aim to deliver new code to production every 5 weeks. Those 5 weeks are split into 3 sprints (2 sprints of 2-weeks and a single 1-week sprint).
