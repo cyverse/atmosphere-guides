@@ -12,18 +12,18 @@ When a user launches an instance and configures it to their liking, they can cre
 
 During the imaging process:
 - The 'machine' is created:
-  - Create and Download a snapshot of the Instance
-  - Mount and clean the image file to remove “User-specific” data
-  - Upload new image to cloud
+    - Create and Download a snapshot of the Instance
+    - Mount and clean the image file to remove “User-specific” data
+    - Upload new image to cloud
 - The 'machine' is processed:
-  - Appropriate metadata is attached to the new image
-  - Atmosphere properly catalogs the image into the right Application, Version, and ProviderMachine.
+    - Appropriate metadata is attached to the new image
+    - Atmosphere properly catalogs the image into the right Application, Version, and ProviderMachine.
 - The 'machine' is validated:
-  - Atmosphere will launch the instance and wait for it to go to "green-light active".
-  - Atmosphere will then destroy the launched instance
+    - Atmosphere will launch the instance and wait for it to go to "green-light active".
+    - Atmosphere will then destroy the launched instance
 - The 'machine' is completed:
-  - The 'machine owner' is e-mailed
-  - The machine is ready for launch by others.
+    - The 'machine owner' is e-mailed
+    - The machine is ready for launch by others.
 
 ### Concept: Projects
 Project is an overloaded term, at any one time it could be referring to:

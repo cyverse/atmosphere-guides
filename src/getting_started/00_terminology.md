@@ -22,15 +22,15 @@ Groups are used similar to the linux “user/group” model.
 ### Provider
 Provider (also known as cloud, cloud provider) is a term used by atmosphere to identify a specific installation of cloud software.
 - Providers have a specific set of credentials common to all users (That uniquely identifies them)
-  - Ex: auth_url, version, …
+    - Ex: auth_url, version, …
 - ProviderType
-  - Ex: OpenStack, AWS, …
+    - Ex: OpenStack, AWS, …
 - Providers are owned by a Group (usually a staff/admin)
 
 ### Identity
 Identities are a term used by atmosphere to identify a specific user on a Provider.
 - Identities have a specific set of credentials for the user
-  - Example: key(username), secret(password)
+    - Example: key(username), secret(password)
 - Identities are owned by a Group
 
 ### Projects 
@@ -81,7 +81,7 @@ Machines (also known as Image, or ProviderMachine) are like a blueprint that wil
 Volumes are how users can allocate additional data storage (by policy, up to 1TB) to be used with their instances.
 - Volumes have a pre-set size (1-1000gb)
 - Volumes start unformatted
-  - Atmosphere handles mkfs on first attach + mounting.
+    - Atmosphere handles mkfs on first attach + mounting.
 - Can be created based on an Image and “Booted” as an instance. (Bootable volumes are not yet a part of atmosphere)
 
 ### Instance
