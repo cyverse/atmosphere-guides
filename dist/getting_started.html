@@ -65,7 +65,13 @@
               <p>We’re going to go over some simple terminology and concepts commonly used in Atmosphere.</p>
               <h2 id="terminology---atmosphere">Terminology - Atmosphere</h2>
               <h3 id="user">User</h3>
-              <p>A User is an individual that has logged into Atmosphere. Users have: - Username (unique) - Name - Email</p>
+              <p>A User is an individual that has logged into Atmosphere.</p>
+              <p>Users have:</p>
+              <ul>
+              <li>Username (unique)</li>
+              <li>Name</li>
+              <li>Email</li>
+              </ul>
               <h3 id="group">Group</h3>
               <p>Groups are used similar to the linux “user/group” model.</p>
               <ul>
@@ -75,27 +81,119 @@
               <li>Groups (not Users) are the “owners” of cloud resources</li>
               </ul>
               <h3 id="provider">Provider</h3>
-              <p>Provider (also known as cloud, cloud provider) is a term used by atmosphere to identify a specific installation of cloud software. - Providers have a specific set of credentials common to all users (That uniquely identifies them) - Ex: auth_url, version, … - ProviderType - Ex: OpenStack, AWS, … - Providers are owned by a Group (usually a staff/admin)</p>
+              <p>Provider (also known as cloud, cloud provider) is a term used by atmosphere to identify a specific installation of cloud software.</p>
+              <ul>
+              <li>Providers have a specific set of credentials common to all users (That uniquely identifies them)
+              <ul>
+              <li>Ex: auth_url, version, …</li>
+              </ul></li>
+              <li>ProviderType
+              <ul>
+              <li>Ex: OpenStack, AWS, …</li>
+              </ul></li>
+              <li>Providers are owned by a Group (usually a staff/admin)</li>
+              </ul>
               <h3 id="identity">Identity</h3>
-              <p>Identities are a term used by atmosphere to identify a specific user on a Provider. - Identities have a specific set of credentials for the user - Example: key(username), secret(password) - Identities are owned by a Group</p>
+              <p>Identities are a term used by atmosphere to identify a specific user on a Provider.</p>
+              <ul>
+              <li>Identities have a specific set of credentials for the user
+              <ul>
+              <li>Example: key(username), secret(password)</li>
+              </ul></li>
+              <li>Identities are owned by a Group</li>
+              </ul>
               <h3 id="projects">Projects</h3>
-              <p>Projects (in Atmosphere) represent a collection of Cloud Resources (not sizes) that allow users to logically group related instances/volumes. - A project is required for new instance/volume created in Atmosphere. - Projects have a name - Projects are owned by a Group</p>
+              <p>Projects (in Atmosphere) represent a collection of Cloud Resources (not sizes) that allow users to logically group related instances/volumes.</p>
+              <ul>
+              <li>A project is required for new instance/volume created in Atmosphere.</li>
+              <li>Projects have a name</li>
+              <li>Projects are owned by a Group</li>
+              </ul>
               <h3 id="application">Application</h3>
-              <p>Applications (displayed to the user in troposphere as Image) are a way to abstract a “history” of related Machines (via ApplicationVersion). Ex: | Image Name in OpenStack | Application | ApplicationVersion | ProviderMachines | | — | — | — | — | | Ubuntu 16.04 v1 (1111-222-333-4444) | 1 - Ubuntu 16.04 | 1.0 | Tucson Cloud (1111-222-333-4444)| | Ubuntu 16.04 v1 (1111-222-333-4444) | 1 - Ubuntu 16.04 | 1.0 | Austin Cloud (1111-222-333-4444)| | Ubuntu 16.04 v2 (2222-333-444-5555) | 1 - Ubuntu 16.04 | 2.0 | Tucson Cloud (2222-333-444-5555)|</p>
+              <p>Applications (displayed to the user in troposphere as Image) are a way to abstract a “history” of related Machines (via ApplicationVersion).</p>
+              <p>Ex:</p>
+              <table style="width:22%;">
+              <colgroup>
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              </colgroup>
+              <thead>
+              <tr class="header">
+              <th>Image Name in OpenStack</th>
+              <th>Application</th>
+              <th>ApplicationVersion</th>
+              <th>ProviderMachines</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="odd">
+              <td>Ubuntu 16.04 v1 (1111-222-333-4444)</td>
+              <td>1 - Ubuntu 16.04</td>
+              <td>1.0</td>
+              <td>Tucson Cloud (1111-222-333-4444)</td>
+              </tr>
+              <tr class="even">
+              <td>Ubuntu 16.04 v1 (1111-222-333-4444)</td>
+              <td>1 - Ubuntu 16.04</td>
+              <td>1.0</td>
+              <td>Austin Cloud (1111-222-333-4444)</td>
+              </tr>
+              <tr class="odd">
+              <td>Ubuntu 16.04 v2 (2222-333-444-5555)</td>
+              <td>1 - Ubuntu 16.04</td>
+              <td>2.0</td>
+              <td>Tucson Cloud (2222-333-444-5555)</td>
+              </tr>
+              </tbody>
+              </table>
               <h3 id="applicationversion">ApplicationVersion</h3>
-              <p>ApplicationVersion (also known as Version) is a grouping of one or more Machines. (In Atmosphere, it is common to replicate a Machine (ex: Ubuntu 16.04) across several Providers (ex: iPlant - Austin, iPlant - Tucson, …).)</p>
-              <p>Because the image is (mostly) identical across providers, the grouping serves as a way to simplify the cloud-agnostic nature of Atmosphere. - ApplicationVersions have One or more ProviderMachine - ApplicationVersions have a name (1.0, 2.0-alpha, beta-do-not-use, …) - ApplicationVersions have a change log (that helps users understand what changed between versions)</p>
+              <p>ApplicationVersion (also known as Version) is a grouping of one or more Machines.</p>
+              <p>(In Atmosphere, it is common to replicate a Machine (ex: Ubuntu 16.04) across several Providers (ex: iPlant - Austin, iPlant - Tucson, …).)</p>
+              <p>Because the image is (mostly) identical across providers, the grouping serves as a way to simplify the cloud-agnostic nature of Atmosphere.</p>
+              <ul>
+              <li>ApplicationVersions have One or more ProviderMachine</li>
+              <li>ApplicationVersions have a name (1.0, 2.0-alpha, beta-do-not-use, …)</li>
+              <li>ApplicationVersions have a change log (that helps users understand what changed between versions)</li>
+              </ul>
               <h2 id="terminology---cloud">Terminology - Cloud</h2>
               <h3 id="cloud-resource">Cloud resource</h3>
               <p>Cloud Resources are a term used by atmosphere to identify a Volume, Instance, Size, or Machine.</p>
               <h3 id="size">Size</h3>
-              <p>Sizes (also known as flavors in Openstack) are a preset configuration of CPUs, GB of memory, and Disk space that will be allocated to a Machine when creating an Instance. Sizes have: - CPU - RAM (in GB) - Disk (for the image, in GB, 0 means “create disk image that is the exact size of the Machine”) - Ephemeral (as an additional mount, in GB)</p>
+              <p>Sizes (also known as flavors in Openstack) are a preset configuration of CPUs, GB of memory, and Disk space that will be allocated to a Machine when creating an Instance.</p>
+              <p>Sizes have:</p>
+              <ul>
+              <li>CPU</li>
+              <li>RAM (in GB)</li>
+              <li>Disk (for the image, in GB, 0 means “create disk image that is the exact size of the Machine”)</li>
+              <li>Ephemeral (as an additional mount, in GB)</li>
+              </ul>
               <h3 id="machine">Machine</h3>
-              <p>Machines (also known as Image, or ProviderMachine) are like a blueprint that will tell the Cloud how to create a new Instance. - Machines, minimally, have an operating system - They may also be installed and configured with additional software applications as desired. - They are a fixed size (usually 8GB-60GB) - Administrators and other users can create new machines from Instances via <a href="#concepts-machine_requests">Machine Requests</a> and/or downloading new image files.</p>
+              <p>Machines (also known as Image, or ProviderMachine) are like a blueprint that will tell the Cloud how to create a new Instance.</p>
+              <ul>
+              <li>Machines, minimally, have an operating system</li>
+              <li>They may also be installed and configured with additional software applications as desired.</li>
+              <li>They are a fixed size (usually 8GB-60GB)</li>
+              <li>Administrators and other users can create new machines from Instances via <a href="#concepts-machine_requests">Machine Requests</a> and/or downloading new image files.</li>
+              </ul>
               <h3 id="volume">Volume</h3>
-              <p>Volumes are how users can allocate additional data storage (by policy, up to 1TB) to be used with their instances. - Volumes have a pre-set size (1-1000gb) - Volumes start unformatted - Atmosphere handles mkfs on first attach + mounting. - Can be created based on an Image and “Booted” as an instance. (Bootable volumes are not yet a part of atmosphere)</p>
+              <p>Volumes are how users can allocate additional data storage (by policy, up to 1TB) to be used with their instances.</p>
+              <ul>
+              <li>Volumes have a pre-set size (1-1000gb)</li>
+              <li>Volumes start unformatted
+              <ul>
+              <li>Atmosphere handles mkfs on first attach + mounting.</li>
+              </ul></li>
+              <li>Can be created based on an Image and “Booted” as an instance. (Bootable volumes are not yet a part of atmosphere)</li>
+              </ul>
               <h3 id="instance">Instance</h3>
-              <p>Instances (also known as nodes, or servers) is the virtual machine that will be created by end users. - Instances have a specific size - Instances are based on an Image or Volume. - Atmosphere handles the networking and pre-configuration of instances prior to handing control over to the User.</p>
+              <p>Instances (also known as nodes, or servers) is the virtual machine that will be created by end users.</p>
+              <ul>
+              <li>Instances have a specific size</li>
+              <li>Instances are based on an Image or Volume.</li>
+              <li>Atmosphere handles the networking and pre-configuration of instances prior to handing control over to the User.</li>
+              </ul>
               <h2 id="concepts-in-atmosphere-and-openstack">Concepts in Atmosphere and Openstack</h2>
               <h3 id="concept-quota-and-allocation">Concept: Quota and Allocation</h3>
               <p>Quotas are an admin-set limit on the number of resources a specific cloud user can create at any one time. - (Ex: Quota of 2 CPU, 8 GB ram) Allocations are a way for Atmosphere to track the amount of time a specific cloud user has used their resource. - (Ex: Allocation for 168 hours of compute in one month)</p>
