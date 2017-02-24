@@ -362,7 +362,7 @@ atmosphere-mytestcloud
 vm7.mytestcloud.cyverse.org ansible_host=128.196.171.7 ansible_port=22
 ```
 
-Also ensure that you have appropriate group_vars defined in `/opt/dev/atmosphere-ansible/ansible/group/vars/name-of-your-cloud`.
+Also ensure that you have appropriate group_vars defined in `/opt/dev/atmosphere-ansible/ansible/group_vars/name-of-your-cloud`.
 
 #### Test Atmosphere!
 
