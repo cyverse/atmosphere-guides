@@ -35,25 +35,26 @@
                       <h3> TABLE OF CONTENTS </h3>
                       <ul>
                       <li><a href="#connecting-a-cloud-provider-to-atmosphere">Connecting a Cloud Provider to Atmosphere</a><ul>
-                      <li><a href="#overview">Overview</a></li>
-                      <li><a href="#prerequisites">Prerequisites</a></li>
-                      <li><a href="#procedure">Procedure</a><ul>
+                      <li><a href="#overview">Overview</a><ul>
+                      <li><a href="#production-or-testing">Production or Testing?</a></li>
+                      </ul></li>
+                      <li><a href="#prerequisites">Prerequisites</a><ul>
                       <li><a href="#dns-for-instance-ip-space">DNS for Instance IP Space</a></li>
                       <li><a href="#tls-certificate-for-openstack-api-endpoints">TLS Certificate for OpenStack API endpoints</a></li>
+                      </ul></li>
                       <li><a href="#openstack-configuration">OpenStack Configuration</a><ul>
-                      <li><a href="#expose-apis-and-configure-https">Expose APIs and configure HTTPS</a></li>
-                      <li><a href="#configure-openstack-for-atmosphere-access">Configure OpenStack for Atmosphere Access</a></li>
-                      <li><a href="#obtain-credentials">Obtain Credentials</a></li>
+                      <li><a href="#expose-apis-and-optionally-secure-them-wtih-https">Expose APIs * (and optionally secure them wtih HTTPS)</a></li>
+                      <li><a href="#configure-openstack-for-atmosphere-access">Configure OpenStack for Atmosphere Access *</a></li>
+                      <li><a href="#obtain-credentials">Obtain Credentials *</a></li>
                       </ul></li>
                       <li><a href="#atmosphere-configuration">Atmosphere Configuration</a><ul>
-                      <li><a href="#add-a-new-provider">Add a New Provider</a></li>
-                      <li><a href="#add-user-accounts-to-the-new-cloud">Add User Accounts to the new cloud</a></li>
+                      <li><a href="#add-a-new-provider">Add a New Provider *</a></li>
+                      <li><a href="#add-user-accounts-to-the-new-cloud">Add User Accounts to the new cloud *</a></li>
                       <li><a href="#grant-staffsuperuser-privileges">Grant Staff/Superuser Privileges</a></li>
-                      <li><a href="#choose-an-allocation-strategy">Choose an Allocation Strategy</a></li>
-                      <li><a href="#add-openstacks-imagesinstancessizes-to-atmosphere">Add OpenStack’s Images/Instances/Sizes to Atmosphere</a></li>
-                      <li><a href="#update-atmosphere-ansible-hosts-file-and-group_vars">Update atmosphere-ansible hosts file and group_vars</a></li>
+                      <li><a href="#choose-an-allocation-strategy">Choose an Allocation Strategy *</a></li>
+                      <li><a href="#add-openstacks-imagesinstancessizes-to-atmosphere">Add OpenStack’s Images/Instances/Sizes to Atmosphere *</a></li>
+                      <li><a href="#update-atmosphere-ansible-hosts-file-and-group_vars">Update atmosphere-ansible hosts file and group_vars *</a></li>
                       <li><a href="#test-atmosphere">Test Atmosphere!</a></li>
-                      </ul></li>
                       </ul></li>
                       </ul></li>
                       </ul>
@@ -64,19 +65,20 @@
               <h2 id="overview">Overview</h2>
               <p>This guide will help you connect Atmosphere to an OpenStack cloud. Atmosphere connects to OpenStack APIs using both LibCloud and the OpenStack client tools.</p>
               <p>This is a work in progress, see Chris Martin or Steve Gregory with questions.</p>
+              <h3 id="production-or-testing">Production or Testing?</h3>
+              <p>This guide is oriented toward building a production-quality OpenStack + Atmosphere deployment. Many of the steps are unnecessary if you are just creating a test environment. Steps which are absolutely required are marked with a * , other steps are merely recommendations for production use.</p>
               <h2 id="prerequisites">Prerequisites</h2>
               <ul>
-              <li>Administrative access to an Atmosphere(1) deployment</li>
-              <li>Administrative access to an OpenStack deployment configured with:
+              <li>Administrative access to an Atmosphere(1) deployment *</li>
+              <li>Administrative access to an OpenStack deployment configured with: *
               <ul>
               <li>At least one image, size, network, and router (<a href="https://github.com/cyverse/openstack-ansible-host-prep/blob/master/docs/post-deployment.md">example directions</a>)</li>
-              <li>An external network with floating IP addresses available to instances, which are routable at least from your Atmosphere server</li>
+              <li>An external network with floating IP addresses available to instances, which are routable at least from your Atmosphere server *</li>
               </ul></li>
               <li>DNS hostname to use for HTTPS connections to your OpenStack APIs, and a client-trusted TLS certificate for this hostname If you need a certificate, <a href="https://letsencrypt.org/">Let’s Encrypt</a> is your friend</li>
               <li>Control of a DNS zone that you want to use for instance public IPs (probably optional, can be same zone as above)</li>
               </ul>
               <p>Before attempting to connect Atmosphere to your OpenStack cloud, exercise the cloud to confirm basic functionality. Using the Horizon dashboard or OpenStack APIs, verify you can launch an instance, assign a floating IP address, SSH to your instance, create and attach Cinder volumes, and so forth.</p>
-              <h2 id="procedure">Procedure</h2>
               <h3 id="dns-for-instance-ip-space">DNS for Instance IP Space</h3>
               <p>This step is probably optional.</p>
               <p>Atmosphere will use a range of DNS names corresponding to your floating IP addresses; the naming convention is configurable when you add the cloud provider below. So, assign hostnames for each of the possible floating IPs in a DNS zone that you control, e.g. vm#.myawesomecloud.org. For example, if your range of available public IPs is 1.2.3.2-62, then create records that resolve vm40.myawesomecloud.org to 1.2.3.40, and so forth throughout the range.</p>
@@ -84,13 +86,14 @@
               <p>Your OpenStack cloud may have its API endpoints configured to use HTTPS with self-signed certificates. These work for testing purposes but are problematic for security; they make it difficult for you to ensure that there is no man-in-the-middle attack between your Atmosphere(1) and your OpenStack cloud. Self-signed certificates encourage you to disable certificate validation in your client applications, which is a <strong>bad</strong> security practice.</p>
               <p>So, obtain a TLS/SSL certificate for the hostname you want to use to connect to the OpenStack API. If you don’t have one, you can get free certificates from Let’s Encrypt; perhaps run it on your load balancer(s) or infrastructure node(s).</p>
               <p>Note that the “public” IP address for your OpenStack APIs does not strictly need to be in publicly routable IP space (as long as it is routable from your Atmosphere), but in order to successfully obtain a certificate from Let’s Encrypt, you must expose port 80 or 443 on a public IP address from the host making the request.</p>
-              <h3 id="openstack-configuration">OpenStack Configuration</h3>
-              <p>These instructions are written for OpenStack clouds provisioned with the OpenStack-Ansible project (OSA). If you roll your own cloud or get it from elsewhere, you may need to translate, but the concepts still apply. :)</p>
-              <h4 id="expose-apis-and-configure-https">Expose APIs and configure HTTPS</h4>
+              <h2 id="openstack-configuration">OpenStack Configuration</h2>
+              <p>Skip this if you already have an OpenStack deployment configured for use with Atmosphere.</p>
+              <p>These instructions are written for OpenStack clouds provisioned with the OpenStack-Ansible project (OSA). If you roll your own cloud or get it from elsewhere, you may need to translate, but the concepts still apply.</p>
+              <h3 id="expose-apis-and-optionally-secure-them-wtih-https">Expose APIs * (and optionally secure them wtih HTTPS)</h3>
               <p>Atmosphere(1) needs access to the public API endpoints for the various OpenStack services (which?), and also to the <em>Keystone admin API</em>. (Possibly also admin APIs for other services, possibly not?)</p>
-              <p>These APIs should be configured to use HTTPS only – this is not a strict requirement for testing but should be considered a requirement for any real production deployment, especially if API traffic between Atmosphere(1) and OpenStack will transit networks that you don’t trust or control.</p>
-              <p>By default, OSA configures public API endpoints with HTTPS using self-signed certificates. This is better than no HTTPS at all, but it’s much better to use HTTPS real, client-trusted certificates, which we will do.</p>
-              <p>Also by default, OSA configures the keystone admin API as <em>non-HTTPS</em> (plain HTTP), and <em>only listening on the internal</em> (container management) network. We need to open this up to listen on a network routable from Atmosphere, and of course, secure the endpoint with HTTPS.</p>
+              <p>These APIs should be configured to use HTTPS only – this is not a strict requirement for testing but should be considered a requirement for any production deployment, especially if API traffic between Atmosphere(1) and OpenStack will transit networks that you don’t trust or control.</p>
+              <p>By default, OSA configures public API endpoints with HTTPS using self-signed certificates. This is better than no HTTPS at all, but it’s much better to use real, client-trusted HTTPS certificates.</p>
+              <p>Also by default, OSA configures the keystone admin API as <em>non-HTTPS</em> (plain HTTP), and <em>only listening on the internal</em> (container management) network. We need to open this up to listen on a network routable from Atmosphere.</p>
               <p>For an OSA deployment, you can configure this in your user_variables.yml as follows:</p>
               <pre><code># The following services all need a certificate, private key, and corresponding CA certificate.
               # They can all use the same one.
@@ -132,7 +135,7 @@
                     haproxy_service_name: keystone_admin
                     haproxy_backend_nodes: &quot;{{ groups[&#39;keystone_all&#39;] | default([])  }}&quot;
                     haproxy_port: 35357
-                    # Add this next line to configure HAProxy to use SSL
+                    # Add this next line to configure HAProxy to use TLS
                     haproxy_ssl: &quot;{{ haproxy_ssl }}&quot;
                     haproxy_balance_type: &quot;http&quot;
                     haproxy_backend_options:
@@ -144,7 +147,7 @@
                       # Add more networks here, specifically wherever your Atmosphere(1) server lives
                       - 128.196.0.0/16
               # (redacting the rest of haproxy_default_services)</code></pre>
-              <p>You should also override variables to define your hostname (rather than IP address) for public API endpoints. Note that you may not need all of these if you don’t use all the services (but it doesn’t hurt). Place these in user_variables.yml, replacing myawesomecloud.org with your actual hostname:</p>
+              <p>If configuring TLS, you should also override variables to define your hostname (rather than IP address) for public API endpoints. You don’t need all of these variables if you don’t use all the services (but it doesn’t hurt). Place these in user_variables.yml, replacing myawesomecloud.org with your actual hostname:</p>
               <pre><code>glance_service_publicuri: &quot;{{ glance_service_publicuri_proto }}://myawesomecloud.org:{{ glance_service_port }}&quot;
               nova_service_publicuri: &quot;{{ nova_service_publicuri_proto }}://myawesomecloud.org:{{ nova_service_port }}&quot;
               cinder_service_publicuri: &quot;{{ cinder_service_publicuri_proto }}://myawesomecloud.org:{{ cinder_service_port }}&quot;
@@ -160,7 +163,7 @@
               swift_service_publicuri: &quot;{{ swift_service_publicuri_proto }}://myawesomecloud.org:{{ swift_proxy_port }}&quot;
               magnum_service_publicurl: &quot;{{ magnum_service_publicuri_proto }}://myawesomecloud.org:{{ magnum_bind_port }}&quot;</code></pre>
               <p>(Of course this is Ansible, so you can also declare your hostname as a variable and just use the variable everywhere.)</p>
-              <p>If you have already deployed your cloud, re-run <code>setup-infrastructure.yml</code> and <code>setup-openstack.yml</code> to apply your changes.</p>
+              <p>If you have already deployed your cloud using OpenStack-Ansible, re-run <code>setup-infrastructure.yml</code> and <code>setup-openstack.yml</code> to apply your changes.</p>
               <p>Finally, check the Keystone service catalog, e.g. from a utility container in an OSA deployment:</p>
               <pre><code>$ source openrc
               $ openstack endpoint list
@@ -179,13 +182,13 @@
               | d39cab53a5d546738aeee36d87115b48 | RegionOne | glance       | image          | True    | public    | https://myawesomecloud.org:9292                                |
               +----------------------------------+-----------+--------------+----------------+---------+-----------+----------------------------------------------------------------+</code></pre>
               <p>You should see HTTPS URLs, with fully qualified domain names (hostnames) instead of IP addresses, for all of the public endpoints, <em>and also for the keystone admin endpoint</em>. If so, you’re good! (If not, you may need to use <code>openstack endpoint delete</code> and <code>openstack endpoint create</code> commands to match reality. Don’t be afraid to <code>curl</code> where you think the endpoints should be, to verify that they are available.)</p>
-              <h4 id="configure-openstack-for-atmosphere-access">Configure OpenStack for Atmosphere Access</h4>
+              <h3 id="configure-openstack-for-atmosphere-access">Configure OpenStack for Atmosphere Access *</h3>
               <p>Create a keystone user “atmoadmin”, and a project with the same name. Grant the atmoadmin user the “admin” role for the atmoadmin project. (Note that <strong>this gives the atmoadmin user admin rights to the entire OpenStack cloud</strong>.)</p>
               <p>To do this in the OpenStack client tools:</p>
               <pre><code>openstack project create atmoadmin
               openstack user create --password mysupersecretpassword --project atmoadmin atmoadmin
               openstack role add --user atmoadmin --project atmoadmin admin</code></pre>
-              <h4 id="obtain-credentials">Obtain Credentials</h4>
+              <h3 id="obtain-credentials">Obtain Credentials *</h3>
               <p>Look for your openrc file, which contains information needed to tell Atmosphere how to connect to OpenStack. If you have Horizon dashboard access, you can download the openrc file specific to a project – browse to Project -&gt; “Access &amp; Security” -&gt; “API Access” -&gt; “Download OpenStack RC File v3”. You’ll also find openrc files in /root/ in the utility containers that OSA deploys, and in the deployer’s home folder on the deployment host.</p>
               <p>(CloudLab places this file in <code>/root/setup/admin-openrc-newcli.sh</code>, approximately?)</p>
               <p>An openrc file will look like this (approximately).</p>
@@ -204,8 +207,8 @@
               if [ -z &quot;$OS_REGION_NAME&quot; ]; then unset OS_REGION_NAME; fi
               export OS_INTERFACE=public
               export OS_IDENTITY_API_VERSION=3</code></pre>
-              <h3 id="atmosphere-configuration">Atmosphere Configuration</h3>
-              <h4 id="add-a-new-provider">Add a New Provider</h4>
+              <h2 id="atmosphere-configuration">Atmosphere Configuration</h2>
+              <h4 id="add-a-new-provider">Add a New Provider *</h4>
               <p>Build some JSON to feed to the add_new_provider.py script. Replace the boilerplate variables here with information from the openrc file and your desired configuration:</p>
               <pre><code>{
                 &quot;admin&quot;: {
@@ -285,16 +288,17 @@
                u&#39;public_routers&#39;: u&#39;public_router&#39;,
                u&#39;region_name&#39;: u&#39;RegionOne&#39;}
               Does everything above look correct? [Yes]/No</code></pre>
-              <h4 id="add-user-accounts-to-the-new-cloud">Add User Accounts to the new cloud</h4>
-              <p>From the Atmosphere server:</p>
+              <h4 id="add-user-accounts-to-the-new-cloud">Add User Accounts to the new cloud *</h4>
+              <p>From the Atmosphere server, grant at least one user an identity on your OpenStack cloud:</p>
               <pre><code>source /opt/env/atmo/bin/activate
               cd /opt/dev/atmosphere
               export DJANGO_SETTINGS_MODULE=&#39;atmosphere.settings&#39;
               export PYTHONPATH=&quot;$PWD:$PYTHONPATH&quot;
               # Replace the provider ID to match the provider that you just added
-              # The first provider added to a new OpenStack deployment is typically 4
+              # The first provider added to a new Atmosphere deployment is typically 4
               python scripts/add_new_accounts.py --provider 4 --users cmart</code></pre>
               <h4 id="grant-staffsuperuser-privileges">Grant Staff/Superuser Privileges</h4>
+              <p>This is not strictly part of connecting a cloud provider, but you likely want to grant these privileges to your Atmosphere user account for testing purposes.</p>
               <p>From Atmosphere’s manage.py REPL:</p>
               <pre><code>from core.models import AtmosphereUser
               user = AtmosphereUser.objects.get(username=&quot;myusername&quot;)
@@ -304,7 +308,7 @@
               user.set_password(&quot;changeme123&quot;)
               user.save()</code></pre>
               <p>If you are not using LDAP or mock authentication, you must also un-comment <code>django.contrib.auth.backends.ModelBackend</code> in the <code>AUTHENTICATION_BACKENDS</code> section of atmosphere/settings/local.py. (This should be configured by Clank in the future).</p>
-              <h4 id="choose-an-allocation-strategy">Choose an Allocation Strategy</h4>
+              <h4 id="choose-an-allocation-strategy">Choose an Allocation Strategy *</h4>
               <p>From Julian’s notes, we should generalize this:</p>
               <ul>
               <li>When you go to URL: <a href="https://youratmosphere.cloud/admin/core/allocationstrategy/" class="uri">https://youratmosphere.cloud/admin/core/allocationstrategy/</a></li>
@@ -326,7 +330,7 @@
               <li>And you press the “Save” button</li>
               <li>Then you should see: “The allocation strategy &quot;Provider:4:your-new-cloud Counting:1 Month - Calendar Window Refresh:[<RefreshBehavior: First of the Month>] Rules:[<RulesBehavior: Ignore non-active status>, <RulesBehavior: Multiply by Size CPU>]&quot; was added successfully.”</li>
               </ul>
-              <h4 id="add-openstacks-imagesinstancessizes-to-atmosphere">Add OpenStack’s Images/Instances/Sizes to Atmosphere</h4>
+              <h4 id="add-openstacks-imagesinstancessizes-to-atmosphere">Add OpenStack’s Images/Instances/Sizes to Atmosphere *</h4>
               <p>From your Atmosphere server:</p>
               <pre><code>cd /opt/dev/atmosphere
               . /opt/env/atmo/bin/activate
@@ -338,14 +342,14 @@
               monitor_sizes_for(8)
               monitor_machines_for(8)
               monitor_instances_for(8)  # Only necessary if `nova boot` was done out-of-band</code></pre>
-              <h4 id="update-atmosphere-ansible-hosts-file-and-group_vars">Update atmosphere-ansible hosts file and group_vars</h4>
+              <h4 id="update-atmosphere-ansible-hosts-file-and-group_vars">Update atmosphere-ansible hosts file and group_vars *</h4>
               <p>Ensure that the hostnames of all your VMs are in <code>/opt/dev/atmosphere-ansible/ansible/hosts</code>, e.g.:</p>
               <pre><code>[atmosphere:children]
               atmosphere-mytestcloud
               
               [atmosphere-mytestcloud]
               vm7.mytestcloud.cyverse.org ansible_host=128.196.171.7 ansible_port=22</code></pre>
-              <p>Also ensure that you have appropriate group_vars defined in <code>/opt/dev/atmosphere-ansible/ansible/group/vars/name-of-your-cloud</code>.</p>
+              <p>Also ensure that you have appropriate group_vars defined in <code>/opt/dev/atmosphere-ansible/ansible/group_vars/name-of-your-cloud</code>.</p>
               <h4 id="test-atmosphere">Test Atmosphere!</h4>
               <p>In Atmosphere, try logging into the Troposphere UI as the account you added, selecting an image, and launching an instance.</p>
               </article>
