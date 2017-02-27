@@ -107,6 +107,37 @@ ps auxww | grep 'celery worker' | grep 'imaging' | awk '{print $2}' | xargs kill
 service celeryd start
 ```
 
+
+##### Problem: A MachineRequest has been processed as a "New Application", but we would rather it be "A second version of Application X"
+```
+from core.models import Application, ApplicationVersion, ProviderMachine
+mach = ProviderMachine.objects.get(instance_source__provider__id=4, instance_source__identifier="f77cb286-d5fc-4a3e-b15b-98e5a9dd2a86")
+version = mach.application_version
+move_to_app = Application.objects.get(id=1144) # this ID can be found in the Troposphere GUI when you are "viewing" the image you want to move your version to...
+version.application = move_to_app
+# NOTE: you *must* have a unique combination of 'version name' and 'application ID', so you will likely need to rename one of the versions from the default (1.0) name.
+version.name = "1.2"
+version.save()
+```
+
+##### Problem: A MachineRequest has been processed as "private" but I would like to now make it publicly available.
+Step 1: Update the glance image visibility for each provider
+```
+from core.models import Identity
+from service.driver import get_account_driver
+ident = Identity.objects.filter(provider__id=4).first()
+accounts = get_account_driver(ident.provider)
+glance_img = accounts.get_image("f77cb286-d5fc-4a3e-b15b-98e5a9dd2a86")
+accounts.image_manager.glance.images.update(glance_img['id'], visibility='public')
+```
+Step 2: Update the application from 'private' to 'public':
+```
+from core.models import Application
+app_to_change = Application.objects.get(id=X)
+app_to_change.private = False  # public
+app_to_change.save()
+```
+
 #### Making contact with the Atmosphere Support Team
 
 If the information in this guide was not enough to help you solve the users imaging problem, you will need to contact the Atmosphere Support Team.
