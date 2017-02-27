@@ -341,6 +341,28 @@
               ps auxww | grep &#39;celery worker&#39; | grep &#39;imaging&#39; | awk &#39;{print $2}&#39; | xargs kill -9
               # This will only start the imaging service, which is no longer running.
               service celeryd start</code></pre>
+              <h5 id="problem-a-machinerequest-has-been-processed-as-a-new-application-but-we-would-rather-it-be-a-second-version-of-application-x">Problem: A MachineRequest has been processed as a “New Application”, but we would rather it be “A second version of Application X”</h5>
+              <pre><code>from core.models import Application, ApplicationVersion, ProviderMachine
+              mach = ProviderMachine.objects.get(instance_source__provider__id=4, instance_source__identifier=&quot;f77cb286-d5fc-4a3e-b15b-98e5a9dd2a86&quot;)
+              version = mach.application_version
+              move_to_app = Application.objects.get(id=1144) # this ID can be found in the Troposphere GUI when you are &quot;viewing&quot; the image you want to move your version to...
+              version.application = move_to_app
+              # NOTE: you *must* have a unique combination of &#39;version name&#39; and &#39;application ID&#39;, so you will likely need to rename one of the versions from the default (1.0) name.
+              version.name = &quot;1.2&quot;
+              version.save()</code></pre>
+              <h5 id="problem-a-machinerequest-has-been-processed-as-private-but-i-would-like-to-now-make-it-publicly-available.">Problem: A MachineRequest has been processed as “private” but I would like to now make it publicly available.</h5>
+              <p>Step 1: Update the glance image visibility for each provider</p>
+              <pre><code>from core.models import Identity
+              from service.driver import get_account_driver
+              ident = Identity.objects.filter(provider__id=4).first()
+              accounts = get_account_driver(ident.provider)
+              glance_img = accounts.get_image(&quot;f77cb286-d5fc-4a3e-b15b-98e5a9dd2a86&quot;)
+              accounts.image_manager.glance.images.update(glance_img[&#39;id&#39;], visibility=&#39;public&#39;)</code></pre>
+              <p>Step 2: Update the application from ‘private’ to ‘public’:</p>
+              <pre><code>from core.models import Application
+              app_to_change = Application.objects.get(id=X)
+              app_to_change.private = False  # public
+              app_to_change.save()</code></pre>
               <h4 id="making-contact-with-the-atmosphere-support-team">Making contact with the Atmosphere Support Team</h4>
               <p>If the information in this guide was not enough to help you solve the users imaging problem, you will need to contact the Atmosphere Support Team. To ensure that your end user requests are resolved as quickly as possible, it is highly encouraged that you first colelct the following “Level two triage information”.</p>
               <p>When making contact with Atmosphere support team:</p>
