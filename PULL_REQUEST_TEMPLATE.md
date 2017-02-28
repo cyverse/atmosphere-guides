@@ -4,7 +4,7 @@ Please describe your pull request. If it fixes a bug or resolves a feature reque
 
 ## Checklist before merging Pull Requests
 - [ ] Run makefile to compile your changes into the guide (see "Compiling Docs" in README.md)
-- [ ] Verified that the compiled changes look accurate by viewing the HTML site
+- [ ] Verify that the compiled changes look accurate by viewing the HTML site
 - [ ] If applicable, [Example link to the PR](https://example.test/doc#new_section) to give context to the documentation
 - [ ] Reviewed and approved by at least one other contributor.
 
