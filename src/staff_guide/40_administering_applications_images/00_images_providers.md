@@ -8,6 +8,8 @@ This script will create image objects on the new provider, populate image data a
 
 Example usage:
 ```
+export PYTHONPATH=/opt/dev/atmosphere:$PYTHONPATH
+export DJANGO_SETTINGS_MODULE=atmosphere.settings
 source /opt/env/atmo/bin/activate
 /opt/dev/atmosphere/scripts/application_to_provider.py 1378 7 --source-provider-id 4 --ignore-missing-owner --ignore-missing-members
 ```
