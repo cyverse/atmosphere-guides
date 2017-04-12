@@ -2,7 +2,7 @@
 
 This is a collection of OpenStack troubleshooting tips. These are not Atmosphere(1)-specific but may still be useful to operators.
 
-## How to Connect to Instance Console Using Desktop SPICE client
+## Connect to Instance Console Using Desktop SPICE client
 
 You may want to do this if the SPICE HTML5 client in Horizon is not responding to keyboard input, not refreshing the display, or throwing errors in the text box underneath the video console (e.g. [this behavior](https://forum.opennebula.org/t/4-11-spice-is-not-refreshing/336)). Instead, you can use a GTK client which may not exhibit these bugs.
 
@@ -27,7 +27,7 @@ Here we are using an OpenStack cloud deployed using OpenStack-Ansible, so the pr
 
 These instructions were tested using the `spicy` client included with the `spice-client-gtk` APT package. With SSH port forwarding, you can point your local SPICE client to localhost on port 5901; the connection will be forwarded to 172.29.236.147:5900 on the compute host. A graphical console session should be obtained which accepts keyboard input, ctrl+alt+del, etc.
 
-## How to Inspect the Filesystem of a Running Instance with Broken Networking
+## Inspect the Filesystem of a Running Instance with Broken Networking
 
 To inspect filesystem of an instance that will not accept SSH connections or a console session, you can create a snapshot (image) of that instance, convert that image to a volume, and then attach that volume to another instance.
 

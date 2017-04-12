@@ -35,8 +35,8 @@
                       <h3> TABLE OF CONTENTS </h3>
                       <ul>
                       <li><a href="#openstack-troubleshooting-guide">OpenStack Troubleshooting Guide</a><ul>
-                      <li><a href="#how-to-connect-to-instance-console-using-desktop-spice-client">How to Connect to Instance Console Using Desktop SPICE client</a></li>
-                      <li><a href="#how-to-inspect-the-filesystem-of-a-running-instance-with-broken-networking">How to Inspect the Filesystem of a Running Instance with Broken Networking</a></li>
+                      <li><a href="#connect-to-instance-console-using-desktop-spice-client">Connect to Instance Console Using Desktop SPICE client</a></li>
+                      <li><a href="#inspect-the-filesystem-of-a-running-instance-with-broken-networking">Inspect the Filesystem of a Running Instance with Broken Networking</a></li>
                       </ul></li>
                       </ul>
                   </aside>
@@ -44,7 +44,7 @@
               <article>
               <h1 id="openstack-troubleshooting-guide">OpenStack Troubleshooting Guide</h1>
               <p>This is a collection of OpenStack troubleshooting tips. These are not Atmosphere(1)-specific but may still be useful to operators.</p>
-              <h2 id="how-to-connect-to-instance-console-using-desktop-spice-client">How to Connect to Instance Console Using Desktop SPICE client</h2>
+              <h2 id="connect-to-instance-console-using-desktop-spice-client">Connect to Instance Console Using Desktop SPICE client</h2>
               <p>You may want to do this if the SPICE HTML5 client in Horizon is not responding to keyboard input, not refreshing the display, or throwing errors in the text box underneath the video console (e.g. <a href="https://forum.opennebula.org/t/4-11-spice-is-not-refreshing/336">this behavior</a>). Instead, you can use a GTK client which may not exhibit these bugs.</p>
               <p>First, determine the compute host your instance is running on – Horizon shows you this, or ask the OpenStack CLI <code>openstack server-show my-instance-uuid</code>.</p>
               <p>Then, SSH to that compute host and look for listening SPICE ports (typically 5900+). Each will be associated with a qemu process. Look for the process containing a <code>-uuid</code> argument that matches your instance ID, and read its <code>-spice</code> argument – here it is <code>port=5900,addr=172.29.236.147</code>. (I have snipped the very long argument list.)</p>
@@ -59,7 +59,7 @@
               <p>Here we are using an OpenStack cloud deployed using OpenStack-Ansible, so the process is only listening on the internal management network. We can access this network by creating an SSH connection to the compute host with port forwarding configured:</p>
               <p><code>ssh -p 1657 -L 5901:172.29.236.147:5900 root@marana-17.cyverse.org</code></p>
               <p>These instructions were tested using the <code>spicy</code> client included with the <code>spice-client-gtk</code> APT package. With SSH port forwarding, you can point your local SPICE client to localhost on port 5901; the connection will be forwarded to 172.29.236.147:5900 on the compute host. A graphical console session should be obtained which accepts keyboard input, ctrl+alt+del, etc.</p>
-              <h2 id="how-to-inspect-the-filesystem-of-a-running-instance-with-broken-networking">How to Inspect the Filesystem of a Running Instance with Broken Networking</h2>
+              <h2 id="inspect-the-filesystem-of-a-running-instance-with-broken-networking">Inspect the Filesystem of a Running Instance with Broken Networking</h2>
               <p>To inspect filesystem of an instance that will not accept SSH connections or a console session, you can create a snapshot (image) of that instance, convert that image to a volume, and then attach that volume to another instance.</p>
               <ul>
               <li>Create a snapshot of instance using OpenStack CLI or Horizon UI
