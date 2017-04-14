@@ -37,6 +37,7 @@
                       <li><a href="#openstack-troubleshooting-guide">OpenStack Troubleshooting Guide</a><ul>
                       <li><a href="#connect-to-instance-console-using-desktop-spice-client">Connect to Instance Console Using Desktop SPICE client</a></li>
                       <li><a href="#inspect-the-filesystem-of-a-running-instance-with-broken-networking">Inspect the Filesystem of a Running Instance with Broken Networking</a></li>
+                      <li><a href="#increase-the-size-of-a-base-cloud-image">Increase the size of a base cloud image</a></li>
                       </ul></li>
                       </ul>
                   </aside>
@@ -74,6 +75,12 @@
               <p><code>*</code> Volume creation may fail and you see in cinder-volume.log (perhaps on your cinder storage server(s)):</p>
               <pre><code>ImageUnacceptable: Image 0a23ea76-d661-4483-a562-cba0a3f58a21 is unacceptable: Image virtual size is 20GB and doesn&#39;t fit in a volume of size 10GB.</code></pre>
               <p>https://bugs.launchpad.net/cinder/+bug/1599147 This is fixed but not yet in current stable releases of OpenStack (as of April 2017). Until then, you must look for this error and then specify a larger size when running <code>openstack volume create</code>.</p>
+              <h2 id="increase-the-size-of-a-base-cloud-image">Increase the size of a base cloud image</h2>
+              <p>If your flavors/sizes in OpenStack do not have root disks, then you may find yourself restricted by the size of cloud image stored in Glance. If you try to install a GUI or other large software packages then you may quickly run out of disk space.</p>
+              <p>qcow2 image files (possibly also raw image files) can be resized before they are uploaded to glance using the <code>qemu-img</code> command-line tool:</p>
+              <p><code>qemu-img resize xenial-server-cloudimg-amd64-disk1.img +5GB</code></p>
+              <p>This will result in more space available on the root filesystem of instances launched from the image.</p>
+              <p>(When you increase the size of a compressed qcow2 image using <code>qemu-img resize</code>, it may not actually increase the size of the compressed image file.)</p>
               </article>
             </div> <!-- #main -->
         </div> <!-- #main-container -->

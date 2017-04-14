@@ -69,3 +69,15 @@ ImageUnacceptable: Image 0a23ea76-d661-4483-a562-cba0a3f58a21 is unacceptable: I
 
 https://bugs.launchpad.net/cinder/+bug/1599147
 This is fixed but not yet in current stable releases of OpenStack (as of April 2017). Until then, you must look for this error and then specify a larger size when running `openstack volume create`.
+
+## Increase the size of a base cloud image
+
+If your flavors/sizes in OpenStack do not have root disks, then you may find yourself restricted by the size of cloud image stored in Glance. If you try to install a GUI or other large software packages then you may quickly run out of disk space.
+
+qcow2 image files (possibly also raw image files) can be resized before they are uploaded to glance using the `qemu-img` command-line tool:
+
+`qemu-img resize xenial-server-cloudimg-amd64-disk1.img +5GB`
+
+This will result in more space available on the root filesystem of instances launched from the image.
+
+(When you increase the size of a compressed qcow2 image using `qemu-img resize`, it may not actually increase the size of the compressed image file.)
