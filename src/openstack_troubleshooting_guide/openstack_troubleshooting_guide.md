@@ -2,6 +2,13 @@
 
 This is a collection of OpenStack troubleshooting tips. These are not Atmosphere(1)-specific but may still be useful to operators.
 
+## Launch Instance on Specific Compute Host
+
+You may want to launch an instance on a specific compute host in order to troubleshoot an issue, or change the configuration of nova-compute service on one compute host, and test it.
+
+See this doc from the OpenStack Administrator Guide:
+[https://docs.openstack.org/admin-guide/cli-nova-specify-host.html](https://docs.openstack.org/admin-guide/cli-nova-specify-host.html)
+
 ## Connect to Instance Console Using Desktop SPICE client
 
 You may want to do this if the SPICE HTML5 client in Horizon is not responding to keyboard input, not refreshing the display, or throwing errors in the text box underneath the video console (e.g. [this behavior](https://forum.opennebula.org/t/4-11-spice-is-not-refreshing/336)). Instead, you can use a GTK client which may not exhibit these bugs.

@@ -35,6 +35,7 @@
                       <h3> TABLE OF CONTENTS </h3>
                       <ul>
                       <li><a href="#openstack-troubleshooting-guide">OpenStack Troubleshooting Guide</a><ul>
+                      <li><a href="#launch-instance-on-specific-compute-host">Launch Instance on Specific Compute Host</a></li>
                       <li><a href="#connect-to-instance-console-using-desktop-spice-client">Connect to Instance Console Using Desktop SPICE client</a></li>
                       <li><a href="#inspect-the-filesystem-of-a-running-instance-with-broken-networking">Inspect the Filesystem of a Running Instance with Broken Networking</a></li>
                       <li><a href="#increase-the-size-of-a-base-cloud-image">Increase the size of a base cloud image</a></li>
@@ -45,6 +46,9 @@
               <article>
               <h1 id="openstack-troubleshooting-guide">OpenStack Troubleshooting Guide</h1>
               <p>This is a collection of OpenStack troubleshooting tips. These are not Atmosphere(1)-specific but may still be useful to operators.</p>
+              <h2 id="launch-instance-on-specific-compute-host">Launch Instance on Specific Compute Host</h2>
+              <p>You may want to launch an instance on a specific compute host in order to troubleshoot an issue, or change the configuration of nova-compute service on one compute host, and test it.</p>
+              <p>See this doc from the OpenStack Administrator Guide: <a href="https://docs.openstack.org/admin-guide/cli-nova-specify-host.html" class="uri">https://docs.openstack.org/admin-guide/cli-nova-specify-host.html</a></p>
               <h2 id="connect-to-instance-console-using-desktop-spice-client">Connect to Instance Console Using Desktop SPICE client</h2>
               <p>You may want to do this if the SPICE HTML5 client in Horizon is not responding to keyboard input, not refreshing the display, or throwing errors in the text box underneath the video console (e.g. <a href="https://forum.opennebula.org/t/4-11-spice-is-not-refreshing/336">this behavior</a>). Instead, you can use a GTK client which may not exhibit these bugs.</p>
               <p>First, determine the compute host your instance is running on – Horizon shows you this, or ask the OpenStack CLI <code>openstack server-show my-instance-uuid</code>.</p>
