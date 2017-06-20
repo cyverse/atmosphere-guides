@@ -2,14 +2,16 @@
 
 This is a collection of OpenStack troubleshooting tips. These are not Atmosphere(1)-specific but may still be useful to operators.
 
-## Launch Instance on Specific Compute Host
+## Instance Troubleshooting
+
+### Launch Instance on Specific Compute Host
 
 You may want to launch an instance on a specific compute host in order to troubleshoot an issue, or change the configuration of nova-compute service on one compute host, and test it.
 
 See this doc from the OpenStack Administrator Guide:
 [https://docs.openstack.org/admin-guide/cli-nova-specify-host.html](https://docs.openstack.org/admin-guide/cli-nova-specify-host.html)
 
-## Connect to Instance Console Using Desktop SPICE client
+### Connect to Instance Console Using Desktop SPICE client
 
 You may want to do this if the SPICE HTML5 client in Horizon is not responding to keyboard input, not refreshing the display, or throwing errors in the text box underneath the video console (e.g. [this behavior](https://forum.opennebula.org/t/4-11-spice-is-not-refreshing/336)). Instead, you can use a GTK client which may not exhibit these bugs.
 
@@ -34,7 +36,7 @@ Here we are using an OpenStack cloud deployed using OpenStack-Ansible, so the pr
 
 These instructions were tested using the `spicy` client included with the `spice-client-gtk` APT package. With SSH port forwarding, you can point your local SPICE client to localhost on port 5901; the connection will be forwarded to 172.29.236.147:5900 on the compute host. A graphical console session should be obtained which accepts keyboard input, ctrl+alt+del, etc.
 
-## Inspect the Filesystem of a Running Instance with Broken Networking
+### Inspect the Filesystem of a Running Instance with Broken Networking
 
 To inspect filesystem of an instance that will not accept SSH connections or a console session, you can create a snapshot (image) of that instance, convert that image to a volume, and then attach that volume to another instance.
 
@@ -77,7 +79,9 @@ ImageUnacceptable: Image 0a23ea76-d661-4483-a562-cba0a3f58a21 is unacceptable: I
 https://bugs.launchpad.net/cinder/+bug/1599147
 This is fixed but not yet in current stable releases of OpenStack (as of April 2017). Until then, you must look for this error and then specify a larger size when running `openstack volume create`.
 
-## Increase the size of a base cloud image
+## Image Troubleshooting
+
+### Increase the size of a base cloud image
 
 If your flavors/sizes in OpenStack do not have root disks, then you may find yourself restricted by the size of cloud image stored in Glance. If you try to install a GUI or other large software packages then you may quickly run out of disk space.
 
@@ -88,3 +92,42 @@ qcow2 image files (possibly also raw image files) can be resized before they are
 This will result in more space available on the root filesystem of instances launched from the image.
 
 (When you increase the size of a compressed qcow2 image using `qemu-img resize`, it may not actually increase the size of the compressed image file.)
+
+### Cannot re-use Glance image UUID? Purge it from Database
+
+atmosphere(1) explicitly sets UUIDs for Glance images, as some deployers wish to maintain consistent matching UUIDs for the same image across multiple OpenStack providers. At some point you may wish to delete a Glance image and re-create it (perhaps so you can upload different image data).
+
+This exposes an issue with Glance: the record of a Glance image (_including its UUID_) persists in the Glance database after the image is deleted, and Glance will not allow you to create a new image with the same UUID as an existing record. (Incidentally, this behavior is [intended](https://bugs.launchpad.net/glance/+bug/1176978) by the Glance developers.)
+
+```
+MariaDB [glance]> select id, name, status from images where id = '948cf114-dfd7-4e2d-b84f-9bf6dab47aa3';
++--------------------------------------+--------------------------------+---------+
+| id                                   | name                           | status  |
++--------------------------------------+--------------------------------+---------+
+| 948cf114-dfd7-4e2d-b84f-9bf6dab47aa3 | Trinotate_RNAseq_annotation_v3 | deleted |
++--------------------------------------+--------------------------------+---------+
+```
+
+Fortunately, there is a Glance [db purge utility](https://specs.openstack.org/openstack/glance-specs/specs/mitaka/implemented/database-purge.html) which will remove records from all deleted images, so we can re-use their UUIDs.
+
+First, get a shell to your Glance server (or container).
+
+If you have just deleted your image (less than 1 day ago), you must comment out the following two lines in glance/cmd/manage.py (as of OpenStack Newton release):
+
+```
+# diff glance/cmd/manage.py.bak.20170620 glance/cmd/manage.py
+160,161c160,161
+<         if age_in_days <= 0:
+<             sys.exit(_("Must supply a positive, non-zero value for age."))
+---
+>         # if age_in_days <= 0:
+>         #     sys.exit(_("Must supply a positive, non-zero value for age."))
+```
+
+Now, run the purge utility. If Glance is installed in a virtual environment, activate it first (e.g. `source /openstack/venvs/glance-14.0.4/bin/activate`), then run the following:
+
+```
+# glance-manage db purge --age_in_days 0
+```
+
+You should now be able to re-create a Glance image with the same UUID as a previous image.

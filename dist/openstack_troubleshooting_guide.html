@@ -35,10 +35,15 @@
                       <h3> TABLE OF CONTENTS </h3>
                       <ul>
                       <li><a href="#openstack-troubleshooting-guide">OpenStack Troubleshooting Guide</a><ul>
+                      <li><a href="#instance-troubleshooting">Instance Troubleshooting</a><ul>
                       <li><a href="#launch-instance-on-specific-compute-host">Launch Instance on Specific Compute Host</a></li>
                       <li><a href="#connect-to-instance-console-using-desktop-spice-client">Connect to Instance Console Using Desktop SPICE client</a></li>
                       <li><a href="#inspect-the-filesystem-of-a-running-instance-with-broken-networking">Inspect the Filesystem of a Running Instance with Broken Networking</a></li>
+                      </ul></li>
+                      <li><a href="#image-troubleshooting">Image Troubleshooting</a><ul>
                       <li><a href="#increase-the-size-of-a-base-cloud-image">Increase the size of a base cloud image</a></li>
+                      <li><a href="#cannot-re-use-glance-image-uuid-purge-it-from-database">Cannot re-use Glance image UUID? Purge it from Database</a></li>
+                      </ul></li>
                       </ul></li>
                       </ul>
                   </aside>
@@ -46,10 +51,11 @@
               <article>
               <h1 id="openstack-troubleshooting-guide">OpenStack Troubleshooting Guide</h1>
               <p>This is a collection of OpenStack troubleshooting tips. These are not Atmosphere(1)-specific but may still be useful to operators.</p>
-              <h2 id="launch-instance-on-specific-compute-host">Launch Instance on Specific Compute Host</h2>
+              <h2 id="instance-troubleshooting">Instance Troubleshooting</h2>
+              <h3 id="launch-instance-on-specific-compute-host">Launch Instance on Specific Compute Host</h3>
               <p>You may want to launch an instance on a specific compute host in order to troubleshoot an issue, or change the configuration of nova-compute service on one compute host, and test it.</p>
               <p>See this doc from the OpenStack Administrator Guide: <a href="https://docs.openstack.org/admin-guide/cli-nova-specify-host.html" class="uri">https://docs.openstack.org/admin-guide/cli-nova-specify-host.html</a></p>
-              <h2 id="connect-to-instance-console-using-desktop-spice-client">Connect to Instance Console Using Desktop SPICE client</h2>
+              <h3 id="connect-to-instance-console-using-desktop-spice-client">Connect to Instance Console Using Desktop SPICE client</h3>
               <p>You may want to do this if the SPICE HTML5 client in Horizon is not responding to keyboard input, not refreshing the display, or throwing errors in the text box underneath the video console (e.g. <a href="https://forum.opennebula.org/t/4-11-spice-is-not-refreshing/336">this behavior</a>). Instead, you can use a GTK client which may not exhibit these bugs.</p>
               <p>First, determine the compute host your instance is running on – Horizon shows you this, or ask the OpenStack CLI <code>openstack server-show my-instance-uuid</code>.</p>
               <p>Then, SSH to that compute host and look for listening SPICE ports (typically 5900+). Each will be associated with a qemu process. Look for the process containing a <code>-uuid</code> argument that matches your instance ID, and read its <code>-spice</code> argument – here it is <code>port=5900,addr=172.29.236.147</code>. (I have snipped the very long argument list.)</p>
@@ -64,7 +70,7 @@
               <p>Here we are using an OpenStack cloud deployed using OpenStack-Ansible, so the process is only listening on the internal management network. We can access this network by creating an SSH connection to the compute host with port forwarding configured:</p>
               <p><code>ssh -p 1657 -L 5901:172.29.236.147:5900 root@marana-17.cyverse.org</code></p>
               <p>These instructions were tested using the <code>spicy</code> client included with the <code>spice-client-gtk</code> APT package. With SSH port forwarding, you can point your local SPICE client to localhost on port 5901; the connection will be forwarded to 172.29.236.147:5900 on the compute host. A graphical console session should be obtained which accepts keyboard input, ctrl+alt+del, etc.</p>
-              <h2 id="inspect-the-filesystem-of-a-running-instance-with-broken-networking">Inspect the Filesystem of a Running Instance with Broken Networking</h2>
+              <h3 id="inspect-the-filesystem-of-a-running-instance-with-broken-networking">Inspect the Filesystem of a Running Instance with Broken Networking</h3>
               <p>To inspect filesystem of an instance that will not accept SSH connections or a console session, you can create a snapshot (image) of that instance, convert that image to a volume, and then attach that volume to another instance.</p>
               <ul>
               <li>Create a snapshot of instance using OpenStack CLI or Horizon UI
@@ -79,12 +85,35 @@
               <p><code>*</code> Volume creation may fail and you see in cinder-volume.log (perhaps on your cinder storage server(s)):</p>
               <pre><code>ImageUnacceptable: Image 0a23ea76-d661-4483-a562-cba0a3f58a21 is unacceptable: Image virtual size is 20GB and doesn&#39;t fit in a volume of size 10GB.</code></pre>
               <p>https://bugs.launchpad.net/cinder/+bug/1599147 This is fixed but not yet in current stable releases of OpenStack (as of April 2017). Until then, you must look for this error and then specify a larger size when running <code>openstack volume create</code>.</p>
-              <h2 id="increase-the-size-of-a-base-cloud-image">Increase the size of a base cloud image</h2>
+              <h2 id="image-troubleshooting">Image Troubleshooting</h2>
+              <h3 id="increase-the-size-of-a-base-cloud-image">Increase the size of a base cloud image</h3>
               <p>If your flavors/sizes in OpenStack do not have root disks, then you may find yourself restricted by the size of cloud image stored in Glance. If you try to install a GUI or other large software packages then you may quickly run out of disk space.</p>
               <p>qcow2 image files (possibly also raw image files) can be resized before they are uploaded to glance using the <code>qemu-img</code> command-line tool:</p>
               <p><code>qemu-img resize xenial-server-cloudimg-amd64-disk1.img +5GB</code></p>
               <p>This will result in more space available on the root filesystem of instances launched from the image.</p>
               <p>(When you increase the size of a compressed qcow2 image using <code>qemu-img resize</code>, it may not actually increase the size of the compressed image file.)</p>
+              <h3 id="cannot-re-use-glance-image-uuid-purge-it-from-database">Cannot re-use Glance image UUID? Purge it from Database</h3>
+              <p>atmosphere(1) explicitly sets UUIDs for Glance images, as some deployers wish to maintain consistent matching UUIDs for the same image across multiple OpenStack providers. At some point you may wish to delete a Glance image and re-create it (perhaps so you can upload different image data).</p>
+              <p>This exposes an issue with Glance: the record of a Glance image (<em>including its UUID</em>) persists in the Glance database after the image is deleted, and Glance will not allow you to create a new image with the same UUID as an existing record. (Incidentally, this behavior is <a href="https://bugs.launchpad.net/glance/+bug/1176978">intended</a> by the Glance developers.)</p>
+              <pre><code>MariaDB [glance]&gt; select id, name, status from images where id = &#39;948cf114-dfd7-4e2d-b84f-9bf6dab47aa3&#39;;
+              +--------------------------------------+--------------------------------+---------+
+              | id                                   | name                           | status  |
+              +--------------------------------------+--------------------------------+---------+
+              | 948cf114-dfd7-4e2d-b84f-9bf6dab47aa3 | Trinotate_RNAseq_annotation_v3 | deleted |
+              +--------------------------------------+--------------------------------+---------+</code></pre>
+              <p>Fortunately, there is a Glance <a href="https://specs.openstack.org/openstack/glance-specs/specs/mitaka/implemented/database-purge.html">db purge utility</a> which will remove records from all deleted images, so we can re-use their UUIDs.</p>
+              <p>First, get a shell to your Glance server (or container).</p>
+              <p>If you have just deleted your image (less than 1 day ago), you must comment out the following two lines in glance/cmd/manage.py (as of OpenStack Newton release):</p>
+              <pre><code># diff glance/cmd/manage.py.bak.20170620 glance/cmd/manage.py
+              160,161c160,161
+              &lt;         if age_in_days &lt;= 0:
+              &lt;             sys.exit(_(&quot;Must supply a positive, non-zero value for age.&quot;))
+              ---
+              &gt;         # if age_in_days &lt;= 0:
+              &gt;         #     sys.exit(_(&quot;Must supply a positive, non-zero value for age.&quot;))</code></pre>
+              <p>Now, run the purge utility. If Glance is installed in a virtual environment, activate it first (e.g. <code>source /openstack/venvs/glance-14.0.4/bin/activate</code>), then run the following:</p>
+              <pre><code># glance-manage db purge --age_in_days 0</code></pre>
+              <p>You should now be able to re-create a Glance image with the same UUID as a previous image.</p>
               </article>
             </div> <!-- #main -->
         </div> <!-- #main-container -->
