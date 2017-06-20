@@ -18,7 +18,7 @@ Note: You can also emulate from "Admin > Manage Users".
 1. Click on the "Admin" tab within the header
 1. Click on "Manage Users"
 1. Search by _username_
-1. Click on the "sunglasses" icon next to _username_
+1. Click on the "user" icon to the left of _username_
 
 ![](./media/emulate-from-admin-tab.png)
 
