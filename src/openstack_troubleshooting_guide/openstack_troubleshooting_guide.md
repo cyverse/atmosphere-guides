@@ -112,7 +112,7 @@ Fortunately, there is a Glance [db purge utility](https://specs.openstack.org/op
 
 First, get a shell to your Glance server (or container).
 
-If you have just deleted your image (less than 1 day ago), you must comment out the following two lines in glance/cmd/manage.py (as of OpenStack Newton release):
+If you are using OpenStack Newton release or older, and you deleted your image less than 1 day ago, you must comment out the following two lines in glance/cmd/manage.py (resolved as of Ocata release):
 
 ```
 # diff glance/cmd/manage.py.bak.20170620 glance/cmd/manage.py
