@@ -103,7 +103,7 @@
               +--------------------------------------+--------------------------------+---------+</code></pre>
               <p>Fortunately, there is a Glance <a href="https://specs.openstack.org/openstack/glance-specs/specs/mitaka/implemented/database-purge.html">db purge utility</a> which will remove records from all deleted images, so we can re-use their UUIDs.</p>
               <p>First, get a shell to your Glance server (or container).</p>
-              <p>If you have just deleted your image (less than 1 day ago), you must comment out the following two lines in glance/cmd/manage.py (as of OpenStack Newton release):</p>
+              <p>If you are using OpenStack Newton release or older, and you deleted your image less than 1 day ago, you must comment out the following two lines in glance/cmd/manage.py (resolved as of Ocata release):</p>
               <pre><code># diff glance/cmd/manage.py.bak.20170620 glance/cmd/manage.py
               160,161c160,161
               &lt;         if age_in_days &lt;= 0:
