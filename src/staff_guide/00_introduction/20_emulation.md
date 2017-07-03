@@ -13,13 +13,24 @@ Next, navigate to this page in your browser: `https://<your_url>/application/emu
 After a series of redirections, you should see that the username in the Top Right corner has changed to the user you are intending to emulate.
 If you are unable to emulate a user after several attempts, ensure that the username exists and is spelled properly.
 
+Note: You can also emulate from "Admin > Manage Users".
+
+1. Click on the "Admin" tab within the header
+1. Click on "Manage Users"
+1. Search by _username_
+1. Click on the "user" icon to the left of _username_
+
+![](./media/emulate-from-admin-tab.png)
+
+
 ##### Unemulate a user:
 <a name="staff_no_emulate_ui"></a>
 When done emulating a user, there are several options to 'disconnect' from the session:
 
 1. navigate to `https://<your_url>/application/emulate/<your_username>`
 1. navigate to `https://<your_url>/application/emulate` (NOTE: no username after `emulate`.)
-1. You can also **logout** and upon the next login you should see your own account again.
+
+Or, you can also **logout** and upon the next login you should see your own account again.
 
 How to emulate a user on Troposphere via the URL `https://<your_url>/application/emulate/<username>`:  
 ![Troposphere Emulation](./media/staff_emulate_application.gif)
