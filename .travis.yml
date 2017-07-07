@@ -2,7 +2,7 @@ language: python
 python:
 - '2.7'
 install:
-- apt-get install pandoc
+- sudo apt-get install pandoc
 script:
 - make
 deploy:
