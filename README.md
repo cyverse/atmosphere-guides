@@ -5,6 +5,36 @@ This repo contains multiple guides that are hosted on Github Pages:
 
 ## How to Contribute
 
+### How to Install
+
+
+#### Mac OS X
+
+You can install the released `.dmg` built as part of Pandoc releases. You can find them on the [release page](https://github.com/jgm/pandoc/releases/latest).
+
+Or, you can install via [Homebrew](https://brew.sh/):
+
+```
+brew install pandoc
+```
+
+More details are available on the Pandoc [installing page](http://pandoc.org/installing.html#mac-os-x).
+
+#### Linux
+
+For Linux, the suggestion is to try using the distributions package manager.
+
+The Atmosphere development team favors Ubuntu, here is an example of installed within that distribution:
+
+```
+$ sudo apt-get install pandoc
+```
+
+This will install `pandoc` and `pandoc-data`.
+
+More details are available on the Pandoc [installing page](http://pandoc.org/installing.html#linux).
+
+
 ### How to Write Docs
 Guides are written in Markdown. You may want to use a tool to render your Markdown. [livedown](https://github.com/shime/livedown) works with a few editors to hot-load your changes. The [atom](https://atom.io/) editor also has built-in markdown preview.
 
