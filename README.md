@@ -1,4 +1,4 @@
-# Atmosphere Guides
+# Atmosphere Guides [![Build Status](https://travis-ci.org/cyverse/atmosphere-guides.svg?branch=master)](https://travis-ci.org/cyverse/atmosphere-guides)
 
 This repo contains multiple guides that are hosted on Github Pages:
 [https://cyverse.github.io/atmosphere-guides](https://cyverse.github.io/atmosphere-guides).
