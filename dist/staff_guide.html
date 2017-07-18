@@ -205,13 +205,24 @@
               <p><a name="staff_emulate_ui"></a></p>
               <p><strong>To emulate a user, you must first log in to Troposphere as a staff user.</strong> First, login normally as the staff user. Next, navigate to this page in your browser: <code>https://&lt;your_url&gt;/application/emulate/&lt;username&gt;</code></p>
               <p>After a series of redirections, you should see that the username in the Top Right corner has changed to the user you are intending to emulate. If you are unable to emulate a user after several attempts, ensure that the username exists and is spelled properly.</p>
+              <p>Note: You can also emulate from “Admin &gt; Manage Users”.</p>
+              <ol style="list-style-type: decimal">
+              <li>Click on the “Admin” tab within the header</li>
+              <li>Click on “Manage Users”</li>
+              <li>Search by <em>username</em></li>
+              <li>Click on the “user” icon to the left of <em>username</em></li>
+              </ol>
+              <div class="figure">
+              <img src="./media/emulate-from-admin-tab.png" />
+              
+              </div>
               <h5 id="unemulate-a-user">Unemulate a user:</h5>
               <p><a name="staff_no_emulate_ui"></a> When done emulating a user, there are several options to ‘disconnect’ from the session:</p>
               <ol style="list-style-type: decimal">
               <li>navigate to <code>https://&lt;your_url&gt;/application/emulate/&lt;your_username&gt;</code></li>
               <li>navigate to <code>https://&lt;your_url&gt;/application/emulate</code> (NOTE: no username after <code>emulate</code>.)</li>
-              <li>You can also <strong>logout</strong> and upon the next login you should see your own account again.</li>
               </ol>
+              <p>Or, you can also <strong>logout</strong> and upon the next login you should see your own account again.</p>
               <p>How to emulate a user on Troposphere via the URL <code>https://&lt;your_url&gt;/application/emulate/&lt;username&gt;</code>:<br />
               <img src="./media/staff_emulate_application.gif" alt="Troposphere Emulation" /></p>
               <h3 id="emulating-a-user-through-the-api">Emulating a user through the API</h3>
