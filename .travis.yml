@@ -1,0 +1,21 @@
+dist: trusty
+sudo: required
+language: python
+python:
+- '2.7'
+install:
+- sudo apt-get install pandoc
+script:
+- make
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: ./dist
+  name: CyVerse Deploy
+  email: cyverse-deploy@cyverse.org
+  on:
+    branch: master
+env:
+  global:
+    secure: OGsqXnFqsYsQ1socMtEOcQFjmlL5/v9dnPpqAwDzMRjZYFL9Wy71Cnel9oY0NoV6UZxHrtPRj1Syo5p0hrsat01NZBQpGEknnjC2zI/n+ZXRhJO3hlMi8qGxl/Lkg2wha6TSeVmFuR29CjYL5KCUGQA9ssBQ1l3TCxhCorR/FPWPnyWXKUdIMxK9lPYW73+F9nQWOui3bbHZrtpavJSpObbTPRBtZzx95dGgQcPxZyK4lT8DZHz/jXQzFBFwhj9O+VkBsq3hvFruqP9J7KfAjkmNPQP8g6RXtqo/ONnSnoBifYjkkSyuPDu3RHoof1CoA4asl7VNE1CDwjWDlQiQ+AacWkxat43Fe1zQWKDoGVVIJuF3rMIxi0o8ugNRjTwRrAPwYf7wtzmkyYvZ/ZVJv3wjvkllX5MLp2Gmj1xRZl95W19yAUXJ9plXe7NZtlsFlW/mylPQYFLsIV87+fU8871EBvNmtA/PLVknvg6nsQNTPcn/WC8l88b9njLUIOYKDkK8KZJGGwsXXmzFdrZ90maUF6kYbrAmvfeWZHaIkEnCjk88R0hJ+w8cA0/gf5vi16RQ/mK7pxadhnPPtvlWSUNVsggxrEGqHm8HhUoLRsNJJIdGgo8w3fwSEpuW5mwsS1z4JSGte7r3foEIZQWPrA3S59RJoF6oRXWLwhSYPU8=

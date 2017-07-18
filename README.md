@@ -3,6 +3,7 @@
 This repo contains multiple guides that are hosted on Github Pages:
 [https://cyverse.github.io/atmosphere-guides](https://cyverse.github.io/atmosphere-guides).
 
+
 ## How to Contribute
 
 ### How to Install
@@ -41,8 +42,10 @@ Guides are written in Markdown. You may want to use a tool to render your Markdo
 Here is another tool to make nice GIFs.
 http://recordit.co/
 
+
 ### How to Publish Docs
 After making changes to the Markdown source, you need to compile them to HTML, then push to the gh-pages branch, from which the static HTML is served.
+
 
 #### Compiling Docs
 First, you must have [pandoc](http://pandoc.org/) installed and in your executable path -- see [Installing Pandoc](http://pandoc.org/installing.html).
@@ -53,8 +56,12 @@ Finally, to compile the docs, run `make` from the root of this repository.
 
 See CONTRIBUTING.md for Pandoc-specific details not covered here.
 
+
 #### Pushing to GitHub Pages
-Static HTML is served on [GitHub Pages](https://pages.github.com/) from the `gh-pages` branch of this repository, which contains only the `dist/` folder of the master branch. After pushing changes to master or merging in a pull request, the gh-pages branch must be updated. A maintainer (someone with write access) can do this by running `make gh-pages-commit` from a local copy of this repository.
+Static HTML is served on [GitHub Pages](https://pages.github.com/) from the `gh-pages` branch of this repository, which contains only the `dist/` folder of the master branch. After pushing changes to master or merging in a pull request, the gh-pages branch will be automatically updated by the Travis CI [deployment provider for GitHub Pages](https://docs.travis-ci.com/user/deployment/pages/). 
+
+Note: if a manual push to `gh-pages` is required, a maintainer (someone with write access) can do this by running `make gh-pages-commit` from a local copy of this repository.
+
 
 ### Notice for CyVerse Documenters
 A lot of Atmosphere documentation lives on the [CyVerse Wiki](https://pods.iplantcollaborative.org/wiki/dashboard.action), some in the [Atmosphere Manual](https://pods.iplantcollaborative.org/wiki/display/atmman/Atmosphere+Manual+Table+of+Contents) and some in private spaces. Going forward, documentation should be maintained as follows:
