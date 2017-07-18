@@ -117,6 +117,7 @@
                       </ul></li>
                       <li><a href="#administering-applications-and-images">Administering Applications and Images</a><ul>
                       <li><a href="#migrating-applicationimage-to-a-new-cloud-provider">Migrating Application/Image to a New Cloud Provider</a></li>
+                      <li><a href="#synchronizing-applicationsimages-across-cloud-providers">Synchronizing Applications/Images across Cloud Providers</a></li>
                       </ul></li>
                       </ul></li>
                       </ul>
@@ -464,6 +465,13 @@
               export DJANGO_SETTINGS_MODULE=atmosphere.settings
               source /opt/env/atmo/bin/activate
               /opt/dev/atmosphere/scripts/application_to_provider.py 1378 7 --source-provider-id 4 --ignore-missing-owner --ignore-missing-members</code></pre>
+              <h3 id="synchronizing-applicationsimages-across-cloud-providers">Synchronizing Applications/Images across Cloud Providers</h3>
+              <p><code>application_sync_providers.py</code> is a script which uses <code>application_to_provider</code> to synchronize all Applications (a.k.a. images) from a designated master provider to one or more replica providers. Run <code>./application_sync_providers.py --help</code> for more information on usage.</p>
+              <p>Example usage which synchronizes applications from Provider ID 7 (master) to 4 and 5 (replicas):</p>
+              <pre><code>export PYTHONPATH=/opt/dev/atmosphere:$PYTHONPATH
+              export DJANGO_SETTINGS_MODULE=atmosphere.settings
+              source /opt/env/atmo/bin/activate
+              /opt/dev/atmosphere/scripts/application_sync_providers.py 7 4 5</code></pre>
               </article>
             </div> <!-- #main -->
         </div> <!-- #main-container -->
