@@ -36,6 +36,12 @@
                       <ul>
                       <li><a href="#atmosphere-project-contribution-guide">Atmosphere Project Contribution Guide</a><ul>
                       <li><a href="#what-is-atmosphere">What is Atmosphere?</a></li>
+                      <li><a href="#what-are-the-steps-to-contributing-to-atmospherecore-services">What are the steps to contributing to Atmosphere/Core services?</a><ul>
+                      <li><a href="#the-atmosphere-workflow-for-jira-tickets">The Atmosphere workflow for JIRA tickets</a></li>
+                      <li><a href="#using-github-to-work-on-an-issuebugfeature">Using github to work on an issue/bug/feature</a><ul>
+                      <li><a href="#pull-request-templates">Pull Request Templates</a></li>
+                      </ul></li>
+                      </ul></li>
                       <li><a href="#where-is-atmosphere-deployed">Where is Atmosphere Deployed?</a></li>
                       <li><a href="#resources-and-docs-for-new-contributors">Resources and Docs for New Contributors</a></li>
                       <li><a href="#where-is-the-code">Where is the Code?</a><ul>
@@ -108,6 +114,69 @@
               <li><a href="https://github.com/iPlantCollaborativeOpenSource/atmosphere">Atmosphere</a>(2), the API and back-end component of the above software project</li>
               </ul>
               <p>For clarity, this page will disambiguate all uses of “Atmosphere”.</p>
+              <h2 id="what-are-the-steps-to-contributing-to-atmospherecore-services">What are the steps to contributing to Atmosphere/Core services?</h2>
+              <p>Contribution to core-services products (usually) takes place in two different environments:</p>
+              <ol style="list-style-type: decimal">
+              <li><a href="https://pods.iplantcollaborative.org/jira/secure/Dashboard.jspa">JIRA</a> - This is an external service where we document bugs, issues, and new features to be fixed.</li>
+              <li><a href="https://github.com/cyverse/">Github</a> - This is where our codebase generally resides. See <a href="#where-is-the-code">Where is the code</a> for more details.</li>
+              </ol>
+              <h3 id="the-atmosphere-workflow-for-jira-tickets">The Atmosphere workflow for JIRA tickets</h3>
+              <pre><code>1.  Issues/Bugs/New Features that are found in the wild, during requirements gathering, etc. should be created as &quot;JIRA Tickets&quot; and assigned a **fixVersion** of **Release Backlog** or **Product Backlog**.
+                  1.  **JIRA **Operations**-note:** At this time the form only lets you set **affectedVersion**, which is not quite the same. We should make this easier for specific users (if the workflow allows for it)</code></pre>
+              <ol start="2" style="list-style-type: decimal">
+              <li><strong>JIRA Sprints and the Agile Board</strong>
+              <ol style="list-style-type: decimal">
+              <li><strong>Tickets are assigned</strong> to match with the <strong>Release</strong> and <strong>Sprint </strong>Schedule:</li>
+              <li>Currently, core-services is on a <strong>5 week</strong> release schedule. There are <strong>two 2-week sprints</strong> and a <strong>1-week sprint</strong> <strong>to prepare for and release</strong> the branch to the production servers.</li>
+              <li>JIRA Tickets for both 2-week sprints are regularly assigned at the beginning of each release.
+              <ol style="list-style-type: decimal">
+              <li>During the first sprint after a release, primarily ‘Bug’ tickets will be assigned. This is done to give time for the changes to “settle” on the beta server for a few weeks.</li>
+              <li>During the second sprint, primarily “Improvements and new feature” tickets will be assigned.</li>
+              </ol></li>
+              <li>The third sprint, only one week long, will be split between preparing for deployment and finishing up any lingering tickets that extend past the sprint deadline.</li>
+              </ol></li>
+              <li><strong>The Lifecycle of a ticket</strong>
+              <ol style="list-style-type: decimal">
+              <li><strong>Starting work on a ticket</strong>
+              <ol style="list-style-type: decimal">
+              <li>(If applicable) Tickets will move to <code>**Start Design**</code> and work with the design pipeline to gather requirements (See The Design Pipeline section for more details)</li>
+              <li>Put the ticket into “<strong>Start Progress</strong>” and start writing Code to fix the bug/create the feature. </li>
+              <li>Tests are written for any new bug to verify the failure has been fixed and for any new feature to help with QA. (See the Testing the Code section for more details)</li>
+              <li>Documentation is written (See the Documenting the Code section for more details)</li>
+              </ol></li>
+              <li><strong>Reviewing a ticket</strong>
+              <ol style="list-style-type: decimal">
+              <li>Ensure that the checklist for your PR template is complete before requesting review. (see below for more details)</li>
+              <li>Put the ticket into “<strong>Review</strong>” step and assign to a project lead. (See Reviewing Code section for more details)</li>
+              <li>Upon merge, a project lead will move the ticket to <strong>Resolved</strong> and assigned to QA for final approval/confirmation. Notes should be included that point to the new tests/documentation as appropriate.</li>
+              </ol></li>
+              </ol></li>
+              </ol>
+              <h3 id="using-github-to-work-on-an-issuebugfeature">Using github to work on an issue/bug/feature</h3>
+              <ol style="list-style-type: decimal">
+              <li><strong>Fork the repo you intend to work on</strong>
+              <ol style="list-style-type: decimal">
+              <li>If this is your first time contributing to a core-services repository, you will want to create a new fork.<span style="color: rgb(34,34,34);"> </span>Forking a repository<span style="color: rgb(34,34,34);"> allows you to freely experiment with changes without affecting the original project.</span></li>
+              <li><span style="color: rgb(34,34,34);">Github’s documentation for working with forks is <a href="https://help.github.com/articles/fork-a-repo/">available here</a>.</span></li>
+              </ol></li>
+              <li><strong><span style="color: rgb(34,34,34);">Creating a feature branch</span></strong>
+              <ol style="list-style-type: decimal">
+              <li>Before starting work on a new feature or bugfix, you should create a new branch. Creating branches for your work allows you to isolate your changes when they are ready for others to review. It also gives you the ability to change to another branch, to work on separate fixes or features as necessary.</li>
+              </ol></li>
+              <li><strong>Submitting a Pull Request</strong>
+              <ol style="list-style-type: decimal">
+              <li>It’s a good idea to make pull requests early on. A pull request represents the start of a discussion, and doesn’t necessarily need to be the final, finished submission.</li>
+              <li>It’s also useful to remember that if you have an outstanding pull request then pushing new commits to your GitHub repo will also automatically update the pull requests.</li>
+              <li><strong>Specific to Core-services:</strong> Pull requests will be reviewed <strong>after</strong> the “Check list” in the Pull Request template has been completed, this should include new tests and documentation!</li>
+              <li>GitHub’s documentation for working on pull requests is <a href="https://help.github.com/articles/using-pull-requests">available here</a>.</li>
+              </ol></li>
+              </ol>
+              <h4 id="pull-request-templates">Pull Request Templates</h4>
+              <p>The pull request template used by core-services can be found on the github of Atmosphere or Troposphere in .<strong>/PULL_REQUEST_TEMPLATE</strong></p>
+              <blockquote>
+              <p><span style="color: rgb(255,0,0);"><strong>NOTE:</strong> Proposals for those PR templates can be found here, and can be updated prior to merge: <a href="https://github.com/cyverse/troposphere/pull/536"><span style="color: rgb(255,0,0);">https://github.com/cyverse/troposphere/pull/536</span></a> and <a href="https://github.com/cyverse/atmosphere/pull/250"><span style="color: rgb(255,0,0);">https://github.com/cyverse/atmosphere/pull/250</span></a></span></p>
+              </blockquote>
+              <p>See this article for including a pull request template in your repository: <a href="https://help.github.com/articles/creating-a-pull-request-template-for-your-repository/" class="uri">https://help.github.com/articles/creating-a-pull-request-template-for-your-repository/</a></p>
               <h2 id="where-is-atmosphere-deployed">Where is Atmosphere Deployed?</h2>
               <p>Atmosphere(1) is deployed at CyVerse as Atmosphere(0), but also at several other organizations known by different names:</p>
               <ul>
