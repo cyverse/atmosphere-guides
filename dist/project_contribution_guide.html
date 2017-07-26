@@ -266,7 +266,7 @@
               <p>Users can create a secure shell to their VMs directly over the internet, authenticating either with their Atmosphere(0) credentials or with an SSH keypair. Atmosphere(1) is essentially uninvolved in this workflow, though it provides a way for users to automatically install their public SSH key on new and re-deployed instances.</p>
               <h4 id="web-shell">Web Shell</h4>
               <p>Web Shell gets you a command line session in your browser, launched from the Troposphere UI. Web Shell uses <a href="https://liftoff.github.io/GateOne/About/index.html">Gate One</a>, a web-based terminal emulator. The Gate One server creates an SSH connection to the instance and exposes that shell to the user in a web interface, proxying the SSH traffic. For Atmosphere(0), the GateOne server is known as “bob” / “atmo-proxy”.</p>
-              <p>See <a href="/wiki/display/csmgmt/GateOne+Background">GateOne Background</a> (TODO fix this link once the content is migrated) for detailed design and troubleshooting information.</p>
+              <p>See <a href="./gateone_background.html">GateOne Background</a> for detailed design and troubleshooting information.</p>
               <h4 id="web-desktop">Web Desktop</h4>
               <p>Web Desktop gets you a graphical desktop session in your browser, launched from the Troposphere UI. Web Desktop uses <a href="https://kanaka.github.io/noVNC">NoVNC</a>, a web-based VNC client. This is brokered through webaccess.cyverse.org.</p>
               <p><a href="https://github.com/cyverse/nginx_novnc_auth" class="uri">https://github.com/cyverse/nginx_novnc_auth</a></p>

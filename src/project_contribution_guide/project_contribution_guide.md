@@ -189,7 +189,7 @@ Users can create a secure shell to their VMs directly over the internet, authent
 
 Web Shell gets you a command line session in your browser, launched from the Troposphere UI. Web Shell uses [Gate One](https://liftoff.github.io/GateOne/About/index.html), a web-based terminal emulator. The Gate One server creates an SSH connection to the instance and exposes that shell to the user in a web interface, proxying the SSH traffic. For Atmosphere(0), the GateOne server is known as "bob" / "atmo-proxy".
 
-See [GateOne Background](/wiki/display/csmgmt/GateOne+Background) (TODO fix this link once the content is migrated) for detailed design and troubleshooting information.
+See [GateOne Background](./gateone_background.html) for detailed design and troubleshooting information.
 
 #### Web Desktop
 
