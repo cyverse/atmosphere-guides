@@ -23,8 +23,8 @@ Contribution to core-services products (usually) takes place in two different en
 2. [Github](https://github.com/cyverse/) - This is where our codebase generally resides. See [Where is the code](#where-is-the-code) for more details.
 
 ### The Atmosphere workflow for JIRA tickets
-    1.  Issues/Bugs/New Features that are found in the wild, during requirements gathering, etc. should be created as "JIRA Tickets" and assigned a **fixVersion** of **Release Backlog** or **Product Backlog**.
-        1.  **JIRA **Operations**-note:** At this time the form only lets you set **affectedVersion**, which is not quite the same. We should make this easier for specific users (if the workflow allows for it)
+1.  Issues/Bugs/New Features that are found in the wild, during requirements gathering, etc. should be created as "JIRA Tickets" and assigned a **fixVersion** of **Release Backlog** or **Product Backlog**.
+    1.  **JIRA **Operations**-note:** At this time the form only lets you set **affectedVersion**, which is not quite the same. We should make this easier for specific users (if the workflow allows for it)
 2.  **JIRA Sprints and the Agile Board**
     1.  **Tickets are assigned** to match with the **Release** and **Sprint **Schedule:
     2.  Currently, core-services is on a **5 week** release schedule. There are **two 2-week sprints** and a **1-week sprint** **to prepare for and release** the branch to the production servers.
