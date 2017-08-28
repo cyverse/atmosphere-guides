@@ -154,9 +154,9 @@
               </ul>
               <h3 id="how-do-i-grant-staff-access-to-the-atmosphere-apis-to-user-x">How do I grant Staff access to the Atmosphere APIs to User X?</h3>
               <p>To get to Atmosphere’s Python REPL:</p>
-              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> /opt/dev/atmosphere <span class="co"># References the canonical &#39;dev&#39; path.</span>
-              <span class="kw">source</span> /opt/env/atmo/bin/activate  <span class="co"># References the canonical &#39;env&#39; path.</span>
-              <span class="kw">./manage.py</span> shell</code></pre></div>
+              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="bu">cd</span> /opt/dev/atmosphere <span class="co"># References the canonical &#39;dev&#39; path.</span>
+              <span class="bu">source</span> /opt/env/atmo/bin/activate  # References the canonical <span class="st">&#39;env&#39;</span> path.
+              <span class="ex">./manage.py</span> shell</code></pre></div>
               <p>Once inside Atmosphere’s Python REPL:</p>
               <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> core.models <span class="im">import</span> AtmosphereUser
               user <span class="op">=</span> AtmosphereUser.objects.get(username<span class="op">=</span><span class="st">&#39;x&#39;</span>)
@@ -169,9 +169,9 @@
               <span class="co"># user.set_password(&#39;new_password&#39;)</span></code></pre></div>
               <h3 id="how-do-i-grant-staff-access-to-the-troposphere-admin-pages-to-user-x">How do I grant Staff access to the Troposphere Admin pages to User X?</h3>
               <p>To get to Troposphere’s Python REPL:</p>
-              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> /opt/dev/troposphere <span class="co"># References the canonical &#39;dev&#39; path.</span>
-              <span class="kw">source</span> /opt/env/troposphere/bin/activate  <span class="co"># References the canonical &#39;env&#39; path.</span>
-              <span class="kw">./manage.py</span> shell</code></pre></div>
+              <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="bu">cd</span> /opt/dev/troposphere <span class="co"># References the canonical &#39;dev&#39; path.</span>
+              <span class="bu">source</span> /opt/env/troposphere/bin/activate  # References the canonical <span class="st">&#39;env&#39;</span> path.
+              <span class="ex">./manage.py</span> shell</code></pre></div>
               <p>Once inside troposphere’s Python REPL:</p>
               <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> django.contrib.auth.models <span class="im">import</span> User
               user <span class="op">=</span> User.objects.get(username<span class="op">=</span><span class="st">&#39;x&#39;</span>)

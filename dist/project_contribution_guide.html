@@ -85,7 +85,7 @@
                       <li><a href="#operation-sanity-behavioral-testing"><a href="https://github.com/cyverse/operation-sanity">Operation Sanity</a> behavioral testing</a></li>
                       </ul></li>
                       <li><a href="#releases-and-development-cycles">Releases and Development Cycles</a><ul>
-                      <li><a href="#release-naming">Release Naming</a></li>
+                      <li><a href="#release-naming-code-names">Release Naming &amp; “Code Names”</a></li>
                       <li><a href="#approach-to-tagging-releases">Approach to Tagging Releases</a><ul>
                       <li><a href="#note-on-sequence">Note on “Sequence”</a></li>
                       <li><a href="#what-should-be-tagged">What Should Be Tagged?</a></li>
@@ -121,9 +121,11 @@
               <li><a href="https://github.com/cyverse/">Github</a> - This is where our codebase generally resides. See <a href="#where-is-the-code">Where is the code</a> for more details.</li>
               </ol>
               <h3 id="the-atmosphere-workflow-for-jira-tickets">The Atmosphere workflow for JIRA tickets</h3>
-              <pre><code>1.  Issues/Bugs/New Features that are found in the wild, during requirements gathering, etc. should be created as &quot;JIRA Tickets&quot; and assigned a **fixVersion** of **Release Backlog** or **Product Backlog**.
-                  1.  **JIRA **Operations**-note:** At this time the form only lets you set **affectedVersion**, which is not quite the same. We should make this easier for specific users (if the workflow allows for it)</code></pre>
-              <ol start="2" style="list-style-type: decimal">
+              <ol style="list-style-type: decimal">
+              <li>Issues/Bugs/New Features that are found in the wild, during requirements gathering, etc. should be created as “JIRA Tickets” and assigned a <strong>fixVersion</strong> of <strong>Release Backlog</strong> or <strong>Product Backlog</strong>.
+              <ol style="list-style-type: decimal">
+              <li><strong>JIRA </strong>Operations<strong>-note:</strong> At this time the form only lets you set <strong>affectedVersion</strong>, which is not quite the same. We should make this easier for specific users (if the workflow allows for it)</li>
+              </ol></li>
               <li><strong>JIRA Sprints and the Agile Board</strong>
               <ol style="list-style-type: decimal">
               <li><strong>Tickets are assigned</strong> to match with the <strong>Release</strong> and <strong>Sprint </strong>Schedule:</li>
@@ -346,40 +348,28 @@
               <p>Operation Sanity is currently in a “proof of concept” state, and is currently not run automatically. There is some intended functionality (e.g. testing launch of Web Shell and Web Desktop) which needs to be built.</p>
               <h2 id="releases-and-development-cycles">Releases and Development Cycles</h2>
               <p>You can see a list of releases as branches in each GitHub repository, e.g. <a href="https://github.com/cyverse/atmosphere/branches">Atmosphere(2)</a>.</p>
-              <h3 id="release-naming">Release Naming</h3>
-              <p>Name should be two words, a hyphen will be added between them. Hyphenated bird names used to be the golden ticket (Abyssinian-nightjar,california-condor) but we now allow for alliterative adjective/verb and bird name combinations (ex: jamming-junglefowl, mystifying-merlin, nautical-nighthawk). Helpful Link: <a href="http://thewebsiteofeverything.com/animals/birds/beginning-with/A">Birds Beginning with Letters</a></p>
+              <h3 id="release-naming-code-names">Release Naming &amp; “Code Names”</h3>
+              <p>Starting in August 2017, Atmosphere releases named by a number preceded by a “v”, <code>v27</code>. This marked the 27th major released of the product. Each major release will be incremented by one.</p>
+              <p>Previously, the name was two words, a hyphen was be added between them. Hyphenated bird names used to be the golden ticket (Abyssinian-nightjar,california-condor) but we later allow for alliterative adjective/verb and bird name combinations (ex: jamming-junglefowl, mystifying-merlin, nautical-nighthawk). The final release using this naming approach was zesty-zapdos.</p>
               <h3 id="approach-to-tagging-releases">Approach to Tagging Releases</h3>
               <p>In order to identify which release a repository is associated with, we need to “tag”, or annotate, the association. Currently, we name branches by release for Atmosphere &amp; Troposphere. However, there are dependencies in the instance deployment automation managed in Atmosphere-Ansible repository. This repo is used by “subspace” via Atmosphere API - yet, we are not explicitly denoting the Atmosphere-Ansible tested, verified, and deployed with an Atmosphere release.</p>
               <p>I suggest that we use <a href="https://git-scm.com/book/en/v2/Git-Basics-Tagging#Annotated-Tags">“annotated-tags”</a> over lightweight tags; this allows for a “tag name” and a message.</p>
-              <p>Given that we use letter-based alliterations for release names, I suggest was use a two-digit year plus letter initials as our <em>annotation</em>. So, petrified-penguin would be 16.p-p as the initial release. If there was patches applied to release, then it would be incremental:</p>
-              <ul>
-              <li>16-p-p-1</li>
-              <li>16-p-p-2</li>
-              <li>16-q-q</li>
-              <li>16-q-q-1</li>
-              <li>16-r-r</li>
-              <li>16-r-r-1</li>
-              <li>16-r-r-2</li>
-              <li>16-s-s</li>
-              <li>16-t-t</li>
-              <li>17-u-u</li>
-              <li>17-u-u-1</li>
-              <li>17-v-v</li>
-              <li>17-v-v-1</li>
-              </ul>
+              <p>Given that we use an integer number preceded by ‘v’ for release names. So releases would be tagged <code>v##-1</code>. Subsequent patch release would increase by one: <code>v30-1</code>, <code>v30-2</code>, <code>v30-3</code>, …</p>
+              <p>Below are a few examples: - <code>v27-1</code> - <code>v27-2</code> - <code>v28-1</code> - <code>v28-2</code> - <code>v28-3</code> - <code>v29-1</code> - <code>v30-1</code></p>
               <p>Applying an annotated tag to a repository would allow a tag-name and a message. We’d then push to the origin without specifying a branch:</p>
-              <pre><code>GIT_TAG=&quot;16-s-s&quot;
-              git tag -a $GIT_TAG -m &quot;Solitary-Snipe released.&quot; &amp;&amp; git push origin --tags&lt;/pre&gt;</code></pre>
+              <pre><code>
+              GIT_TAG=&quot;v27&quot;
+              git tag -a $GIT_TAG -m &quot;v27 (Ancient-Asteroid) released.&quot; &amp;&amp; git push origin --tags&lt;/pre&gt;</code></pre>
               <h4 id="note-on-sequence">Note on “Sequence”</h4>
-              <p>The tag-name should be “two-digit” year concatenated with “release initials” (ravenous-raven shortens to r-r). Only add an incremented integer if more than one tag for a release is needed.</p>
+              <p>The tag-name should be have preceding <code>v</code>, <em>“v for version”</em>, follow by a “two-digit” number that is an increasing integer representing the number of major releases of Atmosphere.</p>
               <h4 id="what-should-be-tagged">What Should Be Tagged?</h4>
               <p>The repositories that <strong>should</strong> be tagged for a release are as follows:</p>
               <ul>
-              <li>Atmosphere (&lt;<release-name>&gt; branch) - <a href="https://github.com/iPlantCollaborativeOpenSource/atmosphere">repo</a></li>
-              <li>Troposphere (&lt;<release-name>&gt; branch) - <a href="https://github.com/iPlantCollaborativeOpenSource/troposphere">repo</a></li>
-              <li>Atmosphere-Ansible (master) - <a href="https://github.com/iPlantCollaborativeOpenSource/atmosphere-ansible">repo</a></li>
-              <li>Clank (master - maybe a feature-branch) - <a href="https://github.com/iPlantCollaborativeOpenSource/clank">repo</a></li>
-              <li>nginx_novnc_auth (master) - <a href="https://github.com/cyverse/nginx_novnc_auth">repo</a></li>
+              <li>Atmosphere (<code>:release-name</code> branch) - <a href="https://github.com/cyverse/atmosphere">repo</a></li>
+              <li>Troposphere (<code>:release-name</code> branch) - <a href="https://github.com/cyverse/troposphere">repo</a></li>
+              <li>Atmosphere-Ansible (<code>master</code>) - <a href="https://github.com/cyverse/atmosphere-ansible">repo</a></li>
+              <li>Clank (<code>master</code>) - <a href="https://github.com/cyverse/clank">repo</a></li>
+              <li>nginx_novnc_auth (<code>master</code>) - <a href="https://github.com/cyverse/nginx_novnc_auth">repo</a></li>
               </ul>
               <p>We should consider tagging this fork - <a href="https://github.com/edwins/gateone" class="uri">https://github.com/edwins/gateone</a></p>
               <h4 id="who-can-tag">Who Can Tag?</h4>

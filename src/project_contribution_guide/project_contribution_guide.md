@@ -23,8 +23,9 @@ Contribution to core-services products (usually) takes place in two different en
 2. [Github](https://github.com/cyverse/) - This is where our codebase generally resides. See [Where is the code](#where-is-the-code) for more details.
 
 ### The Atmosphere workflow for JIRA tickets
-    1.  Issues/Bugs/New Features that are found in the wild, during requirements gathering, etc. should be created as "JIRA Tickets" and assigned a **fixVersion** of **Release Backlog** or **Product Backlog**.
-        1.  **JIRA **Operations**-note:** At this time the form only lets you set **affectedVersion**, which is not quite the same. We should make this easier for specific users (if the workflow allows for it)
+
+1.  Issues/Bugs/New Features that are found in the wild, during requirements gathering, etc. should be created as "JIRA Tickets" and assigned a **fixVersion** of **Release Backlog** or **Product Backlog**.
+    1.  **JIRA **Operations**-note:** At this time the form only lets you set **affectedVersion**, which is not quite the same. We should make this easier for specific users (if the workflow allows for it)
 2.  **JIRA Sprints and the Agile Board**
     1.  **Tickets are assigned** to match with the **Release** and **Sprint **Schedule:
     2.  Currently, core-services is on a **5 week** release schedule. There are **two 2-week sprints** and a **1-week sprint** **to prepare for and release** the branch to the production servers.
@@ -44,6 +45,7 @@ Contribution to core-services products (usually) takes place in two different en
         3.  Upon merge, a project lead will move the ticket to **Resolved** and assigned to QA for final approval/confirmation. Notes should be included that point to the new tests/documentation as appropriate.
 
 ### Using github to work on an issue/bug/feature
+
 1.  **Fork the repo you intend to work on**
     1.  If this is your first time contributing to a core-services repository, you will want to create a new fork.<span style="color: rgb(34,34,34);"> </span>Forking a repository<span style="color: rgb(34,34,34);"> allows you to freely experiment with changes without affecting the original project.</span>
     2.  <span style="color: rgb(34,34,34);">Github's documentation for working with forks is [available here](https://help.github.com/articles/fork-a-repo/).</span>
@@ -301,51 +303,50 @@ Operation Sanity is currently in a "proof of concept" state, and is currently no
 
 You can see a list of releases as branches in each GitHub repository, e.g. [Atmosphere(2)](https://github.com/cyverse/atmosphere/branches).
 
-### Release Naming
+### Release Naming & "Code Names"
 
-Name should be two words, a hyphen will be added between them. Hyphenated bird names used to be the golden ticket (Abyssinian-nightjar,california-condor) but we now allow for alliterative adjective/verb and bird name combinations (ex: jamming-junglefowl, mystifying-merlin, nautical-nighthawk). Helpful Link: [Birds Beginning with Letters](http://thewebsiteofeverything.com/animals/birds/beginning-with/A)
+Starting in August 2017, Atmosphere releases named by a number preceded by a "v", `v27`. This marked the 27th major released of the product. Each major release will be incremented by one. 
+
+Previously, the name was two words, a hyphen was be added between them. Hyphenated bird names used to be the golden ticket (Abyssinian-nightjar,california-condor) but we later allow for alliterative adjective/verb and bird name combinations (ex: jamming-junglefowl, mystifying-merlin, nautical-nighthawk). The final release using this naming approach was zesty-zapdos. 
 
 ### Approach to Tagging Releases
 In order to identify which release a repository is associated with, we need to "tag", or annotate, the association. Currently, we name branches by release for Atmosphere & Troposphere. However, there are dependencies in the instance deployment automation managed in Atmosphere-Ansible repository. This repo is used by "subspace" via Atmosphere API - yet, we are not explicitly denoting the Atmosphere-Ansible tested, verified, and deployed with an Atmosphere release.
 
 I suggest that we use ["annotated-tags"](https://git-scm.com/book/en/v2/Git-Basics-Tagging#Annotated-Tags) over lightweight tags; this allows for a "tag name" and a message.
 
-Given that we use letter-based alliterations for release names, I suggest was use a two-digit year plus letter initials as our _annotation_. So, petrified-penguin would be 16.p-p as the initial release. If there was patches applied to release, then it would be incremental:
+Given that we use an integer number preceded by 'v' for release names. So releases would be tagged `v##-1`. Subsequent patch release would increase by one: `v30-1`, `v30-2`, `v30-3`, ...
 
-- 16-p-p-1
-- 16-p-p-2
-- 16-q-q
-- 16-q-q-1
-- 16-r-r
-- 16-r-r-1
-- 16-r-r-2
-- 16-s-s
-- 16-t-t
-- 17-u-u
-- 17-u-u-1
-- 17-v-v
-- 17-v-v-1
+Below are a few examples:
+- `v27-1`
+- `v27-2`
+- `v28-1`
+- `v28-2`
+- `v28-3`
+- `v29-1`
+- `v30-1`
 
 Applying an annotated tag to a repository would allow a tag-name and a message. We'd then push to the origin without specifying a branch:
 
+
 ```
-GIT_TAG="16-s-s"
-git tag -a $GIT_TAG -m "Solitary-Snipe released." && git push origin --tags</pre>
+
+GIT_TAG="v27"
+git tag -a $GIT_TAG -m "v27 (Ancient-Asteroid) released." && git push origin --tags</pre>
 ```
 
 #### Note on "Sequence"
 
-The tag-name should be "two-digit" year concatenated with "release initials" (ravenous-raven shortens to r-r). Only add an incremented integer if more than one tag for a release is needed.
+The tag-name should be have preceding `v`, _"v for version"_, follow by a "two-digit" number that is an increasing integer representing the number of major releases of Atmosphere.
 
 #### What Should Be Tagged?
 
 The repositories that **should** be tagged for a release are as follows:
 
-- Atmosphere (<<release-name>> branch) - [repo](https://github.com/iPlantCollaborativeOpenSource/atmosphere)
-- Troposphere (<<release-name>> branch) - [repo](https://github.com/iPlantCollaborativeOpenSource/troposphere)
-- Atmosphere-Ansible (master) - [repo](https://github.com/iPlantCollaborativeOpenSource/atmosphere-ansible)
-- Clank (master - maybe a feature-branch) - [repo](https://github.com/iPlantCollaborativeOpenSource/clank)
-- nginx_novnc_auth (master) - [repo](https://github.com/cyverse/nginx_novnc_auth)
+- Atmosphere (`:release-name` branch) - [repo](https://github.com/cyverse/atmosphere)
+- Troposphere (`:release-name` branch) - [repo](https://github.com/cyverse/troposphere)
+- Atmosphere-Ansible (`master`) - [repo](https://github.com/cyverse/atmosphere-ansible)
+- Clank (`master`) - [repo](https://github.com/cyverse/clank)
+- nginx_novnc_auth (`master`) - [repo](https://github.com/cyverse/nginx_novnc_auth)
 
 We should consider tagging this fork
 - [https://github.com/edwins/gateone](https://github.com/edwins/gateone)
@@ -374,6 +375,7 @@ The structure of releases is inspired by [Chrome/Chromium](http://blog.assembla.
 - testing/verification
 
 ### Code Branching Strategy
+
 (Note that the following section contains links to environments that are only accessible to members of CyVerse staff.)
 
 The master branch collects new feature development and community contributions. [http://atmo-dev.cyverse.org](http://atmo-dev.cyverse.org) generally tracks master. Other feature branches are used as needed.
