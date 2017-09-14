@@ -25,6 +25,14 @@ hr {
     padding: 0;
 }
 
+/*
+    Makes images in the content body fluid. We may decide this isn't
+    flexible enough but will work until we need more.
+*/
+article img {
+    width: 100%;
+}
+
 audio,
 canvas,
 iframe,
@@ -207,6 +215,7 @@ aside a:hover {
    ============ */
 
     .main article {
+        width: 60%;
         float: left;
     }
 
