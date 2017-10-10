@@ -330,8 +330,8 @@ Applying an annotated tag to a repository would allow a tag-name and a message. 
 
 ```
 
-GIT_TAG="v27"
-git tag -a $GIT_TAG -m "v27 (Ancient-Asteroid) released." && git push origin --tags</pre>
+GIT_TAG="v28-1"
+git tag -a $GIT_TAG -m "v28 (..release-codename..) release 1." && git push origin --tags</pre>
 ```
 
 #### Note on "Sequence"
