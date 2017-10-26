@@ -51,12 +51,11 @@
                               <!-- MAIN CONTENT -->
               <article>
               <p>This will take you through the process of requesting additional resources.</p>
-              <h1 id="navigate-to-the-request-form">Navigate to the request form</h1>
+              <h1 id="navigate-to-the-request-form"><a href="#navigate-to-the-request-form">Navigate to the request form</a></h1>
               <div class="figure">
               <img src="./media/navigate_to_resource_request_form.gif" />
-              
               </div>
-              <h1 id="requesting-more-resources">Requesting more resources</h1>
+              <h1 id="requesting-more-resources"><a href="#requesting-more-resources">Requesting more resources</a></h1>
               <p>There are two forms of resources: <strong>Allocation</strong> and <strong>Quota</strong>.</p>
               <p><strong>Allocation</strong> is a monthly allotment of time that we allow your virtual machines to run. One of our allocation units (AU) is an hour per cpu of your machine. A 1 cpu machine will consume 1AU for every hour it is active. A 16 cpu machine will consume 16AU per hour. Keep in mind that larger machines need to be suspended often to conserve your AU budget. See <a href="#calculate-au">Calculating desired AU</a>. Allocation is reset every month (it does not carry over).</p>
               <p><strong>Quota</strong> are constraints on resources that don’t change on a monthly basis.</p>
@@ -69,23 +68,22 @@
               </ul>
               <p>You can request an increase of Allocation and Quota to the discretion of the support staff. Motivate why the additonal resources are needed in the form above.</p>
               <p>After you submit the form, support will get in touch with you about the status of your request.</p>
-              <h1 id="calculating-desired-au">Calculating desired AU <a name="calculate-au">🔗</a></h1>
+              <h1 id="calculating-desired-au"><a href="#calculating-desired-au">Calculating desired AU <a name="calculate-au">🔗</a></a></h1>
               <div class="figure">
               <img src="./media/au-calculator.gif" />
-              
               </div>
-              <h1 id="what-is-a-boot-script-and-why-would-you-use-it">What is a Boot Script and why would you use it</h1>
+              <h1 id="what-is-a-boot-script-and-why-would-you-use-it"><a href="#what-is-a-boot-script-and-why-would-you-use-it">What is a Boot Script and why would you use it</a></h1>
               <p>Boot scripts are a way to dynamically modify the environment of your VM at run time.</p>
               <p>Boot scripts can be created for a specific instance Boot scripts can also be created to execute on a new machine (via Machine Request) for all users who launch that VM.</p>
               <p>Boot scripts are executed by the Atmosphere system as the <em>final</em> step of the deployment process.</p>
               <p>These scripts can be used to: - execute a daemon/background processes - change permissions of a directory to match the active running user, rather than your own account.</p>
               <p>These scripts should <em>NOT</em> be used to: - Install new dependencies (Instead, install the software you want and create a Machine Request)</p>
               <p>NOTE: A failure of a boot script may cause your VM to behave in an unexpected way, but time will still be counted against you. Make sure that you test your boot scripts multiple times before distributing it with your VM.</p>
-              <h1 id="variables-that-are-included-in-your-boot-script">Variables that are included in your boot script</h1>
+              <h1 id="variables-that-are-included-in-your-boot-script"><a href="#variables-that-are-included-in-your-boot-script">Variables that are included in your boot script</a></h1>
               <ul>
               <li>ATMO_USER: This is the username of the account that is running your Image/Instance.</li>
               </ul>
-              <h1 id="examples-of-a-full-text-boot-script">Examples of a ‘Full Text’ boot script</h1>
+              <h1 id="examples-of-a-full-text-boot-script"><a href="#examples-of-a-full-text-boot-script">Examples of a ‘Full Text’ boot script</a></h1>
               <p>A Full text boot script should include a shebang line to tell the bash console what program to use. The script will be executed directly.</p>
               <p>Using the templated variables above can be very helpful for creating dynamic boot scripts.</p>
               <pre><code>#!/bin/bash -x
@@ -135,33 +133,30 @@
               
               # This line will start the execution of the script
               main</code></pre>
-              <h1 id="examples-of-a-url-boot-script">Examples of a ‘URL’ boot script</h1>
+              <h1 id="examples-of-a-url-boot-script"><a href="#examples-of-a-url-boot-script">Examples of a ‘URL’ boot script</a></h1>
               <p>A URL boot script should start with http or https. A URL boot script should point to the <em>RAW</em> file The file the boot script points to should follow all rules listed in <em>Examples of a Full Text boot script</em></p>
               <pre><code>https://raw.githubusercontent.com/iPlantCollaborativeOpenSource/atmosphere/master/core/examples/boot_scripts/grant_permissions.sh</code></pre>
               <p>This will take you through the process of creating an image.</p>
-              <h1 id="about-requesting-an-image">About requesting an image</h1>
+              <h1 id="about-requesting-an-image"><a href="#about-requesting-an-image">About requesting an image</a></h1>
               <p>An image is a type of template for a virtual machine. You can launch an instance and install the software and files you want to use, then request an image of the instance using the Request Imaging from within Atmosphere, as outlined below. This allows you to retain a complete copy of all of the changes and updates you made to the instance so you can reuse it again later, much like a template.</p>
               <p><strong>WARNING: <span style="color:red;">It is easy to include sensitive data in a public image.</span></strong></p>
               <p>For other security concerns consult this <a href="https://pods.iplantcollaborative.org/wiki/display/atmman/Requesting+an+Image+of+an+Instance">guide</a>.</p>
-              <h1 id="navigate-to-the-request-form-1">Navigate to the request form</h1>
+              <h1 id="navigate-to-the-request-form-1"><a href="#navigate-to-the-request-form-1">Navigate to the request form</a></h1>
               <div class="figure">
               <img src="./media/navigate-to-image-request.gif" />
-              
               </div>
-              <h1 id="submitting-an-imaging-request">Submitting an imaging request</h1>
+              <h1 id="submitting-an-imaging-request"><a href="#submitting-an-imaging-request">Submitting an imaging request</a></h1>
               <p>Each step has accompanying instructions. After your request has been submitted. Support will get in touch with you about the status of your image request. For more comprehensive documentation consult this <a href="https://pods.iplantcollaborative.org/wiki/display/atmman/Requesting+an+Image+of+an+Instance">guide</a>.</p>
-              <h1 id="viewing-pending-image-requests">Viewing pending image requests</h1>
+              <h1 id="viewing-pending-image-requests"><a href="#viewing-pending-image-requests">Viewing pending image requests</a></h1>
               <p>This animation illustrates viewing a recently submitted request.</p>
               <div class="figure">
               <img src="./media/submit-image-request-and-view-pending-requests.gif" />
-              
               </div>
               <p>This will take you through the login process.</p>
-              <h1 id="logging-in">Logging in</h1>
+              <h1 id="logging-in"><a href="#logging-in">Logging in</a></h1>
               <p>Navigate to the home page, click login.</p>
               <div class="figure">
               <img src="./media/login.gif" />
-              
               </div>
               </article>
             </div> <!-- #main -->

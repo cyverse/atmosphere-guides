@@ -55,14 +55,14 @@
                   </aside>
                               <!-- MAIN CONTENT -->
               <article>
-              <h1 id="atmosphere-troubleshooting-guide">Atmosphere Troubleshooting Guide</h1>
+              <h1 id="atmosphere-troubleshooting-guide"><a href="#atmosphere-troubleshooting-guide">Atmosphere Troubleshooting Guide</a></h1>
               <p>Where to look and what to do when something is broken.</p>
-              <h2 id="common-problems">Common Problems</h2>
-              <h3 id="my-instance-wont-deploy">My Instance Won’t Deploy</h3>
+              <h2 id="common-problems"><a href="#common-problems">Common Problems</a></h2>
+              <h3 id="my-instance-wont-deploy"><a href="#my-instance-wont-deploy">My Instance Won’t Deploy</a></h3>
               <p>Check Atmosphere logs, Kibana, and Celery logs, to determine if the problem is with Atmosphere(2), the OpenStack cloud, or the Ansible code that is run during deployment.</p>
               <p>Note that resuming a suspended instance also re-deploys it.</p>
-              <h2 id="troubleshooting-tools">Troubleshooting Tools</h2>
-              <h3 id="launching-instances-without-troposphere">Launching instances without Troposphere</h3>
+              <h2 id="troubleshooting-tools"><a href="#troubleshooting-tools">Troubleshooting Tools</a></h2>
+              <h3 id="launching-instances-without-troposphere"><a href="#launching-instances-without-troposphere">Launching instances without Troposphere</a></h3>
               <p>To launch instances via atmosphere (without the use of a GUI):</p>
               <pre><code>#############1 - Setting up the environment ######################
               # Ensure that PYTHONPATH and DJANGO_SETTINGS_MODULE are pointed to atmosphere:
@@ -112,7 +112,7 @@
               ....
               Successfully launched Machine 66322719-5bfa-4646-93c6-0132e9a958e5 : 2e90c453-7509-4442-ae28-405b4aaeca10 (Name:sgregory-testlaunch 1, Creator:sgregory, IP:0.0.0.0)
               Launched 1 instances.</code></pre>
-              <h3 id="launching-instances-without-atmosphere-ansible">Launching Instances without atmosphere-ansible</h3>
+              <h3 id="launching-instances-without-atmosphere-ansible"><a href="#launching-instances-without-atmosphere-ansible">Launching Instances without atmosphere-ansible</a></h3>
               <p>Sometimes it is useful to be able to launch instances, add their floating IP, but <strong>skip the ansible portion</strong> of instance deployment. As it turns out, the script above is perfect for this! simply include the flag <code>--skip-deploy</code> to <strong>./scripts/launch_instances.py</strong> in addition to the standard arguments and environment setup described in the section above.</p>
               <pre><code>#############1 - Setting up the environment ######################
               See above
@@ -131,7 +131,7 @@
               ## When you decide you would later like to run ansible by hand, via the REPL:
               from service.deploy import instance_deploy
               instance_deploy(...)</code></pre>
-              <h3 id="accessing-atmosphere-during-maintenance">Accessing Atmosphere During Maintenance</h3>
+              <h3 id="accessing-atmosphere-during-maintenance"><a href="#accessing-atmosphere-during-maintenance">Accessing Atmosphere During Maintenance</a></h3>
               <p>There is an “exception” URI to access the UI when Atmosphere is in maintenance mode.</p>
               <p>Browse to <a>https://(atmosphere-url)/application_backdoor.</a></p>
               <p>In order to access the backdoor, you will need to be included in <a href="https://github.com/iPlantCollaborativeOpenSource/troposphere/blob/master/troposphere/settings/local.py.j2#L41-L43"><code>STAFF_LIST_USERNAMES</code></a> . This is set in the variables.yml (build env) for a deployed environment (dev, beta, prod). Using Jinja2 syntax for referring to YAML data structures, within the build env <code>variables.yml</code> file, the list is <code>TROPO['local.py']['STAFF_LIST_USERNAME']</code>.</p>
@@ -139,15 +139,16 @@
               <pre>TROPO:
                   local.py:
                       STAFF_LIST_USERNAME: ['cmart', 'lenards']</pre>
-              <h3 id="emulating-another-atmosphere1-user">Emulating Another Atmosphere(1) User</h3>
+              
+              <h3 id="emulating-another-atmosphere1-user"><a href="#emulating-another-atmosphere1-user">Emulating Another Atmosphere(1) User</a></h3>
               <p>If you have a staff account in Atmosphere (i.e. you see the “admin” section in Troposphere), you can become (“emulate”) another user account. Browse to https://(atmosphere-url)/application/emulate/(username), replacing (atmosphere-url) as appropriate, and (username) with the user you want to emulate. To clear an emulated session, navigate to https://(atmosphere-url)/application/emulate.</p>
-              <h3 id="testing-deployments-against-multiple-distros">Testing Deployments Against Multiple Distros</h3>
+              <h3 id="testing-deployments-against-multiple-distros"><a href="#testing-deployments-against-multiple-distros">Testing Deployments Against Multiple Distros</a></h3>
               <p>See <a href="https://pods.iplantcollaborative.org/wiki/display/csmgmt/Ansible+Deployment#AnsibleDeployment-Images/AccountstotestAnsible">Images/Accounts to test Ansible</a> (TODO fix link) for a list of images known to work for various distros.</p>
-              <h3 id="capturing-instance-details-for-problem-reports">Capturing Instance Details for Problem Reports</h3>
+              <h3 id="capturing-instance-details-for-problem-reports"><a href="#capturing-instance-details-for-problem-reports">Capturing Instance Details for Problem Reports</a></h3>
               <p>You can easily capture critical information about an instance in order to include it in a problem report. Click on the gravatar (icon), and a string will be printed to your browser’s developer tools console in the following format:</p>
               <pre><code>&lt;image-name&gt; - &lt;instance-GUID&gt; - &lt;provider&gt; - &lt;ip-address&gt; - &lt;deploy-date-time&gt;</code></pre>
-              <h2 id="logs">Logs</h2>
-              <h3 id="log-files-on-atmosphere-server">Log Files on Atmosphere server</h3>
+              <h2 id="logs"><a href="#logs">Logs</a></h2>
+              <h3 id="log-files-on-atmosphere-server"><a href="#log-files-on-atmosphere-server">Log Files on Atmosphere server</a></h3>
               <p>Atmosphere(1) writes logs to several places:</p>
               <ul>
               <li>Nginx logs in /var/log/nginx</li>
@@ -157,7 +158,7 @@
               <li>Celery logs in /var/log/celery</li>
               <li>atmosphere-ansible run logs in /opt/dev/atmosphere/logs/atmosphere_deploy.log</li>
               </ul>
-              <h3 id="celery-flower">Celery Flower</h3>
+              <h3 id="celery-flower"><a href="#celery-flower">Celery Flower</a></h3>
               <p><a href="https://flower.readthedocs.io/en/latest/">Flower</a> is installed for monitoring Celery tasks (e.g. running Ansible against new instances). Browse to https://(atmosphere-url)/flower. The authentication scheme and credentials are set in clank’s variables.yml at deploy time.</p>
               </article>
             </div> <!-- #main -->
