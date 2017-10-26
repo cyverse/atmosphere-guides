@@ -148,9 +148,9 @@ By default, the 'BasicValidation' plugin is used, ensuring that any machine that
 **IMPORTANT NOTE**: Machine validation takes _a single plugin_.
 
 Additional choices for the Machine validation plugin are:
-- "atmosphere.plugins.machine_validation.WhitelistValidation" - Accept images with specific metadata, (reject all other images)
-- "atmosphere.plugins.machine_validation.BlacklistValidation" - Reject images with specific metadata, images not authored by admin user.
-- "atmosphere.plugins.machine_validation.CyverseValidation" - Skip specific metadata, require author to be admin user.
+- "atmosphere.plugins.machine_validation.WhitelistValidation" # Accept images with specific metadata, (reject all other images)
+- "atmosphere.plugins.machine_validation.BlacklistValidation" # Reject images with specific metadata
+- "atmosphere.plugins.machine_validation.CyverseValidation"   # Reject images with specific metadata & require author to be admin user.
 
 To select a non-default machine validation plugin, include this line in your variables.yml
 ```
