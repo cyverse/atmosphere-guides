@@ -12,19 +12,19 @@ Clank perfoms a local install of Atmosphere and Troposphere, and as a result, a 
 
 The lines below allow clank to run its own series of commands to get ansible to run locally:
 ```
-apt-get install python-virtualenv -y
-apt-get install git python-dev libyaml-dev -y
+apt-get update
+apt-get install -y python python-pip python-dev libffi-dev libssl-dev python-virtualenv git
 ```
 
 Next, create a virtualenv and activate it. This will allow us to keep our python dependencies tidy and in one place without polluting the system.
 ```
-virtualenv ratchet_env
-. ratchet_env/bin/activate
+virtualenv clank_env
+. clank_env/bin/activate
 ```
 Once the virtualenv has been created, clone down clank and install its dependencies in our virtualenv.
 ```
-git clone https://github.com/iPlantCollaborativeOpenSource/clank.git
-pip install -r clank/ratchet_requirements.txt
+git clone https://github.com/cyverse/clank.git
+pip install -r clank/clank_requirements.txt
 ```
 If you perform a pip freeze, you should see new libraries added.
 ```
@@ -34,13 +34,13 @@ pip freeze
 #### Requirements for Configuration
 A few files are required to be filled out in order for clank to properly function. You can find all the files below in the dist_files directory.
 
-* variables.yml (See [variables dist](https://github.com/iPlantCollaborativeOpenSource/clank/blob/master/dist_files/variables.yml.dist) for blank template)
+* variables.yml (See [variables dist](https://github.com/cyverse/clank/blob/master/dist_files/variables.yml.dist) for blank template)
 
-* hosts (See [hosts dist](https://github.com/iPlantCollaborativeOpenSource/clank/blob/master/dist_files/hosts.dist) for blank template)
+* hosts for `atmosphere-ansible` (See [hosts dist](https://github.com/cyverse/clank/blob/master/dist_files/atmosphere-ansible/hosts.yml.dist) for blank template)
 
-* group_vars (See [group_vars dist](https://github.com/iPlantCollaborativeOpenSource/clank/tree/master/dist_files/group_vars) for blank templates)
+* group_vars for `atmosphere-ansible` (See [group_vars dist](https://github.com/cyverse/clank/tree/master/dist_files/atmosphere-ansible/group_vars) for two 'provider' templates)
 
-Your hosts file and group_vars directory should reflect one another. This would include renaming the dist file to relflect the groups you wish to create with ansible.
+Your hosts file and group_vars directory should reflect one another. This would include renaming the dist file to reflect the groups you wish to create with ansible.
 
 When you fill out your hosts file and the provider templates in the group_vars directory, be sure to link the location of these files in the variable.yml file.
 At the current moment, the only vars that need to be filled in the new variable.yml are:
@@ -51,37 +51,59 @@ ANSIBLE_HOSTS_FILE:               #Absolute Path Recommended e.g. /path/to/my/ho
 ANSIBLE_GROUP_VARS_FOLDER:        #Absolute Path Recommended e.g. /path/to/my/groupvars/dir/group_vars
 ```
 
-TODO
-Condense variables.yml.dist and explain the other vars needed by user (e.g. openstack, ldap, ELK, etc).
+<!--
+TODO:
+- Condense variables.yml.dist and explain the other vars needed by user (e.g. openstack, ldap, ELK, etc).
+-->
 
 #### Installation
 Once you have the completed files, its time to run clank! Change directories into the clank repo.
 ```
 cd clank
 ```
-We currently have to pass in two arguments, workspace and env_file. These two variables define the workspace we are working from and the variables.yml file we worked on previously.
-If you know the parent directory of the clank directory is, you can pass that, or you can run the command
+In order to override the default arguments for clank, we will need to pass in the variables.yml file we worked on previously.
 ```
-WORKSPACE="$(dirname `pwd`)"
 VARIABLES_YML_FILE=/path/to/our/completed/variables.yml
 ```
-And now we run `clank.py` which will install ansible locally, pass in the appropriate variables to ansible, and pass any flags we wish ansible to consume.
+And now we select the `playbooks/deploy_stack.yml` playbook to install the entire Atmosphere stack. Use --limit to define the target-host you wish to install atmosphere to.
+
+##### Calling ansible-playbook
+By default, Clank is configured to deploy against localhost. To deploy to a remote target, modify [the `hosts` file](https://github.com/cyverse/clank/blob/master/hosts), replacing the target-host: `localhost` to the correct Server/IP address.
+
 ```
-python clank.py --env_file $VARIABLES_YML_FILE
+# Note the '@' required when calling ansible-playbook
+# playbooks/deploy_stack.yml will install the full Atmosphere Stack (Atmosphere, Troposphere, and atmosphere-ansible).
+ansible-playbook playbooks/deploy_stack.yml -e @$VARIABLES_YML_FILE
 ```
 
 #### Advanced Configuration
 ##### SSL CERTS
-You can have clank install your very own ssl certs, rather than create the self signed certs. To do so, make the changes to your variables.yml file:
+###### Installation of self-signed SSL certs
+By default, clank will install self-signed SSL certificates. While this is fine for evaluation, it is encouraged to use letsencrypt or bring your own SSL certificates when running the Atmosphere platform in a production setting.
+
+###### Bringing your own SSL certs
+To have clank install your own ssl certs, rather than create the self signed certs, the following changes should be included in your variables.yml file:
 ```
 # SSL RELATED VARS
 CREATE_SSL: false                           # Set this to false if you wish to pass in your own certs
 
 # If the above variable is set to true, do not edit next three vars below
 
-SSL_CERTIFICATE: /location/to/my/ssl/cert/we/would/like/to/use/my_cert.crt           #Absolute Path Recommended
-BUNDLE_CERT: /location/to/my/ssl/bundle_cert/we/would/like/to/use/my_bundle_cert.crt #Absolute Path Recommended
-SSL_KEY: /location/to/my/ssl/private/key/we/would/like/to/use/my_private_key.key     #Absolute Path Recommended
+TLS_BYO_PRIVKEY_SRC: /location/to/my/ssl/private/key/we/would/like/to/use/example.server.key         #Absolute Path Recommended
+TLS_BYO_CERT_SRC: /location/to/my/ssl/cert/we/would/like/to/use/example.server.crt                   #Absolute Path Recommended
+TLS_BYO_CACHAIN_SRC: /location/to/my/ssl/bundle_cert/we/would/like/to/use/example.server.cachain.crt #Absolute Path Recommended
+```
+###### Using letsencrypt to generate SSL certs
+To have clank run letsencrypt, rather than create self-signed certs, the following changes should be included in your variables.yml file:
+```
+# NOTE: At least one valid email is requried for admin. If given, this user will be emailed when errors occur in Atmosphere, Troposphere, and for user contact/feedback.
+ADMINS_EMAIL_TUPLE: [['Atmosphere Admin', 'valid-email@required'], ['Admin Two', 'valid-email@required']]
+
+# SSL RELATED VARS
+CREATE_SSL: false                           # Set this to false if you wish to pass in your own certs
+
+TLS_LETSENCRYPT_ENABLE: true
+TLS_LETSENCRYPT_EMAIL: "{{ ADMINS_EMAIL_TUPLE[0][1] }}"
 ```
 
 ##### SSH Keys
@@ -93,18 +115,69 @@ ID_RSA:  /location/to/my/id_rsa_key/my_key_id_rsa                      #Absolute
 ID_RSA_PUB: /location/to/my/id_rsa_public_key/my_key_id_rsa.pub        #Absolute Path Recommended
 ```
 
+##### Atmosphere Plugins
+The Atmosphere API has support for a few different types of plugins, that can be included or changed by changing the variables.yml file.
+Described below are the most commonly configured plugins, related to account and machine validation. For a full list, check the [atmosphere settings dist file](https://github.com/cyverse/atmosphere/blob/master/atmosphere/settings/local.py.j2)
+
+###### Creating a new plugin for Atmosphere
+If you are interested in creating a new plugins for atmosphere:
+1) Fork atmosphere
+2) Create the file and Class name in question. Most plugins will have a specific method signature that is expected, be sure thats included.
+3) To install that plugin with clank, you will need to point to _your repository and branch_ when filling out the contents of the `variables.yml` file.
+4) Follow the instructions below and include 'your.plugin.path.ClassName' instead of one from the list.
+
+###### Account Validation Plugins
+Account validation plugins determine what users (after being authenticated by CAS/LDAP/Openstack/etc.) are authorized to use the Atmosphere platform.
+By default, the 'AlwaysAllow' plugin is used, ensuring that any user who is authenticated will be authorized to use atmosphere.
+
+**IMPORTANT NOTE**:Account validation takes _a list of plugins_, **ALL** plugins will be tested for a given user. A user is only denied access when **ALL** Plugins fail for that user.
+
+Additional choices for the Account validation plugin are:
+- 'atmosphere.plugins.auth.validation.LDAPGroupRequired'  # Require that the user has a valid LDAP group
+- 'jetstream.plugins.auth.validation.XsedeProjectRequired'  # Require that the user has a valid XSede project in TAS external API
+To select a non-default account validation plugin, include this line in your variables.yml
+```
+VALIDATION_PLUGINS = ['atmosphere.plugins.auth.validation.LDAPGroupRequired',]
+```
+
+###### Machine Validation Plugin
+Machine validation plugins determine what cloud provider 'machines' will be included in the Atmosphere imaging catalog (and viewable by users of Atmosphere).
+By default, the 'BasicValidation' plugin is used, ensuring that any machine that is found by the Admin user of the cloud provider will be included in the atmosphere image catalog.
+
+
+**IMPORTANT NOTE**: Machine validation takes _a single plugin_.
+
+Additional choices for the Machine validation plugin are:
+- "atmosphere.plugins.machine_validation.WhitelistValidation" # Accept images with specific metadata, (reject all other images)
+- "atmosphere.plugins.machine_validation.BlacklistValidation" # Reject images with specific metadata
+- "atmosphere.plugins.machine_validation.CyverseValidation"   # Reject images with specific metadata & require author to be admin user.
+
+To select a non-default machine validation plugin, include this line in your variables.yml
+```
+MACHINE_VALIDATION_PLUGIN = "atmosphere.plugins.machine_validation.CyverseValidation"
+```
+
+#### Advanced Installation
+
+Because clank uses `ansible-playbook` directly, there are lots of ways to break up clank's playbooks to deploy portions of the Atmosphere platform.
+
 ##### Tags
 You are able to isolate which portions of clank you want to run specifically. To do this you can pass in the tags flag to the `clank.py` script:
 ```
-python clank.py --env_file $VARIABLES_YML_FILE --tags atmosphere # Runs only the installation of atmosphere
+# print-vars tag will print out ansible's interpretation of variables before making changes to the system
+ansible-playbook playbooks/deploy_stack.yml -e @/path/to/my/clank-variables.yml -vvvvv -e "CLANK_VERBOSE=true" --tags print-vars
+
+# atmosphere tag will install/update only the 'atmosphere' portion of the Atmosphere platform.
+ansible-playbook playbooks/deploy_stack.yml -e @/path/to/my/clank-variables.yml --tags atmosphere
 ```
 ##### Skip
-Inversely, you can skip sections:
+Inversely, you can skip sections of the installation by choosing tags to skip:
 ```
-python clank.py --env_file $VARIABLES_YML_FILE --skip atmosphere # skips over the installation of atmosphere
-```
-```
-python clank.py --env_file $VARIABLES_YML_FILE --skip dependencies,troposphere # skips over the installation of dependencies and troposphere
+# You can skip these tags to save time if you are rebuilding the Atmosphere platform.
+ansible-playbook playbooks/deploy_stack.yml -e @/path/to/my/clank-variables.yml --skip-tags "clone-repo,data-load,npm,pip-install-requirements,apt-install"
+
+# and you can skip these tags if you just want to install the 'atmosphere' portion of the Atmosphere platform
+ansible-playbook playbooks/deploy_stack.yml -e @/path/to/my/clank-variables.yml --skip dependencies,troposphere # skips over the installation of dependencies and troposphere
 ```
 ## What to do after installing Clank
 
