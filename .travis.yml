@@ -17,6 +17,7 @@ deploy:
   email: cyverse-deploy@cyverse.org
   on:
     branch: master
+    repo: cyverse/atmosphere-guides
 env:
   global:
   - secure: n7fYxN0Y0ZCDgFiP6bEtz/sYbi65hDH+C9xhxD1OhJHWo9ZZB4hwramZp+ZyTH/St0qb3ZM2MOcN/hvdk/c6krw959xSmP1tldtB4bWErTSCybZQOhwOYs+fmTtjTeT3iQLb0fEuURigC2eBJ6QvjXMM0k5taXLtV9ihuX4dGpQDNeM6swo0jED25nyJOD42BDqlp3t5Vinnp9A9onmPOS1gcKAH9fqMRJMS7BQRwlu80HZLz/9lUKNLwD7lrxlS2VTgRQZEuY9p+3O5fDAxF6y/7okKpKetD4GvixDr47TnpCG/D6NQ35p26bjYcJN76neF7/pf3+x89lYInxZMoYd/l79L2/kQO7Vz8mM1Aqiwh7nrOLC3+x2Fsc3nj+lAcEb0As81IZkrQXXkUa8crsQeKHQp43wTEFi2eIuxtmYqqu4l0GQT/5xMrQehsAbHdl7AIeGbrdIcPIcZOiwblTiH1UIjT6sECNbTo5oI6otlyeLI7HlIgnYHIanS/qXsUvRUC5JB2aOkvu5tq7t6k+EaoHcULF0zBMgrSFahY9ue/nlZgACMzv9YBhb8aUEitJiwf8mEgCox6dHCHj3QDzTSlfS5UnjgDEWwE25px4Y7ymM0gb1e+mfn6cmJ4v5OrBk+Y8Zi5JBEXCTMrTxK2lZV5+qUpn7UpRdTqvR4K/s=
