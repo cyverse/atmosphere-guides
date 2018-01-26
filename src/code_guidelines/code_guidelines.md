@@ -132,6 +132,11 @@ The Ansible projects use a `requirements.yml` file to define the Galaxy roles we
 
 Follow the instructions in [this template](https://github.com/CyVerse-Ansible/ansible-role-template) to publish an Ansible role to Galaxy and set up automated testing with Travis CI; then you can install the role into other projects.
 
+When you're ready to add your project to the CyVerse-Ansible organiztion contact Chris Martin for an invite.
+
+**Note for maintainers:**
+It is suggested that roles in Cyverse-Ansible be versioned with tags. Be cognizant to push tags when the project changes, and please follow the [SemVer](https://semver.org/) protocol.
+
 ## Security Guidelines
 
 Do not store anything secret or sensitive (e.g. passphrases, SSH private keys, license keys) in public version control. Environment-specific secrets can be encrypted with Ansible Vault and stored in private version control.
