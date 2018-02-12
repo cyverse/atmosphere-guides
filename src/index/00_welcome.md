@@ -13,6 +13,7 @@ This site hosts documentation for Atmosphere, the free, open-source cloud comput
 
 ## For Users
 
+- [Getting Started](./getting_started.html)
 - [User Guide](./user_guide.html)
 - [Imaging Guide](./imaging_guide.html)
 
