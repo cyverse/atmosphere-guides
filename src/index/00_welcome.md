@@ -10,6 +10,7 @@ This site hosts documentation for Atmosphere, the free, open-source cloud comput
 - [Atmosphere Troubleshooting Guide](./atmosphere_troubleshooting_guide.html)
 - [GateOne Background](./gateone_background.html)
 - [OpenStack Troubleshooting Guide](./openstack_troubleshooting_guide.html)
+- [Guacamole Administration](./guacamole_administration.html)
 
 ## For Users
 
