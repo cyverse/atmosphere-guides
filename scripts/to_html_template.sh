@@ -7,7 +7,7 @@
 if [ -z "$THEME_NAME" ]; then
   THEME_NAME="cyverse"
 fi
-#NOTE: THEME_PATH is *ALWAYS* relative to the dist/ directory -- 
+#NOTE: THEME_PATH is *ALWAYS* relative to the dist/ directory --
 if [ -z "$THEME_PATH" ]; then
   THEME_PATH="./themes/$THEME_NAME"
 fi
@@ -24,7 +24,7 @@ function run_pandoc {
         -H "./dist/$THEME_PATH/templates/headers.html"\
         -A "./dist/$THEME_PATH/templates/footer.html"\
         -c "./themes/$THEME_NAME/templates/main.css"\
-        --standalone -S --toc --toc-depth 4\
+        --standalone -smart --toc --toc-depth 4\
         -t "html" -o "./dist/${SECTION}.html"
 }
 
