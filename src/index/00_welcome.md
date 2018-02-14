@@ -16,6 +16,7 @@ This site hosts documentation for Atmosphere, the free, open-source cloud comput
 
 - [Getting Started](./getting_started.html)
 - [User Guide](./user_guide.html)
+- [Web Desktop and Web Shell User Guide](./guacamole_user_guide.html)
 - [Imaging Guide](./imaging_guide.html)
 
 ## For Developers
