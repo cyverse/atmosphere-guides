@@ -57,7 +57,7 @@ xrandr -s <choice>
 When you close a Web Shell window, your shell session ends and is not preserved. You may wish to make your shell session persistent, so that you can disconnect from it and reconnect later. For this, we recommend using a terminal multiplexer, either [`tmux`](https://en.wikipedia.org/wiki/Tmux) or [`screen`](https://en.wikipedia.org/wiki/GNU_Screen) on your instance. Both of these may already be installed. Both can be used to keep your shell session active, and connect to it later, even if your browser disconnects.
 
 
-### `tmux`/`screen` Crash Course
+### tmux/screen Crash Course
 
 Create a new terminal multiplexer session and activate it:
 ```
