@@ -27,10 +27,10 @@ An up-to-date `cyverse-theme.jar` is included in the ansible role and is install
 - `install_type` is used to specify if you are installing for CyVerse or Jetstream. It just changes which theme extension is used.
 - Add host to your hosts file:
 
-```
+```yaml
 [guac-servers]
-guac-prod ansible_host=guac-prod.cyverse.org
-guac-jetstream ansible_host=guacamole.jetstream-cloud.org
+guac-prod ansible_host=guac.cyverse.org
+guac-jetstream ansible_host=guac.jetstream-cloud.org
 guac-test ansible_host=192.168.0.111
 ```
 
@@ -39,7 +39,7 @@ guac-test ansible_host=192.168.0.111
 
 - Create playbook. Example:
 
-```
+```yaml
 - hosts: guac-servers
   remote_user: root
   vars:
@@ -52,7 +52,7 @@ guac-test ansible_host=192.168.0.111
 
 - Run the playbook:
 
-```
+```bash
 ansible-playbook guac-pb.yml -l guac-test
 ```
 

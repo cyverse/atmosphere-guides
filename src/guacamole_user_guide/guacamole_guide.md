@@ -39,7 +39,8 @@ In order to copy and paste between your local computer and your instance using o
 ## Changing Resolution of Web Desktop
 
 Open a terminal and use these commands:
-```
+
+```bash
 # Show the available resolution options
 xrandr -q
 
@@ -60,7 +61,8 @@ When you close a Web Shell window, your shell session ends and is not preserved.
 ### tmux/screen Crash Course
 
 Create a new terminal multiplexer session and activate it:
-```
+
+```bash
 tmux
 screen
 ```
@@ -70,19 +72,22 @@ Now you can do your work inside terminal multiplexer, and your session will be p
 You can explicitly "detach" from your terminal multiplexer session by pressing `CTRL+B` in `tmux` or `CTRL+A` in `screen`, followed by pressing the `d` key – though this is not necessary when disconnecting Web Shell. You can just close the browser and your terminal multiplexer session will stay active.
 
 When you re-connect to Web shell, you can re-attach to the first available terminal multiplexer session (i.e. the one that you opened earlier) with:
-```
+
+```bash
 tmux a
 screen -x
 ```
 
 This should bring you back to the same shell, exactly where you were earlier! It's possible to have more than one terminal multiplexer session open, and this may cause confusion. You can list all active terminal multiplexer sessions with:
-```
+
+```bash
 tmux ls
 screen -ls
 ```
 
 If you see multiple sessions listed, you can connect to a named session (e.g. session 0) with
-```
+
+```bash
 tmux a -t 0
 screen -x 0
 ```
@@ -101,7 +106,8 @@ For more information on using `screen`, please see `screen` documentation (e.g. 
 This means that you were successfully authenticated by the Guacamole server, but it was unable to connect to your instance. This could be an issue with the instance, or perhaps with the server. If it continues to happen after a few tries, contact support. The most likely problem is the VNC server closed.
 
 You can try to fix this yourself with these commands:
-```
+
+```bash
 # Kill the Guacamole-specific VNC server
 # If you get an error, that means the server is already killed
 vncserver -kill :5

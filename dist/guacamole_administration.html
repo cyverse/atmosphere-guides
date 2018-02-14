@@ -10,7 +10,72 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
                     <title>00_introduction</title>
         <style type="text/css">code{white-space: pre;}</style>
-                          <link rel="stylesheet" href="./themes/cyverse/templates/main.css" />
+                    <style type="text/css">
+      a.sourceLine { display: inline-block; line-height: 1.25; }
+      a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+      a.sourceLine:empty { height: 1.2em; position: absolute; }
+      .sourceCode { overflow: visible; }
+      code.sourceCode { white-space: pre; position: relative; }
+      div.sourceCode { margin: 1em 0; }
+      pre.sourceCode { margin: 0; }
+      @media screen {
+      div.sourceCode { overflow: auto; }
+      }
+      @media print {
+      code.sourceCode { white-space: pre-wrap; }
+      a.sourceLine { text-indent: -1em; padding-left: 1em; }
+      }
+      pre.numberSource a.sourceLine
+        { position: relative; }
+      pre.numberSource a.sourceLine:empty
+        { position: absolute; }
+      pre.numberSource a.sourceLine::before
+        { content: attr(data-line-number);
+          position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+          border: none; pointer-events: all;
+          -webkit-touch-callout: none; -webkit-user-select: none;
+          -khtml-user-select: none; -moz-user-select: none;
+          -ms-user-select: none; user-select: none;
+          padding: 0 4px; width: 4em;
+          color: #aaaaaa;
+        }
+      pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+      div.sourceCode
+        {  }
+      @media screen {
+      a.sourceLine::before { text-decoration: underline; }
+      }
+      code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+      code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+      code span.at { color: #7d9029; } /* Attribute */
+      code span.bn { color: #40a070; } /* BaseN */
+      code span.bu { } /* BuiltIn */
+      code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+      code span.ch { color: #4070a0; } /* Char */
+      code span.cn { color: #880000; } /* Constant */
+      code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+      code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+      code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+      code span.dt { color: #902000; } /* DataType */
+      code span.dv { color: #40a070; } /* DecVal */
+      code span.er { color: #ff0000; font-weight: bold; } /* Error */
+      code span.ex { } /* Extension */
+      code span.fl { color: #40a070; } /* Float */
+      code span.fu { color: #06287e; } /* Function */
+      code span.im { } /* Import */
+      code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+      code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+      code span.op { color: #666666; } /* Operator */
+      code span.ot { color: #007020; } /* Other */
+      code span.pp { color: #bc7a00; } /* Preprocessor */
+      code span.sc { color: #4070a0; } /* SpecialChar */
+      code span.ss { color: #bb6688; } /* SpecialString */
+      code span.st { color: #4070a0; } /* String */
+      code span.va { color: #19177c; } /* Variable */
+      code span.vs { color: #4070a0; } /* VerbatimString */
+      code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+        </style>
+                    <link rel="stylesheet" href="./themes/cyverse/templates/main.css" />
                     <link rel="icon" href="themes/cyverse/media/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="themes/cyverse/media/css/normalize.min.css">
         <link rel="stylesheet" href="themes/cyverse/media/css/main.css">
@@ -34,15 +99,144 @@
                                   <aside>
                       <h3> TABLE OF CONTENTS </h3>
                       <ul>
-                      <li><a href="#guacamole-introduction">Guacamole Introduction</a></li>
-                      <li><a href="#guacamole-installation-at-cyverse">Guacamole Installation at CyVerse</a></li>
+                      <li><a href="#guacamole-introduction">Guacamole Introduction</a><ul>
+                      <li><a href="#components">Components</a></li>
+                      <li><a href="#authentication">Authentication</a><ul>
+                      <li><a href="#building">Building</a></li>
+                      <li><a href="#installation-configuration">Installation &amp; Configuration</a></li>
+                      <li><a href="#usage">Usage</a></li>
+                      <li><a href="#request-signing">Request Signing</a></li>
+                      <li><a href="#post">POST</a></li>
+                      <li><a href="#notes">Notes</a></li>
+                      </ul></li>
+                      </ul></li>
+                      <li><a href="#guacamole-installation-at-cyverse">Guacamole Installation at CyVerse</a><ul>
+                      <li><a href="#cyverse-guacamole-repositories">CyVerse Guacamole repositories</a></li>
+                      <li><a href="#things-to-know">Things to know</a></li>
+                      <li><a href="#before-running-the-ansible-role">Before running the Ansible role</a></li>
+                      <li><a href="#running-the-ansible-role">Running the Ansible role</a></li>
+                      <li><a href="#after-deploying-guacamole-with-the-ansible-role">After deploying Guacamole with the Ansible role</a></li>
+                      </ul></li>
                       <li><a href="#troubleshooting-guacamole">Troubleshooting Guacamole</a></li>
                       </ul>
                   </aside>
                               <!-- MAIN CONTENT -->
               <article>
               <h1 id="guacamole-introduction">Guacamole Introduction</h1>
+              <p><a href="https://guacamole.apache.org/">Apache Guacamole</a> is a clientless remote access gateway. At CyVerse, we use it to provide web-based VNC and SSH connections to user instances.</p>
+              <h2 id="components">Components</h2>
+              <p>The Guacamole setup at CyVerse consists of a few components:</p>
+              <ol type="1">
+              <li>Tomcat7 Java web-servlet to run the webapp</li>
+              </ol>
+              <ul>
+              <li>Within the webapp, there is an authentication plugin and a theming plugin</li>
+              </ul>
+              <ol type="1">
+              <li><p>Nginx reverse proxy with SSL</p></li>
+              <li><p>guacd is the daemon that handles Guacamole operations. Here is a description from <a href="http://guacamole.apache.org/doc/gug/guacamole-architecture.html#guacd">Guacamole’s documentation</a>:</p>
+              <blockquote>
+              <p>guacd is a daemon process which is installed along with Guacamole and runs in the background, listening for TCP connections from the web application. guacd also does not understand any specific remote desktop protocol, but rather implements just enough of the Guacamole protocol to determine which protocol support needs to be loaded and what arguments must be passed to it. Once a client plugin is loaded, it runs independently of guacd and has full control of the communication between itself and the web application until the client plugin terminates.</p>
+              </blockquote></li>
+              </ol>
+              <h2 id="authentication">Authentication</h2>
+              <p>This plugin is an <em>authentication provider</em> that enables stateless, on-the-fly configuration of remote desktop connections that are authorized using a pre-shared key.</p>
+              <h3 id="building">Building</h3>
+              <p>guacamole-auth-hmac uses Maven for managing builds. After installing Maven you can build a suitable jar for deployment with <code>mvn package</code>.</p>
+              <p>The resulting jar file will be placed in <code>target/guacamole-auth-hmac-&lt;version&gt;.jar</code>.</p>
+              <h3 id="installation-configuration">Installation &amp; Configuration</h3>
+              <p>Install the extension by moving the jar file to <code>/etc/guacamole/extensions</code> and restart tomcat7. <code>guacamole-auth-hmac</code> adds two new config keys to <code>guacamole.properties</code>:</p>
+              <ul>
+              <li><code>secret-key</code> - The key that will be used to verify URL signatures. Whatever is generating the signed URLs will need to share this value.</li>
+              <li><code>timestamp-age-limit</code> - A numeric value (in milliseconds) that determines how long a signed request should be valid for.</li>
+              </ul>
+              <h3 id="usage">Usage</h3>
+              <ul>
+              <li><code>id</code> - A connection ID that must be unique per user session. Can be a random integer <strong><em>or UUID</em></strong>.</li>
+              <li><code>timestamp</code> - A unix timestamp in milliseconds. This is used to prevent replay attacks.</li>
+              <li><code>signature</code> - The SHA256 encrypted signature for authentication.</li>
+              <li><code>guac.protocol</code> - One of <code>vnc</code> or <code>ssh</code>.</li>
+              <li><code>guac.hostname</code> - The hostname of the remote desktop server to connect to.</li>
+              <li><code>guac.port</code> - The port number to connect to.</li>
+              <li><code>guac.username</code> - (<em>optional</em>)</li>
+              <li><code>guac.password</code> - (<em>optional</em>)</li>
+              <li><code>guac.*</code> - (<em>optional</em>) Any other configuration parameters recognized by Guacamole can be by prefixing them with <code>guac.</code>.</li>
+              </ul>
+              <h3 id="request-signing">Request Signing</h3>
+              <p>Requests must be signed with an HMAC, where the message content is generated from the request parameters as follows:</p>
+              <ol type="1">
+              <li>The parameters <code>timestamp</code>, <code>protocol</code>, <code>hostname</code>, <code>port</code>, <code>username</code>, and <code>password</code> are concatenated with the secret key.</li>
+              <li>Encrypt using SHA256.</li>
+              </ol>
+              <h3 id="post">POST</h3>
+              <p>Parameters are POSTed to <code>/guacamole/api/tokens</code> to authenticate. The response is then sent as JSON and contains <code>authToken</code> which is then used to login: <code>guacamole/#/client/(connection)?token=(authToken)</code></p>
+              <p><code>(connection)</code> is an encoded string that tells Guacamole to connect the user to a server. It is generated as follows:</p>
+              <ol type="1">
+              <li>Remove the first two characters from the ID (I have tried it without shortening the ID, but it did not work).</li>
+              <li>Append <code>NULLcNullhmac</code> to the shortened ID.</li>
+              </ol>
+              <ul>
+              <li><code>NULL</code> represents a <code>NULL</code> character (often “\0”).</li>
+              <li><code>c</code> stands for connection.</li>
+              <li><code>hmac</code> is the authentication provider.</li>
+              </ul>
+              <ol type="1">
+              <li>Encode this with base64.</li>
+              </ol>
+              <p>Then, add this to the URL after <code>guacamole/#/client/</code> and append the authToken parameter.</p>
+              <p><a href="https://glyptodon.org/jira/browse/GUAC-1102?jql=project%20%3D%20GUAC%20AND%20resolution%20%3D%20Unresolved%20AND%20priority%20%3D%20Major%20ORDER%20BY%20key%20DESC">More about using POST with Guacamole</a></p>
+              <p><a href="https://sourceforge.net/p/guacamole/discussion/1110834/thread/8bea4c74/#102b">Outline of how Guacamole receives and responds to authentication requests</a></p>
+              <p><a href="https://sourceforge.net/p/guacamole/discussion/1110834/thread/fb609070/">Explanation of the base64 encoded URL</a></p>
+              <h3 id="notes">Notes</h3>
+              <ul>
+              <li>UUIDs can be used rather than integers as connection identifiers.</li>
+              <li>Clicking the link twice <em>without refreshing</em> the page will log out the first connection window and login to the second one. The connection ID <em>does not</em> change, but the user ID <em>does change</em>.</li>
+              </ul>
               <h1 id="guacamole-installation-at-cyverse">Guacamole Installation at CyVerse</h1>
+              <p>This guide will help you to understand and re-create the installation of <a href="https://guacamole.apache.org/">Apache Guacamole</a> at CyVerse. See Apache’s official <a href="https://guacamole.apache.org/doc/gug/installing-guacamole.html">install guide</a> and <a href="https://guacamole.apache.org/doc/gug/configuring-guacamole.html">configuration guide</a>.</p>
+              <h2 id="cyverse-guacamole-repositories">CyVerse Guacamole repositories</h2>
+              <ul>
+              <li>Ansible for deploying Guacamole can be found here: https://github.com/CyVerse-Ansible/ansible-guacamole-server</li>
+              <li>Guacamole HMAC Authentication extension: https://github.com/calvinmclean/guacamole-auth-hmac</li>
+              <li>Guacamole CyVerse theming: https://github.com/calvinmclean/guac-cyverse-theme</li>
+              </ul>
+              <h2 id="things-to-know">Things to know</h2>
+              <p>Guacamole webapp is located at <code>/var/lib/tomcat7/webapps/guacamole.war</code>.</p>
+              <p>Guacamole configuration files are located in <code>/usr/share/tomcat7/.guacamole</code> which is linked to <code>/etc/guacamole</code>. Extensions (hmac auth, CyVerse theme), are located in the subdirectory <code>extensions</code>.</p>
+              <p>Guacamole is proxied through Nginx with the config file in <code>/etc/nginx/sites-available/nginx-guacamole.conf</code>.</p>
+              <p>An up-to-date <code>cyverse-theme.jar</code> is included in the ansible role and is installed in <code>/etc/guacamole/extensions</code>. If you need to manually update the extension, create the jar by zipping the extensions contents, not the directory: <code>zip -r theme.jar *</code>. For Jetstream, checkout the ‘jetstream’ branch and create the jar.</p>
+              <h2 id="before-running-the-ansible-role">Before running the Ansible role</h2>
+              <ul>
+              <li>Define necessary variables</li>
+              <li>The variable <code>nginx_gauc_loc</code> is “/guacamole” by default, but our production server uses “” so Guacamole can be found on guacamole-prod.cyverse.org/ (instead of guacamole-prod.cyverse.org/guacamole).</li>
+              <li><code>install_type</code> is used to specify if you are installing for CyVerse or Jetstream. It just changes which theme extension is used.</li>
+              <li>Add host to your hosts file:</li>
+              </ul>
+              <div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">[</span>guac-servers<span class="kw">]</span></a>
+              <a class="sourceLine" id="cb1-2" data-line-number="2">guac-prod ansible_host=guac.cyverse.org</a>
+              <a class="sourceLine" id="cb1-3" data-line-number="3">guac-jetstream ansible_host=guac.jetstream-cloud.org</a>
+              <a class="sourceLine" id="cb1-4" data-line-number="4">guac-test ansible_host=192.168.0.111</a></code></pre></div>
+              <h2 id="running-the-ansible-role">Running the Ansible role</h2>
+              <ul>
+              <li>Create playbook. Example:</li>
+              </ul>
+              <div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">-</span> <span class="fu">hosts:</span><span class="at"> guac-servers</span></a>
+              <a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="fu">remote_user:</span><span class="at"> root</span></a>
+              <a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="fu">vars:</span></a>
+              <a class="sourceLine" id="cb2-4" data-line-number="4">    <span class="fu">letsencrypt_renew_email:</span><span class="at"> </span><span class="st">&quot;me@cyverse.org&quot;</span></a>
+              <a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="fu">nginx_gauc_loc:</span><span class="at"> </span><span class="st">&quot;&quot;</span></a>
+              <a class="sourceLine" id="cb2-6" data-line-number="6"></a>
+              <a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="fu">roles:</span></a>
+              <a class="sourceLine" id="cb2-8" data-line-number="8">    <span class="kw">-</span> ansible-guacamole-server</a></code></pre></div>
+              <ul>
+              <li>Run the playbook:</li>
+              </ul>
+              <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="ex">ansible-playbook</span> guac-pb.yml -l guac-test</a></code></pre></div>
+              <h2 id="after-deploying-guacamole-with-the-ansible-role">After deploying Guacamole with the Ansible role</h2>
+              <ul>
+              <li>Ensure that Let’s Encrypt certificates are successfully setup, fix them if needed.</li>
+              <li>Double check that <code>/etc/guacamole</code> is owned by <code>tomcat7:tomcat7</code></li>
+              </ul>
               <h1 id="troubleshooting-guacamole">Troubleshooting Guacamole</h1>
               </article>
             </div> <!-- #main -->
