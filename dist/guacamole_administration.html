@@ -117,7 +117,14 @@
                       <li><a href="#running-the-ansible-role">Running the Ansible role</a></li>
                       <li><a href="#after-deploying-guacamole-with-the-ansible-role">After deploying Guacamole with the Ansible role</a></li>
                       </ul></li>
-                      <li><a href="#troubleshooting-guacamole">Troubleshooting Guacamole</a></li>
+                      <li><a href="#troubleshooting-guacamole">Troubleshooting Guacamole</a><ul>
+                      <li><a href="#assisting-users">Assisting Users</a><ul>
+                      <li><a href="#problem-connection-error---closed-the-connection-when-attempting-a-connection.">Problem: “Connection Error - closed the connection” when attempting a connection.</a></li>
+                      </ul></li>
+                      <li><a href="#server-side-troubleshooting">Server-side Troubleshooting</a><ul>
+                      <li><a href="#problem-unable-to-bind-socket-to-any-addresses.-error-from-guacd">Problem: “Unable to bind socket to any addresses.” error from guacd</a></li>
+                      </ul></li>
+                      </ul></li>
                       </ul>
                   </aside>
                               <!-- MAIN CONTENT -->
@@ -238,6 +245,26 @@
               <li>Double check that <code>/etc/guacamole</code> is owned by <code>tomcat7:tomcat7</code></li>
               </ul>
               <h1 id="troubleshooting-guacamole">Troubleshooting Guacamole</h1>
+              <p>These are a few common problems we see with Guacamole on Atmosphere. See Apache Guacamole’s <a href="https://guacamole.apache.org/doc/gug/troubleshooting.html">troubleshooting guide</a> for additional troubleshooting help.</p>
+              <h2 id="assisting-users">Assisting Users</h2>
+              <p>Tips for troubleshooting problems that users experience.</p>
+              <h3 id="problem-connection-error---closed-the-connection-when-attempting-a-connection.">Problem: “Connection Error - closed the connection” when attempting a connection.</h3>
+              <p>The user was successfully authenticated by the Guacamole server, but the Guacamole server could not connect to the instance. Therefore, this is most likely a problem with the instance, not the server.</p>
+              <h5 id="solution">Solution</h5>
+              <p>If it is a VNC connection, the instance’s VNC server is messed up. To fix it:</p>
+              <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Kill the Guacamole-specific VNC server</span></a>
+              <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># If you get an error, that means the server is already killed</span></a>
+              <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="ex">vncserver</span> -kill :5</a>
+              <a class="sourceLine" id="cb4-4" data-line-number="4"></a>
+              <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co"># Restart the VNC server</span></a>
+              <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="ex">vncserver</span> -config ~/.vnc/config.guac :5</a></code></pre></div>
+              <h2 id="server-side-troubleshooting">Server-side Troubleshooting</h2>
+              <p>Tips for troubleshooting issues on the Guacamole server.</p>
+              <h3 id="problem-unable-to-bind-socket-to-any-addresses.-error-from-guacd">Problem: “Unable to bind socket to any addresses.” error from guacd</h3>
+              <p>This error may appear in the syslog when trying to restart the guacd process. This error occurs when you try to start guacd while it is already running.</p>
+              <h5 id="solution-1">Solution:</h5>
+              <p>Manually kill the guacd process.</p>
+              <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="ex">pkill</span> -f guacd</a></code></pre></div>
               </article>
             </div> <!-- #main -->
         </div> <!-- #main-container -->
