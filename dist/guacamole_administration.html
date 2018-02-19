@@ -174,7 +174,6 @@
               <p>Parameters are POSTed to <code>/guacamole/api/tokens</code> to authenticate. The response is then sent as JSON and contains <code>authToken</code> which is then used to login: <code>guacamole/#/client/(connection)?token=(authToken)</code></p>
               <p><code>(connection)</code> is an encoded string that tells Guacamole to connect the user to a server. It is generated as follows:</p>
               <ol type="1">
-              <li>Remove the first two characters from the ID (I have tried it without shortening the ID, but it did not work). See <a href="https://github.com/calvinmclean/guacamole-auth-hmac/blob/master/src/main/java/com/stephensugden/guacamole/net/hmac/HmacAuthenticationProvider.java#L175-L180">this part</a> of the authentication plugin to see why. In these lines, the auth plugin removes the first two characters from the ID, so the program for creating the link must do the same.</li>
               <li>Append <code>NULLcNULLhmac</code> to the shortened ID.</li>
               </ol>
               <ul>

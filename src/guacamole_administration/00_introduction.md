@@ -71,7 +71,6 @@ Parameters are POSTed to `/guacamole/api/tokens` to authenticate. The response i
 
 `(connection)` is an encoded string that tells Guacamole to connect the user to a server. It is generated as follows:
 
-1. Remove the first two characters from the ID (I have tried it without shortening the ID, but it did not work). See [this part](https://github.com/calvinmclean/guacamole-auth-hmac/blob/master/src/main/java/com/stephensugden/guacamole/net/hmac/HmacAuthenticationProvider.java#L175-L180) of the authentication plugin to see why. In these lines, the auth plugin removes the first two characters from the ID, so the program for creating the link must do the same.
 1. Append `NULLcNULLhmac` to the shortened ID.
   - `NULL` represents a `NULL` character (often "\0").
   - `c` stands for connection.
