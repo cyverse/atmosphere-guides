@@ -134,12 +134,7 @@
               <h2 id="components">Components</h2>
               <p>The Guacamole setup at CyVerse consists of a few components:</p>
               <ol type="1">
-              <li>Tomcat7 Java web-servlet to run the webapp</li>
-              </ol>
-              <ul>
-              <li>Within the webapp, there is an authentication plugin and a theming plugin</li>
-              </ul>
-              <ol type="1">
+              <li><p>Tomcat7 Java web-servlet to run the webapp (Within the webapp, there is an authentication plugin and a theming plugin)</p></li>
               <li><p>Nginx reverse proxy with SSL</p></li>
               <li><p>guacd is the daemon that handles Guacamole operations. Here is a description from <a href="http://guacamole.apache.org/doc/gug/guacamole-architecture.html#guacd">Guacamole’s documentation</a>:</p>
               <blockquote>
@@ -179,8 +174,8 @@
               <p>Parameters are POSTed to <code>/guacamole/api/tokens</code> to authenticate. The response is then sent as JSON and contains <code>authToken</code> which is then used to login: <code>guacamole/#/client/(connection)?token=(authToken)</code></p>
               <p><code>(connection)</code> is an encoded string that tells Guacamole to connect the user to a server. It is generated as follows:</p>
               <ol type="1">
-              <li>Remove the first two characters from the ID (I have tried it without shortening the ID, but it did not work).</li>
-              <li>Append <code>NULLcNullhmac</code> to the shortened ID.</li>
+              <li>Remove the first two characters from the ID (I have tried it without shortening the ID, but it did not work). See <a href="https://github.com/calvinmclean/guacamole-auth-hmac/blob/master/src/main/java/com/stephensugden/guacamole/net/hmac/HmacAuthenticationProvider.java#L175-L180">this part</a> of the authentication plugin to see why. In these lines, the auth plugin removes the first two characters from the ID, so the program for creating the link must do the same.</li>
+              <li>Append <code>NULLcNULLhmac</code> to the shortened ID.</li>
               </ol>
               <ul>
               <li><code>NULL</code> represents a <code>NULL</code> character (often “\0”).</li>
