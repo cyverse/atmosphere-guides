@@ -7,9 +7,7 @@
 
 The Guacamole setup at CyVerse consists of a few components:
 
-1. Tomcat7 Java web-servlet to run the webapp
-
-  - Within the webapp, there is an authentication plugin and a theming plugin
+1. Tomcat7 Java web-servlet to run the webapp (Within the webapp, there is an authentication plugin and a theming plugin)
 
 1. Nginx reverse proxy with SSL
 
@@ -74,7 +72,7 @@ Parameters are POSTed to `/guacamole/api/tokens` to authenticate. The response i
 `(connection)` is an encoded string that tells Guacamole to connect the user to a server. It is generated as follows:
 
 1. Remove the first two characters from the ID (I have tried it without shortening the ID, but it did not work).
-1. Append `NULLcNullhmac` to the shortened ID.
+1. Append `NULLcNULLhmac` to the shortened ID.
   - `NULL` represents a `NULL` character (often "\0").
   - `c` stands for connection.
   - `hmac` is the authentication provider.
