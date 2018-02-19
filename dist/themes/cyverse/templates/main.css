@@ -33,25 +33,23 @@ article img {
     width: 100%;
 }
 
+code {
+  /*
+      TODO: normalize.min.css is imported after this file which
+      is wrong. Will look into fixing that and removing this
+      !important rule later
+  */
+  font-size: .9em !important;
+  background: rgba(0,0,0,0.03);
+  padding: 5px;
+}
+
 pre code {
     line-height: 1.2;
     display: block;
     overFlow: scroll;
     padding: 10px;
-    /*
-        TODO: normalize.min.css is imported after this file which
-        is wrong. Will look into fixing that and removing this
-        !important rule later
-    */
-    font-size: .9em !important;
     border-left: solid rgba(0,0,0,.08) 5px;
-    background: rgba(0,0,0,0.03);
-}
-
-code {
-  font-size: .9em !important;
-  background: rgba(0,0,0,0.03);
-  padding: 5px;
 }
 
 audio,
