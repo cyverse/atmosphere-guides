@@ -5,8 +5,8 @@ Maintenance records are set separately for Atmosphere(2) and Troposphere. During
 To begin maintenance, enter the following commands on the Atmosphere(2) server:
 
 ```
-tropomanage maintenance start --title "2017-12-12 - v30 Deployment" --message "Atmosphere is down for a Scheduled Maintenance, Today between 10am - 4pm MST." --start-now
-atmomanage maintenance start --title "2017-12-12 - v30 Deployment" --message "Atmosphere is down for a Scheduled Maintenance, Today between 10am - 4pm MST." --start-now
+tropomanage maintenance start --title "2017-12-12 - v30 Deployment" --message "Atmosphere is down for a Scheduled Maintenance, Today between 10am - 4pm MST."
+atmomanage maintenance start --title "2017-12-12 - v30 Deployment" --message "Atmosphere is down for a Scheduled Maintenance, Today between 10am - 4pm MST."
 ```
 
 To end maintenance, enter these commands:
