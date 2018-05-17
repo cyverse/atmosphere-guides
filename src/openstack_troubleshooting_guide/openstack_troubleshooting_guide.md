@@ -36,6 +36,33 @@ Here we are using an OpenStack cloud deployed using OpenStack-Ansible, so the pr
 
 These instructions were tested using the `spicy` client included with the `spice-client-gtk` APT package. With SSH port forwarding, you can point your local SPICE client to localhost on port 5901; the connection will be forwarded to 172.29.236.147:5900 on the compute host. A graphical console session should be obtained which accepts keyboard input, ctrl+alt+del, etc.
 
+### Connect to Instance Console using libvirt (also how to update the root password)
+
+#### Lookup the compute node and libvirt instance id
+The compute host: `openstack server show <server uuid> -c OS-EXT-SRV-ATTR:host`
+
+The libvirt id: `openstack server show <server uuid> -c OS-EXT-SRV-ATTR:instance_name`
+
+#### Replace the root password
+1. Stop the instance first
+1. Generate a new password
+    1. openssl passwd -1
+1. Navigate to the compute node (on marana navigate to deployhost.marana-cloud.cyverse.org first)
+1. Update the password
+    1. virt-edit -d <libvirt id> /etc/shadow
+    1. Find the line with root and replace everything between the first and second colon with the output of the openssl command
+1. Start the instance
+
+#### Connect through libvirt console
+If the instance has networking you should be able to ssh as root. Otherwise read below to connect via the libvirt console.
+
+Try to connect to the instance's `serial0` device
+     
+     virsh console <libvirt id> --devname serial0
+     
+That might fail in which case you should try with `serial1`.In either case you should be prompted for login. If you want to verify the device name, run `virsh dumpxml <libvirt id>`. It's possible there is no console device.
+
+
 ### Inspect the Filesystem of a Running Instance with Broken Networking
 
 To inspect filesystem of an instance that will not accept SSH connections or a console session, you can create a snapshot (image) of that instance, convert that image to a volume, and then attach that volume to another instance.
