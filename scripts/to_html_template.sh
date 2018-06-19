@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 
 ###
@@ -20,10 +20,10 @@ function run_pandoc {
     pandoc \
         $MD_FILES\
         --template "templates/html/bootstrap.html"\
-        -B "./dist/$THEME_PATH/templates/header.html"\
-        -H "./dist/$THEME_PATH/templates/headers.html"\
-        -A "./dist/$THEME_PATH/templates/footer.html"\
-        -c "./themes/$THEME_NAME/templates/main.css"\
+        -B "$THEME_PATH/templates/header.html"\
+        -H "$THEME_PATH/templates/headers.html"\
+        -A "$THEME_PATH/templates/footer.html"\
+        -c "$THEME_PATH/templates/main.css"\
         --standalone -smart --toc --toc-depth 4\
         -t "html" -o "./dist/${SECTION}.html"
 }
