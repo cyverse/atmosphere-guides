@@ -61,8 +61,11 @@ See CONTRIBUTING.md for Pandoc-specific details not covered here.
 
 Static HTML is served on [GitHub Pages](https://pages.github.com/) from the `gh-pages` branch of this repository, which contains only the `dist/` folder of the master branch. After pushing changes to master or merging in a pull request, the gh-pages branch will be automatically updated by the Travis CI [deployment provider for GitHub Pages](https://docs.travis-ci.com/user/deployment/pages/). This automation only works for cyverse/atmosphere-guides repo at the moment.
 
-If you would like to publish your dist folder to **your fork**'s `gh-pages`:
+If you would like to publish your **your fork**'s guide to `gh-pages`:
 ```
+# Build the site in the dist folder
+make
+
 # Overwrite your remote's gh-pages
 git push -f <your remote> "$(git subtree split  --prefix dist)":gh-pages
 ```

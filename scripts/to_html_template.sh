@@ -7,9 +7,8 @@
 if [ -z "$THEME_NAME" ]; then
   THEME_NAME="cyverse"
 fi
-#NOTE: THEME_PATH is *ALWAYS* relative to the dist/ directory --
 if [ -z "$THEME_PATH" ]; then
-  THEME_PATH="./themes/$THEME_NAME"
+  THEME_PATH="themes/$THEME_NAME"
 fi
 
 ###
@@ -20,10 +19,10 @@ function run_pandoc {
     pandoc \
         $MD_FILES\
         --template "templates/html/bootstrap.html"\
-        -B "./dist/$THEME_PATH/templates/header.html"\
-        -H "./dist/$THEME_PATH/templates/headers.html"\
-        -A "./dist/$THEME_PATH/templates/footer.html"\
-        -c "./themes/$THEME_NAME/templates/main.css"\
+        -B "$THEME_PATH/templates/header.html"\
+        -H "$THEME_PATH/templates/headers.html"\
+        -A "$THEME_PATH/templates/footer.html"\
+        -c "$THEME_NAME/templates/main.css"\
         --standalone -smart --toc --toc-depth 4\
         -t "html" -o "./dist/${SECTION}.html"
 }
@@ -38,6 +37,7 @@ function main {
     for SECTION in "$@"
     do
         MD_FILES=`find "src/${SECTION}/" -name "*.md" | sort | tr '\n' ' '`
+        [ ! -d dist ] && mkdir dist;
         run_pandoc
     done
 }
