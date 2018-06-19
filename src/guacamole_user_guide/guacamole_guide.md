@@ -21,6 +21,17 @@ In order to copy and paste between your local computer and your instance using o
 ![](./media/guac_desktop_copypaste.gif)
 
 
+### File Upload/Download
+
+To upload a file, you can simply drag-and-drop it into the browser window. It will automatically be uploaded to your home directory.
+
+To download files, pull up the side menu and double-click on the drive under "Devices". You can then navigate the filesystem by double-clicking through directories and then double-click on a file that you want to download.
+
+You can also upload files by navigating through the filesystem in the menu and clicking the upload button.
+
+_Note: File upload can be pretty slow so it is recommended that you use a different method for files larger than 100 MB._
+
+
 ## Web Shell
 
 - Connect using the "Open Web Shell" button on the instance details page of Atmosphere.
