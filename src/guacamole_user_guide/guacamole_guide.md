@@ -10,9 +10,17 @@ Use `CTRL + ALT + SHIFT` to open a side menu. From here, you can browse system f
 
 ### Copy/Paste
 
-In order to copy and paste between your local computer and your instance using our Web Desktop and Web Shell, you must use the text box in the side menu. The reason that you cannot directly copy/paste is that most browsers have strict control of clipboard access. If you use Google Chrome, you can install [this extension](https://chrome.google.com/webstore/detail/clipboard-permission-mana/ipbhneeanpgkaleihlknhjiaamobkceh) to allow access to your clipboard. A full explanation of this is available on the [Apache Guacamole website](https://guacamole.apache.org/faq/#clipboard).
+The latest versions of the Chrome web browser support clipboard access. On your first time opening a connection to the Web Desktop or Web Shell, you will be prompted to grant clipboard permission. This will allow you to easily copy/paste directly into the Web Shell or Web Desktop.
 
-- On Web Shell: text from your instance will appear in the text box if you highlight it. Paste text into the terminal by right-clicking.
+At the time of writing this, the latest Firefox version is 65.0 and does not directly support clipboard access. If your version does not support it yet, you can enable the beta feature by visiting the URL `about:config` and searching for `dom.events.testing.asyncClipboard`. Setting the value of this feature to `true` will enable clipboard use. However these are advanced settings so do this at your own risk.
+
+
+If your browser does not support clipboard access, you can still copy/paste the old way:
+
+> In order to copy and paste between your local computer and your instance using our Web Desktop and Web Shell, you must use the text box in the side menu. The reason that you cannot directly copy/paste is that most browsers have strict control of clipboard access. A full explanation of this is available on the [Apache Guacamole website](https://guacamole.apache.org/faq/#clipboard).
+
+
+- On Web Shell: text from your instance will be copied if you highlight it. Paste text into the terminal by right-clicking.
 
 ![](./media/guac_shell_copypaste.gif)
 
