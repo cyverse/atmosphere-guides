@@ -57,9 +57,9 @@ The libvirt id: `openstack server show <server uuid> -c OS-EXT-SRV-ATTR:instance
 If the instance has networking you should be able to ssh as root. Otherwise read below to connect via the libvirt console.
 
 Try to connect to the instance's `serial0` device
-     
+
      virsh console <libvirt id> --devname serial0
-     
+
 That might fail in which case you should try with `serial1`.In either case you should be prompted for login. If you want to verify the device name, run `virsh dumpxml <libvirt id>`. It's possible there is no console device.
 
 
@@ -105,6 +105,41 @@ ImageUnacceptable: Image 0a23ea76-d661-4483-a562-cba0a3f58a21 is unacceptable: I
 
 https://bugs.launchpad.net/cinder/+bug/1599147
 This is fixed but not yet in current stable releases of OpenStack (as of April 2017). Until then, you must look for this error and then specify a larger size when running `openstack volume create`.
+
+### Instance stuck shelved/unshelving
+
+You may end up with an instance in a stuck/invalid state after a failed attempt at unshelving. This instance may be in an error state, showing no associated compute host, and `nova reset-state` followed by a hard reboot does not fix.
+
+The typical fix for this is to launch a new instance from the image of the shelved instance (or from a copy of this image). Steps on the OpenStack CLI follow:
+
+- If needed, make your admin account a mamber of the user's project
+  - `openstack role add --project janedoe --user admin _member_`
+- If needed, create an openrc file to get a token scoped to the user's project as your administrative user
+- On the OpenStack CLI, ensure you get a token for the desired project
+  - `openstack token issue`
+- Determine ID of image for the shelved instance
+  - `openstack image list --private`
+- If needed, get information required to launch new instance
+  - `openstack network list`
+- Launch the new instance using the image of previous shelved instance
+  - `openstack server create --image uuid-of-shelved-instance-image --flavor insert-appropriate-flavor-here --nic net-id=uuid-of-users-private-network name-of-users-recovered-instance`
+
+In order for the new instance to show up in Atmosphere(0), either wait for the periodic instance monitoring task, or monitor instances from your Atmosphere server:
+
+```
+cd /opt/dev/atmosphere
+. /opt/env/atmo/bin/activate
+./manage.py shell
+# Moving from bash to python repl:
+from service.tasks.monitoring import monitor_instances_for
+# Replace 8 with your actual provider ID (look it up in the database / Django admin)
+monitor_instances_for(8)
+```
+
+Next, in Troposphere, emulate as the user (and refresh your browser if needed). Troposphere should prompt to choose an allocation source and an Atmosphere(2) project.
+
+Finally, click the "Redeploy" button in Troposphere if needed to get the various remote access methods (e.g. Guacamole desktop) working.
+
 
 ## Image Troubleshooting
 
