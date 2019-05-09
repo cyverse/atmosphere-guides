@@ -30,6 +30,7 @@ These steps must be completed in order to ensure the image that is created is co
     - `/tmp`
     - `/var/log` - All files and directories will be *emptied* but not destroyed, as part of the imaging process.
     - `/root` - All files and directories under /root/ will be destroyed as part of the imaging process.
+    - `/scratch`
 
 - Volumes will *NOT* be copied to a new image. The files must exist on the disk.
 
