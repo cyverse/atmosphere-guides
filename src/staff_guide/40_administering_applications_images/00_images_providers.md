@@ -26,3 +26,47 @@ source /opt/env/atmo/bin/activate
 /opt/dev/atmosphere/scripts/application_sync_providers.py 7 4 5
 ```
 
+### Troubleshooting images that aren't copying to replica providers
+
+Sometimes images are not correctly copied to replica providers.  This leaves the system in a state
+in which Atmosphere has database records for the image on that provider and therefore doesn't
+attempt to copy the image but the provider can't actually launch and instance with that image
+because it's either been partially copied or has some other error.
+
+If you're ever in a situation where a particular image doesn't seem to ever get copied to a provider
+despite running the `aplication_sync_providers.py` script, use the following steps to troubleshoot:
+
+0. Delete the image in the destination provider cloud (e.g. using OpenStack)
+1. Visit the page for the image that's not being copied in your browser and retrieve its application
+   id (`application/images/<app_id>`)
+2. Open a Django shell in the main Atmosphere container:
+```
+./manage.py shell
+```
+3. Import the necessary models and store the Application in question in a variable for later use:
+```
+from core.models import Application, ApplicationVersion, InstanceSource, ProviderMachine
+app = Application.objects.get(id=<app_id>)
+```
+4.  Retrieve the ApplicationVersion that's not being copied over.  You can get a list of all
+   ApplicationVersions that are active for an application by doing:
+```
+app.active_versions()
+```
+5. Store the ApplicationVersion that's not being copied over in a variable.  We'll call this
+   variable `bad_version`.
+6. Find the corresponding `ProviderMachines` for that `ApplicationVersion`:
+
+```
+ProviderMachine.objects.filter(application_version=bad_version.id)
+```
+7. Take note of the UUIDs for the `ProviderMachines` on the replica `Provider` and put it
+   somewhere safe.  Then delete the `ProviderMachines` on the replica `Provider`.
+8. Use the UUID from the previous step to find and delete the `InstanceSources` that have that UUID
+   *and* are on the replica `Provider`:
+```
+$ InstanceSource.objects.filter(identifier=<uuid_from_last_step>)
+```
+
+9.  Run the `application_sync_providers.py` script as mentioned above for the correct providers and
+    replicas.  This should copy the image to the replica provider.
