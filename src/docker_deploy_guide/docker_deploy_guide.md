@@ -38,7 +38,7 @@ To create the release candidate on Github:
   3. Create and tag a new release by visiting the [releases page for the repo](https://github.com/cyverse/atmosphere/releases) and clicking "Draft a new release"
   4. This will trigger a new tagged build on Dockerhub
     - **NOTE**: If you cannot wait for the Dockerhub build to complete, do a shallow clone of Atmosphere/Troposphere and build (instead of including all branches and things from your local repository):
-        ```bash
+        ```shell
         git clone --depth 1 --branch v36-6 https://github.com/cyverse/atmosphere.git && cd atmosphere
         docker build -t cyverse/atmosphere:v36-6 .
         ```
@@ -55,7 +55,7 @@ To create the release candidate on Github:
 ## Deployment Day
 
 **Pre-deployment:** add the following to your aliases to save time typing:
-```bash
+```shell
 alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt/dev/atmosphere-docker/docker-compose.prod.yml"
 ```
 
@@ -86,6 +86,12 @@ alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt
       --title '2019-06-16 v36-1 deployment' \
       --message 'Atmosphere is down for a Scheduled Maintenance, Today between 9am - 4pm MST.'"
     ```
+    - If there is a separate proxy server or nginx for Atmosphere, switch that over to a maintenance message:
+      ```shell
+      rm /etc/nginx/sites-enabled/proxy.conf
+      ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+      systemctl restart nginx
+      ```
 
 3. Checkout the correct branch of `atmosphere-docker-secrets` and double-check variables
 
