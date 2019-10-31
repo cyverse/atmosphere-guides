@@ -63,7 +63,30 @@ alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt
 
 1. Clone the [`atmosphere-docker`](https://github.com/cyverse/atmosphere-docker) and `atmosphere-docker-secrets` repositories
 
-2. Continue to [Upgrading with Atmosphere-Docker](#upgrading-with-atmosphere-docker) instructions
+2. Setup PostgreSQL
+    1. Install PostgreSQL 9.6 with `apt-get` (Google to find up-to-date guide)
+    2. Edit `/etc/postgresql/9.6/main/postgresql.conf` to uncomment `listen_addresses = 'localhost'` and add Docker host: `listen_addresses = 'localhost,172.17.0.1'`
+    3. Edit `/etc/postgresql/9.6/main/pg_hba.conf` to add this line which will allow connections from within the Docker network:
+        ```
+        host    all             all             172.16.0.0/12           md5
+        ```
+    4. Restart PostgreSQL: `systemctl restart postgresql`
+    5. Create `atmo_app` user and databases:
+        ```SQL
+        CREATE USER atmo_app WITH CREATEDB NOSUPERUSER CREATEROLE;
+        ALTER USER atmo_app WITH PASSWORD 'password';
+        -- Reconnect as atmo_app user
+        CREATE DATABASE atmo_prod;
+        CREATE DATABASE troposphere;
+        ```
+    6. Load data from database dumps:
+      ```shell
+      psql -h localhost -U atmo_app atmo_prod < data_base_dump
+      psql -h localhost -U atmo_app troposphere < data_base_dump
+      ```
+
+
+3. Continue to [Upgrading with Atmosphere-Docker](#upgrading-with-atmosphere-docker) instructions
 
 
 ### Upgrading with Atmosphere-Docker
