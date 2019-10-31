@@ -4,6 +4,7 @@ This site hosts documentation for Atmosphere, the free, open-source cloud comput
 
 ## For Site Operators
 
+- [Deploying with Atmosphere Docker](./docker_deploy_guide.html)
 - [Install Guide](./install_guide.html)
 - [Connecting a Cloud Provider](./connecting_cloud_provider.html)
 - [Staff Guide](./staff_guide.html)
