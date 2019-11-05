@@ -161,7 +161,7 @@ Imagine you want to deploy an important change that cannot wait until the next s
   2. Scale up the Atmosphere service:
 
   ```
-  docker-compose -f docker-compose.prod.yml up -d --scale atmosphere=2 --no-recreate --no-deps
+  ./atmosphere-docker.sh -f docker-compose.prod.yml up -d --scale atmosphere=2 --no-recreate --no-deps
   ```
 
   - By scaling atmosphere up, compose will create a new container alongside the first one. It will now load-balance round robin style between the two containers
@@ -182,7 +182,7 @@ Imagine you want to deploy an important change that cannot wait until the next s
   4. Now you will need to restart Nginx, probably due to the way the underlying docker network handles hostname mapping:
 
   ```
-  docker-compose exec troposphere bash
+  ./atmosphere-docker.sh -f docker-compose.prod.yml exec troposphere bash
   service nginx restart # inside troposphere container
   ```
 
