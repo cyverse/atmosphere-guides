@@ -148,3 +148,42 @@ alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt
     atmosphere-docker exec atmosphere /bin/bash -c \
       "source /opt/env/atmo/bin/activate && ./manage.py maintenance stop"
     ```
+
+
+## Hotfixing
+
+The wonderful thing about Docker and containers in general is that they are easy to create and destroy. Also, changes inside the container do not have to be reflected outside the container to the services interacting with it. This gives us the ability to easily swap out one container for a new one.
+
+Imagine you want to deploy an important change that cannot wait until the next scheduled maintenance. Once you have a container image ready with this new feature, follow these instructions:
+
+  1. Edit the `docker-compose.prod.yml` file with the new image tag
+
+  2. Scale up the Atmosphere service:
+
+  ```
+  ./atmosphere-docker.sh -f docker-compose.prod.yml up -d --scale atmosphere=2 --no-recreate --no-deps
+  ```
+
+  - By scaling atmosphere up, compose will create a new container alongside the first one. It will now load-balance round robin style between the two containers
+  - The `--no-recreate` flag here is very important to avoid stopping and deleting the original, out-of-date container
+
+  3. Wait for the new container (`atmosphere_2`) to finish the setup tasks, then stop and delete the original:
+
+  ```
+  docker kill atmosphere-docker_atmosphere_1
+  docker rm atmosphere-docker_atmosphere_1
+  ```
+
+  - Note: the container names may be slightly different than above
+  - Unfortunately, the new container will always have the `2` index and will require `--index=2` on all compose commands interacting with that container. **On Jetstream, add this to entries in the crontab after completing the next step**
+    - Scaling back down to 1 will delete the newest container
+    - Renaming will not change anything since docker-compose relies on immutable labels
+
+  4. Now you will need to restart Nginx, probably due to the way the underlying docker network handles hostname mapping:
+
+  ```
+  ./atmosphere-docker.sh -f docker-compose.prod.yml exec troposphere bash
+  service nginx restart # inside troposphere container
+  ```
+
+  5. Remember to update any crontab entries using `docker-compose` to include `--index=2`
