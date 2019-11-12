@@ -102,3 +102,11 @@ tomcat logs can be found at `/var/log/tomcat7/catalina.out`. Some additional log
   systemctl restart guacd
   systemctl restart nginx
   ```
+
+
+### Note
+Additional information can be gathered from this ansible repository:
+
+https://github.com/CyVerse-Ansible/ansible-guacamole-server
+
+However, it may not be completely up-to-date
