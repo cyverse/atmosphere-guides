@@ -51,7 +51,7 @@ To create the release candidate on Github:
 
 <br>
 
-## Deployment Day
+## Deployment Day!
 
 **Pre-deployment:** add the following to your aliases to save time typing:
 ```shell
@@ -60,14 +60,14 @@ alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt
 
 ### Deploying Atmosphere-Docker for the First Time
 
-1. Clone the [`atmosphere-docker`](https://github.com/cyverse/atmosphere-docker) and `atmosphere-docker-secrets` repositories (typically do this at `/opt/dev/`)
+1. Clone the [`atmosphere-docker`](https://github.com/cyverse/atmosphere-docker) and [`atmosphere-docker-secrets`](https://gitlab.cyverse.org/atmosphere/atmosphere-docker-secrets) repositories - typically do this at `/opt/dev/`
 
 2. Setup PostgreSQL
-    1. Install PostgreSQL 9.6 with `apt-get` (Google to find up-to-date guide)
-    2. Edit `/etc/postgresql/9.6/main/postgresql.conf` to uncomment `listen_addresses = 'localhost'` and add Docker host: `listen_addresses = 'localhost,172.17.0.1'`
+    1. Install PostgreSQL with `apt-get` (Google to find up-to-date guide)
+    2. Edit `/etc/postgresql/<version>/main/postgresql.conf` to uncomment `listen_addresses = 'localhost'` and add Docker host: `listen_addresses = 'localhost,172.17.0.1'`
     3. Also sure that `ssl = off`, otherwise it will cause issues with user login
     
-    4. Edit `/etc/postgresql/9.6/main/pg_hba.conf` to add this line which will allow connections from within the Docker network:
+    4. Edit `/etc/postgresql/<version>/main/pg_hba.conf` to add this line which will allow connections from within the Docker network:
         ```
         host    all             all             172.16.0.0/12           md5
         ```
@@ -85,7 +85,6 @@ alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt
       psql -h localhost -U atmo_app atmo_prod < data_base_dump
       psql -h localhost -U atmo_app troposphere < data_base_dump
       ```
-
 
 3. Continue to [Upgrading with Atmosphere-Docker](#upgrading-with-atmosphere-docker) instructions
 
@@ -111,15 +110,15 @@ alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt
       --title '2019-06-16 v36-1 deployment' \
       --message 'Atmosphere is down for a Scheduled Maintenance, Today between 9am - 4pm MST.'"
     ```
-    - If there is a separate proxy server or nginx for Atmosphere (atmo.cyverse.org for Cyverse prod and use.jetstream-cloud.org for Jetstream prod), switch that over to a maintenance message:
+    - If there is a separate proxy server or nginx for Atmosphere - atmo.cyverse.org for Cyverse prod and use.jetstream-cloud.org for Jetstream prod - switch that over to a maintenance message:
       ```shell
       cd /etc/nginx/sites-enabled
       ln -sf /etc/nginx/sites-available/default proxy.conf
       systemctl restart nginx
       ```
-    - You could also set this (and #8 below) up as 'at' jobs on the proxy server
+    - You could also set this (and #8 below) up as 'at' jobs on the proxy server beforehand to get done automatically
       
-3. Checkout the correct branch of `atmosphere-docker-secrets` and double-check variables (prod, jetstream-prod, atmobeta, etc)
+3. Checkout the correct branch of `atmosphere-docker-secrets` - prod, jetstream-prod, atmobeta, etc - and double-check that variables look correct for this server and consist of your latest updates, if any
 
 4. Stop the current containers and back them up to images
     ```shell
@@ -129,7 +128,7 @@ alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt
     ```
     - Unfortunately, there is no way to preserve the containers without creating an image. Even if you rename the containers, docker-compose uses the IDs
 
-5. Make sure `atmosphere-docker` repository is up-to-date (be careful to note any significant changes before doing this)
+5. Make sure `atmosphere-docker` repository is up-to-date (be careful to note any significant changes before doing this!)
     ```shell
     git reset --hard
     git pull
@@ -140,9 +139,9 @@ alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt
     atmosphere-docker pull
     atmosphere-docker up -d
     ```
-    (if you are having trouble with the above, just type the whole thing out)
+    - If you have trouble with this, type the whole thing out (see alias above)
 
-7. Use and test
+7. Use and test, test, test
     1. Also do apt-updates/apt-upgrades and reboot the server 
     2. Check logs are rotating okay and not getting too big
     3. Delete any unnecessary images
@@ -163,7 +162,7 @@ alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt
     atmosphere-docker exec atmosphere /bin/bash -c \
       "source /opt/env/atmo/bin/activate && ./manage.py maintenance stop"
     ```
-    (If the above doesn't work, go inside the containers for both atmo and trops and run `./manage.py maintenance stop`)
+    - If this isn't working, go inside the containers for both atmo and tropo and run `./manage.py maintenance stop`
 
 <br>
 
