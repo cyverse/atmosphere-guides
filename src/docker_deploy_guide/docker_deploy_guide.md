@@ -13,7 +13,6 @@
     - Perform technical deployment tasks
     - Communicate with crew chief regarding progress, setbacks, blocking issues, etc
 
-<br>
 
 - CyVerse Only:
     - Send maintenance notice to atmosphere-users; Post a maintenance banner to the [Atmosphere User Manual](https://pods.iplantcollaborative.org/wiki/display/atmman/Atmosphere+Manual+Table+of+Contents). Worst-case scenario: notice must be sent two working days prior to release.
@@ -24,12 +23,12 @@
 - Jetstream Only:
     - Ensure that Jetstream tech team is aware of deployment date/time, on their calendar, notified their users, etc
 
+<br>
 
 ## Week Prior to Release
 
 ### Create a release candidate
 Each development cycle has a major release. During a relase, hotfixes will be applied and sometimes we will create patch releases. Each release is identified with a tag Major-Minor (ex. 34-0, or 34-1). A tag is used, because it always refers to an exact snapshot of the project and doesn't change. A release branch may continue to receive changes, and doesn't identify the project at any particular time.
-
 
 To create the release candidate on Github:
 
@@ -43,7 +42,6 @@ To create the release candidate on Github:
         docker build -t cyverse/atmosphere:v36-6 .
         ```
 
-
 ### Prepare Release on Atmobeta
 1. Merge PRs slated for release in Atmosphere, Troposphere, and Atmosphere-Ansible
 2. Deploy release to atmobeta (See "Deployment Day" and apply to atmobeta)
@@ -51,6 +49,7 @@ To create the release candidate on Github:
 4. Prepare production variables
 5. If you are creating a new server for this release, please refer to the [wiki documentation](https://wiki.cyverse.org/wiki/display/csmgmt/Atmosphere+Release+Deployment+Process)
 
+<br>
 
 ## Deployment Day
 
@@ -61,17 +60,19 @@ alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt
 
 ### Deploying Atmosphere-Docker for the First Time
 
-1. Clone the [`atmosphere-docker`](https://github.com/cyverse/atmosphere-docker) and `atmosphere-docker-secrets` repositories
+1. Clone the [`atmosphere-docker`](https://github.com/cyverse/atmosphere-docker) and `atmosphere-docker-secrets` repositories (typically do this at `/opt/dev/`)
 
 2. Setup PostgreSQL
     1. Install PostgreSQL 9.6 with `apt-get` (Google to find up-to-date guide)
     2. Edit `/etc/postgresql/9.6/main/postgresql.conf` to uncomment `listen_addresses = 'localhost'` and add Docker host: `listen_addresses = 'localhost,172.17.0.1'`
-    3. Edit `/etc/postgresql/9.6/main/pg_hba.conf` to add this line which will allow connections from within the Docker network:
+    3. Also sure that `ssl = off`, otherwise it will cause issues with user login
+    
+    4. Edit `/etc/postgresql/9.6/main/pg_hba.conf` to add this line which will allow connections from within the Docker network:
         ```
         host    all             all             172.16.0.0/12           md5
         ```
-    4. Restart PostgreSQL: `systemctl restart postgresql`
-    5. Create `atmo_app` user and databases:
+    5. Restart PostgreSQL: `systemctl restart postgresql`
+    6. Create `atmo_app` user and databases:
         ```SQL
         CREATE USER atmo_app WITH CREATEDB NOSUPERUSER CREATEROLE;
         ALTER USER atmo_app WITH PASSWORD 'password';
@@ -79,7 +80,7 @@ alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt
         CREATE DATABASE atmo_prod;
         CREATE DATABASE troposphere;
         ```
-    6. Load data from database dumps:
+    7. Load data from database dumps:
       ```shell
       psql -h localhost -U atmo_app atmo_prod < data_base_dump
       psql -h localhost -U atmo_app troposphere < data_base_dump
@@ -88,6 +89,7 @@ alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt
 
 3. Continue to [Upgrading with Atmosphere-Docker](#upgrading-with-atmosphere-docker) instructions
 
+<br>
 
 ### Upgrading with Atmosphere-Docker
 
@@ -109,14 +111,15 @@ alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt
       --title '2019-06-16 v36-1 deployment' \
       --message 'Atmosphere is down for a Scheduled Maintenance, Today between 9am - 4pm MST.'"
     ```
-    - If there is a separate proxy server or nginx for Atmosphere, switch that over to a maintenance message:
+    - If there is a separate proxy server or nginx for Atmosphere (atmo.cyverse.org for Cyverse prod and use.jetstream-cloud.org for Jetstream prod), switch that over to a maintenance message:
       ```shell
-      rm /etc/nginx/sites-enabled/proxy.conf
-      ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+      cd /etc/nginx/sites-enabled
+      ln -sf /etc/nginx/sites-available/default proxy.conf
       systemctl restart nginx
       ```
-
-3. Checkout the correct branch of `atmosphere-docker-secrets` and double-check variables
+    - You could also set this (and #8 below) up as 'at' jobs on the proxy server
+      
+3. Checkout the correct branch of `atmosphere-docker-secrets` and double-check variables (prod, jetstream-prod, atmobeta, etc)
 
 4. Stop the current containers and back them up to images
     ```shell
@@ -137,10 +140,22 @@ alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt
     atmosphere-docker pull
     atmosphere-docker up -d
     ```
+    (if you are having trouble with the above, just type the whole thing out)
 
 7. Use and test
+    1. Also do apt-updates/apt-upgrades and reboot the server 
+    2. Check logs are rotating okay and not getting too big
+    3. Delete any unnecessary images
+    4. If there are issues with containers connecting to postgres, restart service postgresql
 
-8. Once you are confident the services are ready-to-go, end the maintenance
+8. Once you are confident the services are ready-to-go, remove the maintenance message from the proxy server
+    ```shell
+    cd /etc/nginx/sites-enabled
+    ln -sf /etc/nginx/sites-available/proxy.conf proxy.conf
+    systemctl restart nginx
+    ```
+
+9. End the maintenance by removing maintenance messages from Atmosphere and Troposphere 
     ```shell
     atmosphere-docker exec troposphere /bin/bash -c \
       "source /opt/env/troposphere/bin/activate && ./manage.py maintenance stop"
@@ -148,7 +163,9 @@ alias atmosphere-docker="/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt
     atmosphere-docker exec atmosphere /bin/bash -c \
       "source /opt/env/atmo/bin/activate && ./manage.py maintenance stop"
     ```
+    (If the above doesn't work, go inside the containers for both atmo and trops and run `./manage.py maintenance stop`)
 
+<br>
 
 ## Hotfixing
 
