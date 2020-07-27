@@ -9,83 +9,52 @@ The Guacamole setup at CyVerse consists of a few components:
 
 1. Tomcat7 Java web-servlet to run the webapp (Within the webapp, there is an authentication plugin and a theming plugin)
 
-1. Nginx reverse proxy with SSL
+2. Nginx reverse proxy with SSL
 
-1. guacd is the daemon that handles Guacamole operations. Here is a description from [Guacamole's documentation](http://guacamole.apache.org/doc/gug/guacamole-architecture.html#guacd):
-
-    > guacd is a daemon process which is installed along with Guacamole and runs in the background, listening for TCP connections from the web application. guacd also does not understand any specific remote desktop protocol, but rather implements just enough of the Guacamole protocol to determine which protocol support needs to be loaded and what arguments must be passed to it. Once a client plugin is loaded, it runs independently of guacd and has full control of the communication between itself and the web application until the client plugin terminates.
-
-
+3. guacd is the daemon that handles Guacamole operations
 
 
 ## Authentication
 
-This plugin is an _authentication provider_ that enables stateless, on-the-fly
-configuration of remote desktop connections that are authorized using a
-pre-shared key.
+CyVerse's Guacamole deployment for Atmosphere uses the [`guacamole-auth-hmac` plugin](https://github.com/cyverse/guacamole-auth-hmac). Additional information about how this plugin works and how it is built, see the project's [`README`](https://github.com/cyverse/guacamole-auth-hmac/blob/master/README.md).
 
 
-### Building
-
-guacamole-auth-hmac uses Maven for managing builds. After installing Maven you can build a
-suitable jar for deployment with `mvn package`.
-
-The resulting jar file will be placed in `target/guacamole-auth-hmac-<version>.jar`.
-
-
-### Installation & Configuration
-
-Install the extension by moving the jar file to `/etc/guacamole/extensions` and restart tomcat7.
-`guacamole-auth-hmac` adds two new config keys to `guacamole.properties`:
-
- * `secret-key` - The key that will be used to verify URL signatures.
-    Whatever is generating the signed URLs will need to share this value.
- * `timestamp-age-limit` - A numeric value (in milliseconds) that determines how long
-    a signed request should be valid for.
+## Relevant Links
+- [Atmosphere Guacamole User Guide](https://cyverse.github.io/atmosphere-guides/guacamole_user_guide.html)
+  - this is a guide to share with users for more information on using Atmosphere's Web Desktop and Web Shell
+- [ansible-guacamole-server](https://github.com/cyverse-ansible/ansible-guacamole-server)
+- [guacamole-auth-hmac](https://github.com/cyverse/guacamole-auth-hmac)
+  - this is the authentication plugin used for Guacamole auth on Atmosphere
+- [guac-cyverse-theme](https://github.com/cyverse/guac-cyverse-theme)
+  - this is another plugin that is used to add some CyVerse branding to Guacamole. It also adds some additional help text for users and disables the Guacamole login page
+- [Guacamole `docker-compose` example in `atmosphere-docker`](https://github.com/cyverse/atmosphere-docker/blob/master/docker-compose.guac.yml)
+  - this can be used as an example for future Guacamole docker deployments
 
 
-### Usage
+## Relationship with Atmosphere
+Additional documentation is provided in the repositories mentioned above. 
 
- * `id`  - A connection ID that must be unique per user session. Can be a random integer ***or UUID***.
- * `timestamp` - A unix timestamp in milliseconds. This is used to prevent replay attacks.
- * `signature` - The SHA256 encrypted signature for authentication.
- * `guac.protocol` - One of `vnc` or `ssh`.
- * `guac.hostname` - The hostname of the remote desktop server to connect to.
- * `guac.port` - The port number to connect to.
- * `guac.username` - (_optional_)
- * `guac.password` - (_optional_)
- * `guac.*` - (_optional_) Any other configuration parameters recognized by
-    Guacamole can be by prefixing them with `guac.`.
+### Troposphere
+Relevant Troposphere code can be found here:
+- [JavaScript UI](https://github.com/cyverse/troposphere/blob/1f98da2373bd0e4c93f03b6fc060a0544933404f/troposphere/static/js/components/projects/resources/instance/details/actions/InstanceActionsAndLinks.jsx#L191-L237)
+- [Django Python API](https://github.com/cyverse/troposphere/blob/master/troposphere/views/web_desktop.py#L15-L69)
+    
+The Django Python API part will just make a request to the Atmosphere backend and redirect to the Web Desktop page.
 
+### Atmosphere
+Relevant Atmosphere code can be found [here](https://github.com/cyverse/atmosphere/blob/master/api/v2/views/web_token.py)
 
-### Request Signing
+In this file, the `guacamole_token` function is the most important since it uses the HMAC method to create and verify a signature and generate the URL for the instance's connection. The fields used here allow us to configure specific connection parameters.
 
-Requests must be signed with an HMAC, where the message content is generated from the request parameters as follows:
-
- 1. The parameters `timestamp`, `protocol`, `hostname`, `port`,  `username`, and `password` are concatenated with the secret key.
- 1. Encrypt using SHA256.
-
-
-### POST
-Parameters are POSTed to `/guacamole/api/tokens` to authenticate. The response is then sent as JSON and contains `authToken` which is then used to login: `guacamole/#/client/(connection)?token=(authToken)`
-
-`(connection)` is an encoded string that tells Guacamole to connect the user to a server. It is generated as follows:
-
-1. Append `NULLcNULLhmac` to the shortened ID.
-  - `NULL` represents a `NULL` character (often "\0").
-  - `c` stands for connection.
-  - `hmac` is the authentication provider.
-1. Encode this with base64.
-
-Then, add this to the URL after `guacamole/#/client/` and append the authToken parameter.
-
-[More about using POST with Guacamole](https://glyptodon.org/jira/browse/GUAC-1102?jql=project%20%3D%20GUAC%20AND%20resolution%20%3D%20Unresolved%20AND%20priority%20%3D%20Major%20ORDER%20BY%20key%20DESC)
-
-[Outline of how Guacamole receives and responds to authentication requests](https://sourceforge.net/p/guacamole/discussion/1110834/thread/8bea4c74/#102b)
-
-[Explanation of the base64 encoded URL](https://sourceforge.net/p/guacamole/discussion/1110834/thread/fb609070/)
-
-
-### Notes
-- UUIDs can be used rather than integers as connection identifiers.
-- Clicking the link twice *without refreshing* the page will log out the first connection window and login to the second one. The connection ID *does not* change, but the user ID *does change*.
+### Atmosphere-Ansible
+Relevant Atmosphere-Ansible can be found here:
+- [Playbook for VNC](https://github.com/cyverse/atmosphere-ansible/blob/master/ansible/playbooks/instance_deploy/30_post_user_install.yml#L10)
+- [Tasks for Guacamole VNC](https://github.com/cyverse/atmosphere-ansible/blob/master/ansible/roles/atmo-vnc/tasks/guacamole.yml)
+  - This task will configure the Guacamole-specific settings for the VNC Server
+  - These settings specify that this instance of the server can only be access from the Guacamole server's IP address
+  - Runs on port `5905`
+- [Playbook for SSH/WebShell](https://github.com/cyverse/atmosphere-ansible/blob/master/ansible/playbooks/instance_deploy/41_shell_access.yml)
+- [Role for SSH/WebShell](https://github.com/cyverse/atmosphere-ansible/tree/master/ansible/roles/sshkey-host-access)
+  - Since Guacamole will need a keypair to connect the the instance's SSH server, atmosphere-ansible will connect to the Guacamole server and create a keypair (if it does not exist) and save it on the server
+  - The public key is added to the instance's `authorized_keys`
+  - The HMAC auth plugin will then read from the filesystem on the Guacamole server to find the private key necessary for SSH access when initiating a connection
