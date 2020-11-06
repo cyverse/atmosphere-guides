@@ -25,7 +25,8 @@ As of Atmosphere `v37-0`, Argo is only used for instance deployment.
     2. the workflow step retry, if a step in the workflow fails, it will be retried up to a certain times as defined in the workflow definition
     3. the celery retry, since the creation and polling of the workflow are still part of a celery task, celery task retry still applies here, and this retry will submit a new workflow to Argo each time.
 
-- Deployment logs for a workflow are located at `/opt/dev/atmosphere-docker/logs/atmosphere/atmosphere_deploy.d/<USERNAME>/<INSTANCE_UUID>/<DEPLOYMENT_DATE_TIME>/` on the host. Each steps/nodes in the workflow will have its own log file in the directory
+- Deployment logs for a workflow are located at `/opt/dev/atmosphere-docker/logs/atmosphere/atmosphere_deploy.d/<USERNAME>/<INSTANCE_UUID>/<DEPLOYMENT_DATE_TIME>/` on the host. Each steps/nodes in the workflow will have its own log file in the directory. The logs here are pulled after the workflow is completed (not realtime).
+> Note: only logs for playbooks that run in Argo Workflow are in those directories, the logs for other playbooks remain where they were.
 
 ### Troubleshooting
 
@@ -40,6 +41,10 @@ argo list -n <NAMESPACE>
 argo list -n <NAMESPACE> --status <WORKFLOW_STATUS> --since <DURATION>
 ```
 
+#### Find Workflow Name for a deployment
+As of `v37-2` there isn't a convenient way to lookup workflow name in real time other than check the parmeter of individual workflows, and look for username and the IP of the instance.
+However the workflow name will be part of the log filename that gets pulled after workflow completes, e.g. `ansible-deploy-xxxxx.log`
+
 #### Get details of a workflow
 ```bash
 argo get -n <NAMESPACE> <WORKFLOW_NAME>
@@ -50,10 +55,25 @@ get the workflow definition as YAML
 argo get -n <NAMESPACE> <WORKFLOW_NAME> -o yaml
 ```
 
+#### Get logs of a workflow (all pods within the workflow)
+```bash
+argo logs -n <NAMESPACE> <WORKFLOW_NAME>
+```
+
+`-f` to follow the logs
+```bash
+argo logs -n <NAMESPACE> <WORKFLOW_NAME> -f
+```
+
 #### Get logs of a pod
 Each pod in an argo workflow will usually consist of 2 containers, `main` and `wait`, `main` container will be the one that executes the actual workload.
 ```bash
 kubectl logs -n <NAMESPACE> <POD_NAME> main
+```
+
+`-f` to follow the logs
+```bash
+kubectl logs -n <NAMESPACE> <POD_NAME> main -f
 ```
 
 #### Resubmit a workflow
