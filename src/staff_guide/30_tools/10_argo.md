@@ -45,6 +45,18 @@ argo list -n <NAMESPACE> --status <WORKFLOW_STATUS> --since <DURATION>
 As of `v37-2` there isn't a convenient way to lookup workflow name in real time other than check the parmeter of individual workflows, and look for username and the IP of the instance.
 However the workflow name will be part of the log filename that gets pulled after workflow completes, e.g. `ansible-deploy-xxxxx.log`
 
+From `v37-3`, workflows will have labels attached to them as metadata.
+
+So to search for workflows for instance with a id of `00000000-0000-0000-0000-000000000000`.
+```bash
+argo list -n <NAMESPACE> -l instance_uuid=00000000-0000-0000-0000-000000000000
+```
+
+To search for workflows for a particular user
+```bash
+argo list -n <NAMESPACE> -l username=<USERNAME>
+```
+
 #### Get details of a workflow
 ```bash
 argo get -n <NAMESPACE> <WORKFLOW_NAME>
@@ -53,6 +65,16 @@ argo get -n <NAMESPACE> <WORKFLOW_NAME>
 get the workflow definition as YAML
 ```bash
 argo get -n <NAMESPACE> <WORKFLOW_NAME> -o yaml
+```
+
+get the instance id of a workflow
+```bash
+argo get -n <NAMESPACE> <WORKFLOW_NAME> -o json | jq .metadata.labels.instance_uuid
+```
+
+get the username of a workflow
+```bash
+argo get -n <NAMESPACE> <WORKFLOW_NAME> -o json | jq .metadata.labels.username
 ```
 
 #### Get logs of a workflow (all pods within the workflow)
