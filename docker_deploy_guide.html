@@ -1,0 +1,206 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="generator" content="pandoc" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+                    <title></title>
+        <style type="text/css">code{white-space: pre;}</style>
+                          <link rel="stylesheet" href="./themes/cyverse/templates/main.css" type="text/css" />
+                    <link rel="icon" href="themes/cyverse/media/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="themes/cyverse/media/css/normalize.min.css">
+        <link rel="stylesheet" href="themes/cyverse/media/css/main.css">
+        <script src="themes/cyverse/media/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+          </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+                <div class="header-container">
+            <header class="wrapper clearfix">
+                <div class="logo"><img src="themes/cyverse/media/cyverse_logo.png" alt="Staff Guide"></div>
+                <h1 class="title"></h1>
+            </header>
+        </div>
+        
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+              <!-- TABLE OF CONTENTS -->
+                                  <aside>
+                      <h3> TABLE OF CONTENTS </h3>
+                      <ul>
+                      <li><a href="#atmosphere-release-deployment-process">Atmosphere Release Deployment Process</a><ul>
+                      <li><a href="#two-weeks-prior-to-release">Two Weeks Prior to Release</a></li>
+                      <li><a href="#week-prior-to-release">Week Prior to Release</a><ul>
+                      <li><a href="#create-a-release-candidate">Create a release candidate</a></li>
+                      <li><a href="#prepare-release-on-atmobeta">Prepare Release on Atmobeta</a></li>
+                      </ul></li>
+                      <li><a href="#deployment-day">Deployment Day!</a><ul>
+                      <li><a href="#deploying-atmosphere-docker-for-the-first-time">Deploying Atmosphere-Docker for the First Time</a></li>
+                      <li><a href="#upgrading-with-atmosphere-docker">Upgrading with Atmosphere-Docker</a></li>
+                      </ul></li>
+                      <li><a href="#hotfixing">Hotfixing</a></li>
+                      </ul></li>
+                      </ul>
+                  </aside>
+                              <!-- MAIN CONTENT -->
+              <article>
+<h1 id="atmosphere-release-deployment-process"><a href="#atmosphere-release-deployment-process">Atmosphere Release Deployment Process</a></h1>
+<h2 id="two-weeks-prior-to-release"><a href="#two-weeks-prior-to-release">Two Weeks Prior to Release</a></h2>
+<ol style="list-style-type: decimal">
+<li>Select a <strong>crew chief</strong> who will have the following duties:
+<ul>
+<li>Take ownership of the deployment to ensure this process is completed, delegating specific tasks as needed</li>
+<li>Serve as point person for communication with other teams, leadership, etc</li>
+<li>Ensure that driver has what he or she needs for a successful release</li>
+</ul></li>
+<li>Select a <strong>driver</strong> who will have the following duties:
+<ul>
+<li>Perform technical deployment tasks</li>
+<li>Communicate with crew chief regarding progress, setbacks, blocking issues, etc</li>
+</ul></li>
+</ol>
+<ul>
+<li>CyVerse Only:
+<ul>
+<li>Send maintenance notice to atmosphere-users; Post a maintenance banner to the <a href="https://pods.iplantcollaborative.org/wiki/display/atmman/Atmosphere+Manual+Table+of+Contents">Atmosphere User Manual</a>. Worst-case scenario: notice must be sent two working days prior to release.</li>
+<li>Ensure maintenance window is on the &quot;CyVerse Maintenance and Release Schedule&quot; <a href="https://wiki.cyverse.org/wiki/display/staff/Subscribe+to+CyVerse+Calendars">calendar</a></li>
+<li>Ensure a scheduled maintenance on status.io, see <a href="https://github.com/cyverse/status-site/blob/master/docs/Maintenance.md">instructions</a></li>
+</ul></li>
+<li>Jetstream Only:
+<ul>
+<li>Ensure that Jetstream tech team is aware of deployment date/time, on their calendar, notified their users, etc</li>
+</ul></li>
+</ul>
+<p><br></p>
+<h2 id="week-prior-to-release"><a href="#week-prior-to-release">Week Prior to Release</a></h2>
+<h3 id="create-a-release-candidate"><a href="#create-a-release-candidate">Create a release candidate</a></h3>
+<p>Each development cycle has a major release. During a relase, hotfixes will be applied and sometimes we will create patch releases. Each release is identified with a tag Major-Minor (ex. 34-0, or 34-1). A tag is used, because it always refers to an exact snapshot of the project and doesn't change. A release branch may continue to receive changes, and doesn't identify the project at any particular time.</p>
+<p>To create the release candidate on Github:</p>
+<ol style="list-style-type: decimal">
+<li>Update the changelog, moving &quot;Unreleased&quot; items into a named release</li>
+<li>Create a PR for these changes and merge into master</li>
+<li>Create and tag a new release by visiting the <a href="https://github.com/cyverse/atmosphere/releases">releases page for the repo</a> and clicking &quot;Draft a new release&quot;</li>
+<li>This will trigger a new tagged build on Dockerhub
+<ul>
+<li><strong>NOTE</strong>: If you cannot wait for the Dockerhub build to complete, do a shallow clone of Atmosphere/Troposphere and build (instead of including all branches and things from your local repository): <code>shell     git clone --depth 1 --branch v36-6 https://github.com/cyverse/atmosphere.git &amp;&amp; cd atmosphere     docker build -t cyverse/atmosphere:v36-6 .</code></li>
+</ul></li>
+</ol>
+<h3 id="prepare-release-on-atmobeta"><a href="#prepare-release-on-atmobeta">Prepare Release on Atmobeta</a></h3>
+<ol style="list-style-type: decimal">
+<li>Merge PRs slated for release in Atmosphere, Troposphere, and Atmosphere-Ansible</li>
+<li>Deploy release to atmobeta (See &quot;Deployment Day&quot; and apply to atmobeta)</li>
+<li>Test changes on atmobeta</li>
+<li>Prepare production variables</li>
+<li>If you are creating a new server for this release, please refer to the <a href="https://wiki.cyverse.org/wiki/display/csmgmt/Atmosphere+Release+Deployment+Process">wiki documentation</a></li>
+</ol>
+<p><br></p>
+<h2 id="deployment-day"><a href="#deployment-day">Deployment Day!</a></h2>
+<p><strong>Pre-deployment:</strong> add the following to your aliases to save time typing:</p>
+<pre class="shell"><code>alias atmosphere-docker=&quot;/opt/dev/atmosphere-docker/atmosphere-docker.sh -f /opt/dev/atmosphere-docker/docker-compose.prod.yml&quot;</code></pre>
+<h3 id="deploying-atmosphere-docker-for-the-first-time"><a href="#deploying-atmosphere-docker-for-the-first-time">Deploying Atmosphere-Docker for the First Time</a></h3>
+<ol style="list-style-type: decimal">
+<li><p>Clone the <a href="https://github.com/cyverse/atmosphere-docker"><code>atmosphere-docker</code></a> and <a href="https://gitlab.cyverse.org/atmosphere/atmosphere-docker-secrets"><code>atmosphere-docker-secrets</code></a> repositories - typically do this at <code>/opt/dev/</code></p></li>
+<li>Setup PostgreSQL
+<ol style="list-style-type: decimal">
+<li>Install PostgreSQL with <code>apt-get</code> (Google to find up-to-date guide)</li>
+<li>Edit <code>/etc/postgresql/&lt;version&gt;/main/postgresql.conf</code> to uncomment <code>listen_addresses = 'localhost'</code> and add Docker host: <code>listen_addresses = 'localhost,172.17.0.1'</code></li>
+<li><p>Also sure that <code>ssl = off</code>, otherwise it will cause issues with user login</p></li>
+<li>Edit <code>/etc/postgresql/&lt;version&gt;/main/pg_hba.conf</code> to add this line which will allow connections from within the Docker network: <code>host    all             all             172.16.0.0/12           md5</code></li>
+<li>Restart PostgreSQL: <code>systemctl restart postgresql</code></li>
+<li>Create <code>atmo_app</code> user and databases: <code>SQL     CREATE USER atmo_app WITH CREATEDB NOSUPERUSER CREATEROLE;     ALTER USER atmo_app WITH PASSWORD 'password';     -- Reconnect as atmo_app user     CREATE DATABASE atmo_prod;     CREATE DATABASE troposphere;</code></li>
+<li><p>Load data from database dumps: <code>shell   psql -h localhost -U atmo_app atmo_prod &lt; data_base_dump   psql -h localhost -U atmo_app troposphere &lt; data_base_dump</code></p></li>
+</ol></li>
+<li><p>Continue to <a href="#upgrading-with-atmosphere-docker">Upgrading with Atmosphere-Docker</a> instructions</p></li>
+</ol>
+<p><br></p>
+<h3 id="upgrading-with-atmosphere-docker"><a href="#upgrading-with-atmosphere-docker">Upgrading with Atmosphere-Docker</a></h3>
+<ol style="list-style-type: decimal">
+<li><p>Even though the database is outside of Docker and should not be touched, back it up: <code>shell     pg_dump -U atmo_app atmo_prod &gt; &quot;/root/atmo-$(date +%F).sql&quot;     pg_dump -U atmo_app troposphere &gt; &quot;/root/tropo-$(date +%F).sql&quot;</code></p></li>
+<li><p>Start maintenance for Atmosphere and Troposphere ```shell atmosphere-docker exec troposphere /bin/bash -c<br /> &quot;source /opt/env/troposphere/bin/activate &amp;&amp; ./manage.py maintenance start<br /> --title '2019-06-16 v36-1 deployment'<br /> --message 'Atmosphere is down for a Scheduled Maintenance, Today between 9am - 4pm MST.'&quot;</p>
+atmosphere-docker exec atmosphere /bin/bash -c<br /> &quot;source /opt/env/atmo/bin/activate &amp;&amp; ./manage.py maintenance start<br /> --title '2019-06-16 v36-1 deployment'<br /> --message 'Atmosphere is down for a Scheduled Maintenance, Today between 9am - 4pm MST.'&quot; <code>- If there is a separate proxy server or nginx for Atmosphere - atmo.cyverse.org for Cyverse prod and use.jetstream-cloud.org for Jetstream prod - switch that over to a maintenance message:</code>shell cd /etc/nginx/sites-enabled ln -sf /etc/nginx/sites-available/default proxy.conf systemctl restart nginx ```
+<ul>
+<li>You could also set this (and #8 below) up as 'at' jobs on the proxy server beforehand to get done automatically</li>
+</ul></li>
+<li><p>Checkout the correct branch of <code>atmosphere-docker-secrets</code> - prod, jetstream-prod, atmobeta, etc - and double-check that variables look correct for this server and consist of your latest updates, if any</p></li>
+<li>Stop the current containers and back them up to images <code>shell     atmosphere-docker stop     docker commit atmosphere-docker_atmosphere_1 old_atmosphere-docker_atmosphere     docker commit atmosphere-docker_atmosphere_1 old_atmosphere-docker_atmosphere</code>
+<ul>
+<li>Unfortunately, there is no way to preserve the containers without creating an image. Even if you rename the containers, docker-compose uses the IDs</li>
+</ul></li>
+<li><p>Make sure <code>atmosphere-docker</code> repository is up-to-date (be careful to note any significant changes before doing this!) <code>shell     git reset --hard     git pull</code></p></li>
+<li>Edit <code>docker-compose.prod.yml</code> to use image tags from the new release if changes are not already in the repository and start containers <code>shell     atmosphere-docker pull     atmosphere-docker up -d</code>
+<ul>
+<li>If you have trouble with this, type the whole thing out (see alias above)</li>
+</ul></li>
+<li>Use and test, test, test
+<ol style="list-style-type: decimal">
+<li>Also do apt-updates/apt-upgrades and reboot the server</li>
+<li>Check logs are rotating okay and not getting too big</li>
+<li>Delete any unnecessary images</li>
+<li>If there are issues with containers connecting to postgres, restart service postgresql</li>
+</ol></li>
+<li><p>Once you are confident the services are ready-to-go, remove the maintenance message from the proxy server <code>shell     cd /etc/nginx/sites-enabled     ln -sf /etc/nginx/sites-available/proxy.conf proxy.conf     systemctl restart nginx</code></p></li>
+<li><p>End the maintenance by removing maintenance messages from Atmosphere and Troposphere ```shell atmosphere-docker exec troposphere /bin/bash -c<br /> &quot;source /opt/env/troposphere/bin/activate &amp;&amp; ./manage.py maintenance stop&quot;</p>
+<p>atmosphere-docker exec atmosphere /bin/bash -c<br /> &quot;source /opt/env/atmo/bin/activate &amp;&amp; ./manage.py maintenance stop&quot; ``<code>- If this isn't working, go inside the containers for both atmo and tropo and run</code>./manage.py maintenance stop`</p></li>
+</ol>
+<p><br></p>
+<h2 id="hotfixing"><a href="#hotfixing">Hotfixing</a></h2>
+<p>The wonderful thing about Docker and containers in general is that they are easy to create and destroy. Also, changes inside the container do not have to be reflected outside the container to the services interacting with it. This gives us the ability to easily swap out one container for a new one.</p>
+<p>Imagine you want to deploy an important change that cannot wait until the next scheduled maintenance. Once you have a container image ready with this new feature, follow these instructions:</p>
+<ol style="list-style-type: decimal">
+<li><p>Edit the <code>docker-compose.prod.yml</code> file with the new image tag</p></li>
+<li><p>Scale up the Atmosphere service:</p></li>
+</ol>
+<p><code>./atmosphere-docker.sh -f docker-compose.prod.yml up -d --scale atmosphere=2 --no-recreate --no-deps</code></p>
+<ul>
+<li>By scaling atmosphere up, compose will create a new container alongside the first one. It will now load-balance round robin style between the two containers</li>
+<li>The <code>--no-recreate</code> flag here is very important to avoid stopping and deleting the original, out-of-date container</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>Wait for the new container (<code>atmosphere_2</code>) to finish the setup tasks, then stop and delete the original:</li>
+</ol>
+<p><code>docker kill atmosphere-docker_atmosphere_1   docker rm atmosphere-docker_atmosphere_1</code></p>
+<ul>
+<li>Note: the container names may be slightly different than above</li>
+<li>Unfortunately, the new container will always have the <code>2</code> index and will require <code>--index=2</code> on all compose commands interacting with that container. <strong>On Jetstream, add this to entries in the crontab after completing the next step</strong>
+<ul>
+<li>Scaling back down to 1 will delete the newest container</li>
+<li>Renaming will not change anything since docker-compose relies on immutable labels</li>
+</ul></li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li>Now you will need to restart Nginx, probably due to the way the underlying docker network handles hostname mapping:</li>
+</ol>
+<p><code>./atmosphere-docker.sh -f docker-compose.prod.yml exec troposphere bash   service nginx restart # inside troposphere container</code></p>
+<ol start="5" style="list-style-type: decimal">
+<li>Remember to update any crontab entries using <code>docker-compose</code> to include <code>--index=2</code></li>
+</ol>
+              </article>
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+                <div class="footer-container">
+            <footer class="wrapper">
+                    <footer class="footer"> <!-- Needs to be a `include-after` -->
+          		<div class="container">
+          		  <div class="region region-footer">
+          		    <section id="block-block-25" class="block block-block clearfix">
+          		      <p><img alt="Cyverse" src="./media/cyverse_icon_transp2.png" style="width: 25px; height: 24px;">&nbsp;<a href="http://www.cyverse.org/">CyVerse</a> | <a href="http://www.cyverse.org/open-source">Open Source</a> | <img alt="NSF" src="./media/nsf1.gif" style="width: 25px; height: 25px;">&nbsp;</p>
+          		    </section>
+          		  </div>
+          		</div>
+        	    </footer>
+            </footer>
+        </div>
+        <!-- Included at the end of body -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="themes/cyverse/media/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        
+        <script src="themes/cyverse/media/js/main.js"></script>
+            </body>
+</html>

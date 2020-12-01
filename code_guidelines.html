@@ -1,0 +1,438 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="generator" content="pandoc" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+                    <title></title>
+        <style type="text/css">code{white-space: pre;}</style>
+                    <style type="text/css">
+      table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+        margin: 0; padding: 0; vertical-align: baseline; border: none; }
+      table.sourceCode { width: 100%; line-height: 100%; }
+      td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+      td.sourceCode { padding-left: 5px; }
+      code > span.kw { color: #007020; font-weight: bold; }
+      code > span.dt { color: #902000; }
+      code > span.dv { color: #40a070; }
+      code > span.bn { color: #40a070; }
+      code > span.fl { color: #40a070; }
+      code > span.ch { color: #4070a0; }
+      code > span.st { color: #4070a0; }
+      code > span.co { color: #60a0b0; font-style: italic; }
+      code > span.ot { color: #007020; }
+      code > span.al { color: #ff0000; font-weight: bold; }
+      code > span.fu { color: #06287e; }
+      code > span.er { color: #ff0000; font-weight: bold; }
+        </style>
+                    <link rel="stylesheet" href="./themes/cyverse/templates/main.css" type="text/css" />
+                    <link rel="icon" href="themes/cyverse/media/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="themes/cyverse/media/css/normalize.min.css">
+        <link rel="stylesheet" href="themes/cyverse/media/css/main.css">
+        <script src="themes/cyverse/media/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+          </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+                <div class="header-container">
+            <header class="wrapper clearfix">
+                <div class="logo"><img src="themes/cyverse/media/cyverse_logo.png" alt="Staff Guide"></div>
+                <h1 class="title"></h1>
+            </header>
+        </div>
+        
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+              <!-- TABLE OF CONTENTS -->
+                                  <aside>
+                      <h3> TABLE OF CONTENTS </h3>
+                      <ul>
+                      <li><a href="#atmosphere-code-guidelines">Atmosphere Code Guidelines</a><ul>
+                      <li><a href="#ansible-style-guidelines">Ansible Style Guidelines</a><ul>
+                      <li><a href="#yaml-files-and-formatting">YAML Files and Formatting</a></li>
+                      <li><a href="#variables">Variables</a><ul>
+                      <li><a href="#distro-specific-variables">Distro-Specific Variables</a></li>
+                      </ul></li>
+                      <li><a href="#tasks">Tasks</a></li>
+                      <li><a href="#conditional-logic">Conditional Logic</a></li>
+                      <li><a href="#modules">Modules</a></li>
+                      <li><a href="#files-and-installation-packages">Files and Installation Packages</a></li>
+                      <li><a href="#possible-ansible-guidelines---things-to-discuss">Possible Ansible Guidelines - Things to Discuss</a></li>
+                      </ul></li>
+                      <li><a href="#ansible-galaxy-roles">Ansible Galaxy Roles</a><ul>
+                      <li><a href="#identifying-and-working-with-galaxy-roles">Identifying and Working With Galaxy Roles</a></li>
+                      <li><a href="#installing-consuming-galaxy-roles-in-another-project">Installing (Consuming) Galaxy Roles in Another Project</a></li>
+                      <li><a href="#importing-contributing-a-role-to-galaxy">Importing (Contributing) a Role to Galaxy</a></li>
+                      </ul></li>
+                      <li><a href="#security-guidelines">Security Guidelines</a></li>
+                      <li><a href="#contribution-guide-contribution-guide">Contribution Guide Contribution Guide</a></li>
+                      <li><a href="#further-reading">Further Reading</a></li>
+                      </ul></li>
+                      <li><a href="#python-style-guidelines">Python Style Guidelines</a><ul>
+                      <li><a href="#naming">Naming</a><ul>
+                      <li><a href="#general-naming-guidelines">General Naming Guidelines</a></li>
+                      </ul></li>
+                      <li><a href="#indentation">Indentation</a></li>
+                      <li><a href="#imports">Imports</a></li>
+                      <li><a href="#string-formatting">String formatting</a></li>
+                      <li><a href="#print-statements">Print statements</a></li>
+                      <li><a href="#documentation">Documentation</a></li>
+                      <li><a href="#on-comments">On Comments</a><ul>
+                      <li><a href="#method-overrides">Method Overrides</a></li>
+                      </ul></li>
+                      <li><a href="#calling-superclasses-methods">Calling Superclasses' Methods</a></li>
+                      <li><a href="#line-lengths">Line lengths</a></li>
+                      <li><a href="#recommended-syntax-checkers">Recommended Syntax Checkers</a></li>
+                      <li><a href="#credits">Credits</a></li>
+                      </ul></li>
+                      </ul>
+                  </aside>
+                              <!-- MAIN CONTENT -->
+              <article>
+<h1 id="atmosphere-code-guidelines"><a href="#atmosphere-code-guidelines">Atmosphere Code Guidelines</a></h1>
+<p>These guidelines will improve the consistency and comprehensibility of our code. Contributions to &quot;the Atmosphere projects&quot; (atmosphere, troposphere, atmosphere-ansible, clank, etc) will be checked for adherence.</p>
+<ul>
+<li><a href="https://late.am/post/2016/04/28/delete-your-dead-code.html">Delete your dead code</a>. If you know that code is not run, don't comment it out, instead remove it completely. Old code remains in version control and we can dig into the past if needed.</li>
+</ul>
+<h2 id="ansible-style-guidelines"><a href="#ansible-style-guidelines">Ansible Style Guidelines</a></h2>
+<p>These apply to repos such as clank and atmosphere-ansible (collectively, &quot;the Ansible projects&quot;). Some are borrowed from <a href="https://openedx.atlassian.net/wiki/display/OpenOPS/Ansible+Code+Conventions">Open edX Operations</a> and <a href="http://docs.openstack.org/developer/openstack-ansible/developer-docs/contribute.html">OpenStack-Ansible</a>.</p>
+<h3 id="yaml-files-and-formatting"><a href="#yaml-files-and-formatting">YAML Files and Formatting</a></h3>
+<p>YAML files should:</p>
+<ul>
+<li>Have a name ending in <code>.yml</code></li>
+<li>Begin with three dashes followed by a blank line</li>
+<li>Use 2-space indents</li>
+<li>Use YAML dictionary format rather than in-line <code>key=value</code>s. It's easier to read and reduces changeset collisions in version control. So, do this:</li>
+</ul>
+<pre><code>- name: foo
+  file:
+    src: /tmp/bar
+    dest: /tmp/baz
+    state: present</code></pre>
+<p>Not this:</p>
+<pre><code>- name: foo src=/tmp/bar dest=/tmp/baz state=present</code></pre>
+<ul>
+<li>Use YAML <a href="http://yaml.org/spec/1.2/spec.html#id2796251">folded style</a> for long lines:</li>
+</ul>
+<pre><code>- shell: &gt;
+        python a very long command --with=very --long-options=foo
+        --and-even=more_options --like-these
+</code></pre>
+<h3 id="variables"><a href="#variables">Variables</a></h3>
+<ul>
+<li>Use spaces between double-braces and variable names: <code>{{ var }}</code> instead of <code>{{var}}</code></li>
+<li>For boolean variables, use un-quoted <code>true</code> and <code>false</code></li>
+<li>Bare variables in YAML must be quoted, e.g.</li>
+</ul>
+<pre><code>- foo: &quot;{{ bar }}&quot;</code></pre>
+<ul>
+<li>For variables that have some default and are optionally overridden by a consumer/deployer: define the variable's default value in the role <code>defaults/</code> instead of using the <code>| default()</code> jinja2 filter. This keeps configuration separate from code.</li>
+</ul>
+<h4 id="distro-specific-variables"><a href="#distro-specific-variables">Distro-Specific Variables</a></h4>
+<p>Many roles must take <em>differently-configured</em> actions to effect the same result, depending on the target's operating system. Accomplish this configuration by defining your variables in files like so:</p>
+<pre><code>vars/
+├── CentOS-5.yml
+├── CentOS.yml
+├── Ubuntu-12.yml
+├── Ubuntu-16.yml
+└── Ubuntu.yml</code></pre>
+<p>Use the following task to include the appropriate variables file:</p>
+<pre><code>- name: gather OS-specific variables
+  include_vars: &quot;{{ item }}&quot;
+  with_first_found:
+    - &quot;{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml&quot;
+    - &quot;{{ ansible_distribution }}.yml&quot;</code></pre>
+<p>Matching is most-specific to least-specific, so with the above example, a role targeting an Ubuntu 16.04 system would include the variables defined in Ubuntu-16.yml, while a role targeting Ubuntu 14.04 would include the variables defined in Ubuntu.yml. Also, only one file will match and there is no concept of inheritance (so usually, the same variables should be defined in each file).</p>
+<p>Role-specific variables that do not vary per-distro can still be defined in <code>vars/main.yml</code> or <code>defaults/main.yml</code>.</p>
+<h3 id="tasks"><a href="#tasks">Tasks</a></h3>
+<p>Name your tasks to reflect the completed action in the past tense: <code>denyhosts stopped and disabled</code> rather than <code>stop and disable denyhosts</code>. This reinforces the goal of defining a series of idempotent steps to either reach or confirm a desired end state.</p>
+<h3 id="conditional-logic"><a href="#conditional-logic">Conditional Logic</a></h3>
+<ul>
+<li>To conditionally include or exclude a role, use the following syntax in a playbook:</li>
+</ul>
+<p><code>roles:     - { role: ldap, when: CONFIGURE_LDAP == true }</code></p>
+<p>Avoid applying the same tag to every task in a role and expecting a user to skip a role with <code>--skip-tags</code>.</p>
+<h3 id="modules"><a href="#modules">Modules</a></h3>
+<ul>
+<li>Use <code>command</code> rather than <code>shell</code> unless shell is explicitly required (<a href="http://docs.ansible.com/ansible/shell_module.html#notes">source 0</a> <a href="https://blog.confirm.ch/ansible-modules-shell-vs-command/">source 1</a>).</li>
+</ul>
+<h3 id="files-and-installation-packages"><a href="#files-and-installation-packages">Files and Installation Packages</a></h3>
+<p>Avoid storing large binary files or installation packages in Ansible projects / version control. Instead, host it externally (e.g. CyVerse's S3 account) and download from there, or download from the publisher.</p>
+<h3 id="possible-ansible-guidelines---things-to-discuss"><a href="#possible-ansible-guidelines---things-to-discuss">Possible Ansible Guidelines - Things to Discuss</a></h3>
+<ul>
+<li><a href="https://github.com/whitecloud/ansible-styleguide#quotes">Quote all strings and prefer single quotes over double quotes</a>? This makes clear what is a string and what refers to a variable</li>
+<li>Define a <a href="https://github.com/whitecloud/ansible-styleguide#task-declaration">general order for a task declaration</a>?</li>
+<li>Variables that are internal to a role should be in snake_case? Variables that are environment-specific and should be overridden in UPPERCASE?</li>
+<li>When to use a role's <code>vars/</code> vs. <code>defaults/</code> directory? <code>vars/</code> for things internal to the role (e.g. distro-specific), <code>defaults/</code> for things expected to be overridden by a consumer?</li>
+<li>Prefix all variables defined in a role with the name of the role to avoid collisions?</li>
+<li>Prefix task names with the role name, to ease human parsing of log output?</li>
+<li>Separate words in role names with dashes (<code>my-role</code>)?</li>
+</ul>
+<h2 id="ansible-galaxy-roles"><a href="#ansible-galaxy-roles">Ansible Galaxy Roles</a></h2>
+<p>The Ansible projects will use similar code to perform very similar tasks, so there is an effort to structure our code into modular, re-usable roles. These roles are generally hosted in the <a href="https://github.com/cyverse-ansible">CyVerse-Ansible</a> organization and consumed via <a href="https://galaxy.ansible.com/">Ansible Galaxy</a>. This will centralize the development/maintenance effort and provide easy consumption by any interested groups. New Ansible contributors are encouraged to read <a href="https://galaxy.ansible.com/intro">Ansible Galaxy Intro</a>.</p>
+<h4 id="identifying-and-working-with-galaxy-roles"><a href="#identifying-and-working-with-galaxy-roles">Identifying and Working With Galaxy Roles</a></h4>
+<p>The Ansible projects include a mix of roles installed from Galaxy and roles defined locally. The following clues should indicate that a given role was installed from Galaxy.</p>
+<ul>
+<li>The role is defined in the project's <code>requirements.yml</code></li>
+<li>The role contains <code>meta/galaxy_install_info</code> and <code>meta/main.yml</code></li>
+</ul>
+<p>There is a clear concept of &quot;upstream&quot; (roles) and &quot;downstream&quot; (projects that consume them), so generally we should <em>avoid making persistent changes</em> to a role which has been installed from Galaxy <em>inside a repository that consumes it</em>. Such changes will 1. not propagate back upstream to the role repository, and 2. be overwritten the next time the role is updated from Galaxy. Instead, make your changes in the upstream Ansible role (see below), re-import it, and install the new version in the consuming repository.</p>
+<h4 id="installing-consuming-galaxy-roles-in-another-project"><a href="#installing-consuming-galaxy-roles-in-another-project">Installing (Consuming) Galaxy Roles in Another Project</a></h4>
+<p>The Ansible projects use a <code>requirements.yml</code> file to define the Galaxy roles we are consuming. Install new roles and update existing roles in a repo by running <code>ansible-galaxy install -f -r requirements.yml -p roles/</code> from the <code>ansible</code> folder. Then, the desired roles will be copied into your project, and you can call them from Playbooks like any other role.</p>
+<h4 id="importing-contributing-a-role-to-galaxy"><a href="#importing-contributing-a-role-to-galaxy">Importing (Contributing) a Role to Galaxy</a></h4>
+<p>Follow the instructions in <a href="https://github.com/CyVerse-Ansible/ansible-role-template">this template</a> to publish an Ansible role to Galaxy and set up automated testing with Travis CI; then you can install the role into other projects.</p>
+<p>When you're ready to add your project to the CyVerse-Ansible organiztion contact Chris Martin for an invite.</p>
+<p><strong>Note for maintainers:</strong> It is suggested that roles in Cyverse-Ansible be versioned with tags. Be cognizant to push tags when the project changes, and please follow the <a href="https://semver.org/">SemVer</a> protocol.</p>
+<h2 id="security-guidelines"><a href="#security-guidelines">Security Guidelines</a></h2>
+<p>Do not store anything secret or sensitive (e.g. passphrases, SSH private keys, license keys) in public version control. Environment-specific secrets can be encrypted with Ansible Vault and stored in private version control.</p>
+<p>When using <code>ansible-vault</code>, consider the following suggestions: * Use one password per repository * Vaulted file names should be pre-fixed or suffixed with <em>&quot;vault&quot;</em> - <code>vault-sample-file-name.yml</code> - <code>sample-file-name-vault.yml</code></p>
+<p>Any REST API calls that handle privileged/sensitive information (or access to private resources) should use HTTPS endpoints. Also, any downloaded code that will be executed in a trusted context (e.g. scripts and installation packages) should be obtained in a way that verifies the other party's authenticity and prevents man-in-the-middle attacks from changing the contents. In practical terms, use HTTPS, or APT packages signed with a GPG key. Avoid disabling SSL certificate verification for any of the above.</p>
+<p>Avoid disabling SSH host key checking. When possible, learn a server's SSH host key out-of-band and verify it on first connection.</p>
+<h2 id="contribution-guide-contribution-guide"><a href="#contribution-guide-contribution-guide">Contribution Guide Contribution Guide</a></h2>
+<p>If you ask someone not to do something, offer a reasonable alternative approach. Otherwise, they may ignore your advice for the sake of pragmatism.</p>
+<h2 id="further-reading"><a href="#further-reading">Further Reading</a></h2>
+<ul>
+<li><a href="http://wiki.c2.com/?CodeSmell">Code Smells</a></li>
+</ul>
+<h1 id="python-style-guidelines"><a href="#python-style-guidelines">Python Style Guidelines</a></h1>
+<p>This Python style guide is largely copied from <a href="http://cosdev.readthedocs.io/en/latest/style_guides/python.html">Center for Open Science</a></p>
+<p>Follow <a href="http://www.python.org/dev/peps/pep-0008/">PEP8</a>, when sensible.</p>
+<h2 id="naming"><a href="#naming">Naming</a></h2>
+<ul>
+<li>Variables, functions, methods, packages, modules
+<ul>
+<li><code>lower_case_with_underscores</code></li>
+</ul></li>
+<li>Classes and Exceptions
+<ul>
+<li><code>CapWords</code></li>
+</ul></li>
+<li>Protected methods and internal functions
+<ul>
+<li><code>_single_leading_underscore(self, ...)</code></li>
+</ul></li>
+<li>Private methods
+<ul>
+<li><code>__double_leading_underscore(self, ...)</code></li>
+</ul></li>
+<li>Constants
+<ul>
+<li><code>ALL_CAPS_WITH_UNDERSCORES</code></li>
+</ul></li>
+</ul>
+<h3 id="general-naming-guidelines"><a href="#general-naming-guidelines">General Naming Guidelines</a></h3>
+<p>Use singlequotes for strings, unless doing so requires lots of escaping.</p>
+<p>Avoid one-letter variables (esp. <code>l</code>, <code>O</code>, <code>I</code>).</p>
+<p><em>Exception</em>: In very short blocks, when the meaning is clearly visible from the immediate context</p>
+<pre class="sourceCode"><code>for e in elements:
+    e.mutate()</code></pre>
+<p>Avoid redundant labeling.</p>
+<pre class="sourceCode"><code># Yes
+import audio
+
+core = audio.Core()
+controller = audio.Controller()
+
+# No
+import audio
+
+core = audio.AudioCore()
+controller = audio.AudioController()</code></pre>
+<p>Prefer &quot;reverse notation&quot;.</p>
+<pre class="sourceCode"><code># Yes
+elements = ...
+elements_active = ...
+elements_defunct = ...
+
+# No
+elements = ...
+active_elements = ...
+defunct_elements ...</code></pre>
+<p>Avoid getter and setter methods.</p>
+<pre class="sourceCode"><code># Yes
+person.age = 42
+
+# No
+person.set_age(42)</code></pre>
+<h2 id="indentation"><a href="#indentation">Indentation</a></h2>
+<p>Use 4 spaces--never tabs. You may need to change the settings in your text editor of choice.</p>
+<h2 id="imports"><a href="#imports">Imports</a></h2>
+<p>Import entire modules instead of individual symbols within a module. For example, for a top-level module canteen that has a file canteen/sessions.py,</p>
+<pre class="sourceCode"><code># Yes
+
+import canteen
+import canteen.sessions
+from canteen import sessions
+
+# No
+from canteen import get_user  # Symbol from canteen/__init__.py
+from canteen.sessions import get_session  # Symbol from canteen/sessions.py</code></pre>
+<p><em>Exception</em>: For third-party code where documentation explicitly says to import individual symbols.</p>
+<p><em>Rationale</em>: Avoids circular imports. See <a href="https://sites.google.com/a/khanacademy.org/forge/for-developers/styleguide/python#TOC-Imports">here</a>.</p>
+<p>Put all imports at the top of the page with three sections, each separated by a blank line, in this order:</p>
+<ol style="list-style-type: decimal">
+<li>System imports</li>
+<li>Third-party imports</li>
+<li>Local source tree imports</li>
+</ol>
+<p><em>Rationale</em>: Makes it clear where each module is coming from.</p>
+<p>If you have intentionally have an unused import that exists only to make imports less verbose, be explicit about it. This will make sure that someone doesn't accidentally remove the import (not to mention that it keeps linters happy)</p>
+<pre class="sourceCode"><code>from my.very.distant.module import Frob
+
+Frob = Frob</code></pre>
+<h2 id="string-formatting"><a href="#string-formatting">String formatting</a></h2>
+<p>Prefer <code>str.format</code> to &quot;%-style&quot; formatting.</p>
+<pre class="sourceCode"><code># Yes
+&#39;Hello {}&#39;.format(&#39;World&#39;)
+ # OR
+&#39;Hello {name}&#39;.format(name=&#39;World&#39;)
+
+# No
+
+&#39;Hello %s&#39; % (&#39;World&#39;, )</code></pre>
+<h2 id="print-statements"><a href="#print-statements">Print statements</a></h2>
+<p>Use the <code>print()</code> function rather than the <code>print</code> keyword (even if you're using Python 2).</p>
+<pre class="sourceCode"><code># Yes
+print(&#39;Hello {}&#39;.format(name))
+
+# No
+print &#39;Hello %s &#39; % name</code></pre>
+<h2 id="documentation"><a href="#documentation">Documentation</a></h2>
+<p>Follow <a href="http://www.python.org/dev/peps/pep-0257/">PEP257</a>'s docstring guidelines. <a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">reStructured Text</a> and <a href="http://sphinx-doc.org/">Sphinx</a> can help to enforce these standards.</p>
+<p>All functions should have a docstring - for very simple functions, one line may be enough:</p>
+<pre><code>&quot;&quot;&quot;Return the pathname of ``foo``.&quot;&quot;&quot;</code></pre>
+<p>Multiline docstrings should include:</p>
+<ul>
+<li>Summary line</li>
+<li>Use case, if appropriate</li>
+<li>Args</li>
+<li>Return type and semantics, unless <code>None</code> is returned</li>
+</ul>
+<!-- -->
+
+<pre><code>&quot;&quot;&quot;Train a model to classify Foos and Bars.
+
+Usage::
+
+    &gt;&gt;&gt; import klassify
+    &gt;&gt;&gt; data = [(&quot;green&quot;, &quot;foo&quot;), (&quot;orange&quot;, &quot;bar&quot;)]
+    &gt;&gt;&gt; classifier = klassify.train(data)
+
+:param train_data: A list of tuples of the form ``(color, label)``.
+:return: A trained :class:`Classifier &lt;Classifier&gt;`
+&quot;&quot;&quot;</code></pre>
+<p>Notes</p>
+<ul>
+<li>Use action words (&quot;Return&quot;) rather than descriptions (&quot;Returns&quot;).</li>
+<li>Document <code>__init__</code> methods in the docstring for the class.</li>
+</ul>
+<pre class="sourceCode"><code>class Person(object):
+    &quot;&quot;&quot;A simple representation of a human being.
+
+    :param name: A string, the person&#39;s name.
+    :param age: An int, the person&#39;s age.
+    &quot;&quot;&quot;
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age</code></pre>
+<h2 id="on-comments"><a href="#on-comments">On Comments</a></h2>
+<p>Use them sparingly. Prefer code readability to writing a lot of comments. Often, small methods and functions are more effective than comments.</p>
+<pre class="sourceCode"><code># Yes
+def is_stop_sign(sign):
+    return sign.color == &#39;red&#39; and sign.sides == 8
+
+if is_stop_sign(sign):
+    stop()
+
+# No
+# If the sign is a stop sign
+if sign.color == &#39;red&#39; and sign.sides == 8:
+    stop()</code></pre>
+<p>When you do write comments, use them to explain <em>why</em> a piece code was used, not <em>what</em> it does.</p>
+<h3 id="method-overrides"><a href="#method-overrides">Method Overrides</a></h3>
+<p>One useful place for comments are method overrides.</p>
+<pre class="sourceCode"><code>class UserDetail(generics.RetrieveUpdateAPIView, UserMixin):
+
+    # overrides RetrieveUpdateAPIView
+    def get_serializer_context(self):
+        return {&#39;request&#39;: self.request}</code></pre>
+<h2 id="calling-superclasses-methods"><a href="#calling-superclasses-methods">Calling Superclasses' Methods</a></h2>
+<p>Use super when there is only one superclass.</p>
+<pre class="sourceCode"><code>class Employee(Person):
+
+    def __init__(self, name):
+        super(Employee, self).__init__(name)
+        # or super().__init__(name) in Python 3
+        # ...</code></pre>
+<p>Call the method directly when there are multiple superclasses.</p>
+<pre class="sourceCode"><code>class DevOps(Developer, Operations):
+
+    def __init__(self):
+        Developer.__init__(self)
+        # ...</code></pre>
+<h2 id="line-lengths"><a href="#line-lengths">Line lengths</a></h2>
+<p>Don't stress over it. 80-100 characters is fine.</p>
+<p>Use parentheses for line continuations.</p>
+<pre class="sourceCode"><code>wiki = (
+    &quot;The Colt Python is a .357 Magnum caliber revolver formerly manufactured &quot;
+    &quot;by Colt&#39;s Manufacturing Company of Hartford, Connecticut. It is sometimes &quot;
+    &#39;referred to as a &quot;Combat Magnum&quot;. It was first introduced in 1955, the &#39;
+    &quot;same year as Smith &amp; Wesson&#39;s M29 .44 Magnum.&quot;
+)</code></pre>
+<h2 id="recommended-syntax-checkers"><a href="#recommended-syntax-checkers">Recommended Syntax Checkers</a></h2>
+<p>We recommend using a syntax checker to help you find errors quickly and easily format your code to abide by the guidelines above. <a href="http://flake8.readthedocs.org/en/latest/">Flake8</a> is our recommended checker for Python. It will check for both syntax and style errors and is easily configurable. It can be installed with pip: :</p>
+<pre><code>$ pip install flake8</code></pre>
+<p>Once installed, you can run a check with: :</p>
+<pre><code>$ flake8</code></pre>
+<p>There are a number of plugins for integrating Flake8 with your preferred text editor.</p>
+<p>Vim</p>
+<ul>
+<li><a href="https://github.com/scrooloose/syntastic">syntastic</a> (multi-language)</li>
+</ul>
+<p>Sublime Text</p>
+<ul>
+<li><a href="https://sublime.wbond.net/packages/SublimeLinter">Sublime Linter</a> with <a href="https://sublime.wbond.net/packages/SublimeLinter-flake8">SublimeLinter-flake8</a> (must install both)</li>
+</ul>
+<p>It is recommended that you use the git <code>pre-commit</code> hook to ensure your code is compliant with our style guide.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -s <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>/contrib/pre-commit.hook <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>/.git/hooks/pre-commit</code></pre>
+<p>To automate running tests before a push use the git <code>pre-push</code> hook to ensure your code passes all the tests.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -s <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>/contrib/pre-push.hook <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>.git/hooks/pre-push</code></pre>
+<p>When master is pulled, it's helpful to know if a <code>pip install</code> or a <code>manage.py migrate</code> is necessary. To get other helpful warnings:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -s <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>/contrib/post-merge.hook <span class="ot">$(</span><span class="kw">pwd</span><span class="ot">)</span>/.git/hooks/post-merge</code></pre>
+<h2 id="credits"><a href="#credits">Credits</a></h2>
+<ul>
+<li><a href="http://cosdev.readthedocs.io/en/latest/style_guides/python.html">Center for Open Science</a></li>
+<li><a href="http://www.python.org/dev/peps/pep-0008/">PEP8</a> (Style Guide for Python)</li>
+<li><a href="http://www.nilunder.com/blog/2013/08/03/pythonic-sensibilities/">Pythonic Sensibilities</a></li>
+<li><a href="http://youtu.be/GZNUfkVIHAY">Python Best Practice Patterns</a></li>
+</ul>
+              </article>
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+                <div class="footer-container">
+            <footer class="wrapper">
+                    <footer class="footer"> <!-- Needs to be a `include-after` -->
+          		<div class="container">
+          		  <div class="region region-footer">
+          		    <section id="block-block-25" class="block block-block clearfix">
+          		      <p><img alt="Cyverse" src="./media/cyverse_icon_transp2.png" style="width: 25px; height: 24px;">&nbsp;<a href="http://www.cyverse.org/">CyVerse</a> | <a href="http://www.cyverse.org/open-source">Open Source</a> | <img alt="NSF" src="./media/nsf1.gif" style="width: 25px; height: 25px;">&nbsp;</p>
+          		    </section>
+          		  </div>
+          		</div>
+        	    </footer>
+            </footer>
+        </div>
+        <!-- Included at the end of body -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="themes/cyverse/media/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        
+        <script src="themes/cyverse/media/js/main.js"></script>
+            </body>
+</html>

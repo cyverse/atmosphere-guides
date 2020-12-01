@@ -1,0 +1,575 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="generator" content="pandoc" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+                    <title></title>
+        <style type="text/css">code{white-space: pre;}</style>
+                    <style type="text/css">
+      table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+        margin: 0; padding: 0; vertical-align: baseline; border: none; }
+      table.sourceCode { width: 100%; line-height: 100%; }
+      td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+      td.sourceCode { padding-left: 5px; }
+      code > span.kw { color: #007020; font-weight: bold; }
+      code > span.dt { color: #902000; }
+      code > span.dv { color: #40a070; }
+      code > span.bn { color: #40a070; }
+      code > span.fl { color: #40a070; }
+      code > span.ch { color: #4070a0; }
+      code > span.st { color: #4070a0; }
+      code > span.co { color: #60a0b0; font-style: italic; }
+      code > span.ot { color: #007020; }
+      code > span.al { color: #ff0000; font-weight: bold; }
+      code > span.fu { color: #06287e; }
+      code > span.er { color: #ff0000; font-weight: bold; }
+        </style>
+                    <link rel="stylesheet" href="./themes/cyverse/templates/main.css" type="text/css" />
+                    <link rel="icon" href="themes/cyverse/media/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="themes/cyverse/media/css/normalize.min.css">
+        <link rel="stylesheet" href="themes/cyverse/media/css/main.css">
+        <script src="themes/cyverse/media/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+          </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+                <div class="header-container">
+            <header class="wrapper clearfix">
+                <div class="logo"><img src="themes/cyverse/media/cyverse_logo.png" alt="Staff Guide"></div>
+                <h1 class="title"></h1>
+            </header>
+        </div>
+        
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+              <!-- TABLE OF CONTENTS -->
+                                  <aside>
+                      <h3> TABLE OF CONTENTS </h3>
+                      <ul>
+                      <li><a href="#staff-guide">Staff Guide</a><ul>
+                      <li><a href="#audience">Audience</a></li>
+                      <li><a href="#staff-responsbilities">Staff Responsbilities</a></li>
+                      <li><a href="#granting-staff-access">Granting staff access</a><ul>
+                      <li><a href="#what-makes-a-staff-member-in-atmosphere-different-from-a-regular-user">What makes a Staff member in Atmosphere different from a regular user?</a></li>
+                      <li><a href="#how-do-i-grant-staff-access-to-the-atmosphere-apis-to-user-x">How do I grant Staff access to the Atmosphere APIs to User X?</a></li>
+                      <li><a href="#how-do-i-grant-staff-access-to-the-troposphere-admin-pages-to-user-x">How do I grant Staff access to the Troposphere Admin pages to User X?</a></li>
+                      </ul></li>
+                      <li><a href="#accessing-the-django-administration-pages">Accessing the Django Administration Pages</a><ul>
+                      <li><a href="#first-a-warning-about-django-administration-pages">First, A warning about Django Administration Pages</a><ul>
+                      <li><a href="#accessing-the-django-administration-pages-atmosphere">Accessing the Django Administration Pages (Atmosphere)</a></li>
+                      <li><a href="#accessing-the-django-administration-pages-troposphere">Accessing the Django Administration Pages (Troposphere)</a></li>
+                      </ul></li>
+                      </ul></li>
+                      <li><a href="#account-emulation">Account Emulation</a><ul>
+                      <li><a href="#emulating-a-user-through-troposphere">Emulating a user through Troposphere</a></li>
+                      <li><a href="#emulating-a-user-through-the-api">Emulating a user through the API</a></li>
+                      </ul></li>
+                      <li><a href="#checking-logs">Checking logs</a></li>
+                      <li><a href="#administration-of-user-requests">Administration of User Requests</a><ul>
+                      <li><a href="#allocation-requests">Allocation Requests</a><ul>
+                      <li><a href="#granting-a-larger-allocation-via-admin-pages">Granting a larger Allocation via Admin Pages</a></li>
+                      <li><a href="#granting-a-larger-quota-via-admin-pages">Granting a larger Quota via Admin Pages</a></li>
+                      </ul></li>
+                      <li><a href="#imaging-requests">Imaging Requests</a><ul>
+                      <li><a href="#approving-a-pending-machine-request">Approving a 'pending' Machine Request</a></li>
+                      <li><a href="#approving-a-machine-request-including-those-in-error">Approving a Machine Request (Including those in ERROR)</a></li>
+                      <li><a href="#troubleshooting-imaging-requests">Troubleshooting Imaging Requests</a></li>
+                      <li><a href="#taking-action-to-restart-the-imaging-services">Taking action to restart the Imaging Services</a></li>
+                      <li><a href="#making-contact-with-the-atmosphere-support-team">Making contact with the Atmosphere Support Team</a></li>
+                      </ul></li>
+                      </ul></li>
+                      <li><a href="#troubleshooting-common-errors-on-instance-launchdeployment">Troubleshooting common errors on Instance Launch/Deployment</a></li>
+                      <li><a href="#the-problem-after-completing-the-launch-instance-dialog-the-instance-immediately-goes-to-error-state.">The Problem: After completing the launch instance dialog, the instance immediately goes to <code>error</code> state.</a></li>
+                      <li><a href="#the-problem-instance-is-stuck-in-networking">The Problem: Instance is &quot;stuck&quot; in <code>networking</code></a></li>
+                      <li><a href="#the-problem-instance-is-stuck-in-deploying">The Problem: Instance is &quot;stuck&quot; in <code>deploying</code></a></li>
+                      <li><a href="#resolving-an-instance-that-is-stuck-in-deploy_error">Resolving an instance that is stuck in <code>deploy_error</code></a></li>
+                      <li><a href="#contacting-the-atmosphere-team">Contacting the Atmosphere Team</a></li>
+                      <li><a href="#argo-workflow">Argo Workflow</a><ul>
+                      <li><a href="#what-is-argo">What is Argo</a></li>
+                      <li><a href="#why-argo">Why Argo</a></li>
+                      <li><a href="#usage-in-atmosphere">Usage in Atmosphere</a><ul>
+                      <li><a href="#instance-deployment">Instance Deployment</a></li>
+                      </ul></li>
+                      <li><a href="#troubleshooting">Troubleshooting</a><ul>
+                      <li><a href="#list-workflows">List workflows</a></li>
+                      <li><a href="#find-workflow-name-for-a-deployment">Find Workflow Name for a deployment</a></li>
+                      <li><a href="#get-details-of-a-workflow">Get details of a workflow</a></li>
+                      <li><a href="#get-logs-of-a-workflow-all-pods-within-the-workflow">Get logs of a workflow (all pods within the workflow)</a></li>
+                      <li><a href="#get-logs-of-a-pod">Get logs of a pod</a></li>
+                      <li><a href="#resubmit-a-workflow">Resubmit a workflow</a></li>
+                      </ul></li>
+                      </ul></li>
+                      <li><a href="#flower">Flower</a><ul>
+                      <li><a href="#logging-in-to-flower">Logging in to flower</a><ul>
+                      <li><a href="#what-are-the-flower-credentials">What are the flower credentials?</a></li>
+                      </ul></li>
+                      <li><a href="#checking-the-status-of-a-running-task">Checking the status of a running task</a></li>
+                      </ul></li>
+                      <li><a href="#administering-applications-and-images">Administering Applications and Images</a><ul>
+                      <li><a href="#migrating-applicationimage-to-a-new-cloud-provider">Migrating Application/Image to a New Cloud Provider</a></li>
+                      <li><a href="#synchronizing-applicationsimages-across-cloud-providers">Synchronizing Applications/Images across Cloud Providers</a></li>
+                      <li><a href="#troubleshooting-images-that-arent-copying-to-replica-providers">Troubleshooting images that aren't copying to replica providers</a></li>
+                      </ul></li>
+                      <li><a href="#setting-maintenance-records">Setting Maintenance Records</a></li>
+                      </ul></li>
+                      </ul>
+                  </aside>
+                              <!-- MAIN CONTENT -->
+              <article>
+<h1 id="staff-guide"><a href="#staff-guide">Staff Guide</a></h1>
+<h2 id="audience"><a href="#audience">Audience</a></h2>
+<p><a name="staff_audience"></a></p>
+<p>The staff guide is intended to be viewed by those who have been or will be given 'is_staff' privileges on Atmosphere.</p>
+<h2 id="staff-responsbilities"><a href="#staff-responsbilities">Staff Responsbilities</a></h2>
+<p><a name="staff_responsibilities"></a></p>
+<p>Staff members are responsible for:</p>
+<ul>
+<li>Approving resource requests</li>
+<li>Approving imaging requests</li>
+<li>Responding to user feedback, support requests</li>
+<li>Triage errors by following the notes in this guide</li>
+<li>Contact Atmosphere team with the most <strong>DETAILED</strong> information possible to ensure the problem is resolved as quickly as possible.</li>
+</ul>
+<h2 id="granting-staff-access"><a href="#granting-staff-access">Granting staff access</a></h2>
+<p><a name="staff_access"></a></p>
+<h3 id="what-makes-a-staff-member-in-atmosphere-different-from-a-regular-user"><a href="#what-makes-a-staff-member-in-atmosphere-different-from-a-regular-user">What makes a Staff member in Atmosphere different from a regular user?</a></h3>
+<p>API Staff members have the ability to:</p>
+<ul>
+<li>Emulate end-users to help reproduce problems for the Atmosphere Team</li>
+<li>Respond to and accept resource requests in the Troposphere App.</li>
+<li>Respond to and accept imaging requests in the Troposphere App.</li>
+<li>Access the <code>/admin</code> built-in django administration pages.</li>
+</ul>
+<p>Troposphere Staff members have the ability to:</p>
+<ul>
+<li>Access the <code>/admin</code> built-in django administration pages.</li>
+</ul>
+<h3 id="how-do-i-grant-staff-access-to-the-atmosphere-apis-to-user-x"><a href="#how-do-i-grant-staff-access-to-the-atmosphere-apis-to-user-x">How do I grant Staff access to the Atmosphere APIs to User X?</a></h3>
+<p>To get to Atmosphere's Python REPL:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> /opt/dev/atmosphere <span class="co"># References the canonical &#39;dev&#39; path.</span>
+<span class="kw">source</span> /opt/env/atmo/bin/activate  <span class="co"># References the canonical &#39;env&#39; path.</span>
+<span class="kw">./manage.py</span> shell</code></pre>
+<p>Once inside Atmosphere's Python REPL:</p>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="ch">from</span> core.models <span class="ch">import</span> AtmosphereUser
+user = AtmosphereUser.objects.get(username=<span class="st">&#39;x&#39;</span>)
+user.is_staff = <span class="ot">True</span>
+user.is_superuser = <span class="ot">True</span>
+user.save()
+
+<span class="co"># To set the users password at the same time</span>
+<span class="co"># (This is required if you want /admin access without LDAP)</span>
+<span class="co"># user.set_password(&#39;new_password&#39;)</span></code></pre>
+<h3 id="how-do-i-grant-staff-access-to-the-troposphere-admin-pages-to-user-x"><a href="#how-do-i-grant-staff-access-to-the-troposphere-admin-pages-to-user-x">How do I grant Staff access to the Troposphere Admin pages to User X?</a></h3>
+<p>To get to Troposphere's Python REPL:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> /opt/dev/troposphere <span class="co"># References the canonical &#39;dev&#39; path.</span>
+<span class="kw">source</span> /opt/env/troposphere/bin/activate  <span class="co"># References the canonical &#39;env&#39; path.</span>
+<span class="kw">./manage.py</span> shell</code></pre>
+<p>Once inside troposphere's Python REPL:</p>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="ch">from</span> django.contrib.auth.models <span class="ch">import</span> User
+user = User.objects.get(username=<span class="st">&#39;x&#39;</span>)
+user.is_staff = <span class="ot">True</span>
+user.is_superuser = <span class="ot">True</span>
+user.save()</code></pre>
+<h2 id="accessing-the-django-administration-pages"><a href="#accessing-the-django-administration-pages">Accessing the Django Administration Pages</a></h2>
+<p><a name="staff_django_admin"></a></p>
+<h3 id="first-a-warning-about-django-administration-pages"><a href="#first-a-warning-about-django-administration-pages">First, A warning about Django Administration Pages</a></h3>
+<p>It is important to note the amount of responsibility that one assumes when they are given access to these admin pages.</p>
+<p>These pages can be thought of as a direct line into all of the available tables and rows in the database.</p>
+<ul>
+<li>&quot;Objects&quot; (Database entries) can be manually deleted and lost forever.</li>
+<li>Values can also be edited incorrectly and cause unforseen problems during a users experience.</li>
+<li>Scalar values that are changed can affect a wide variety of functionality, as an example: you should always <em>create</em> a new <strong>Quota</strong> rather than edit, because to edit would potentially change that value for &gt;1 users.</li>
+</ul>
+<p>Please, <strong>USE CAUTION</strong> when editing <em>any</em> entry directly.</p>
+<h4 id="accessing-the-django-administration-pages-atmosphere"><a href="#accessing-the-django-administration-pages-atmosphere">Accessing the Django Administration Pages (Atmosphere)</a></h4>
+<p>From here, you have full access to all users, identities, requests, and other Atmosphere models.</p>
+<h5 id="logging-in-through-django-admin-interface"><a href="#logging-in-through-django-admin-interface">Logging in through Django admin interface</a></h5>
+<p>In order to access the Django Administration Pages in Atmosphere your user must both have the <code>is_staff</code> and <code>is_superuser</code> privileges <em>AND a valid password</em>. If you are using an LDAP backed Atmosphere, your &quot;Normal&quot; LDAP login should suffice. If you are not, you will need a password set for you by another Atmosphere Staff user, or you must set your password via the REPL (See <a href="#staff_access">Staff access</a> for more details).</p>
+<p>Navigate to <code>https://&lt;your_url&gt;/admin</code> and log in as a staff user to access the Django admin interface.</p>
+<h4 id="accessing-the-django-administration-pages-troposphere"><a href="#accessing-the-django-administration-pages-troposphere">Accessing the Django Administration Pages (Troposphere)</a></h4>
+<p>The Django Admin pages for Troposphere will allow you to manage MaintenanceRecords and other Troposphere models.</p>
+<h5 id="logging-in-via-troposphere"><a href="#logging-in-via-troposphere">Logging in via Troposphere</a></h5>
+<p>If a user is staff, you can gain accessing to the Django Administration Pages by first logging in normally through Troposphere at <code>https://&lt;your_url&gt;/application</code>. Next, redirect your browser to <code>https://&lt;your_url&gt;/tropo-admin</code>. From here you can manage Maintenance Records, which will block normal users from accessing the website.</p>
+<h5 id="logging-in-via-the-login-interface"><a href="#logging-in-via-the-login-interface">Logging in via the Login interface</a></h5>
+<p>You can navigate directly to <code>https://&lt;your_url&gt;/tropo-admin</code> and log in as a staff user if you have an LDAP backed Atmosphere.</p>
+<h2 id="account-emulation"><a href="#account-emulation">Account Emulation</a></h2>
+<p>To emulate an account, you must be a staff user. If you are not sure or need staff user access, see <a href="#">Staff Access</a></p>
+<h3 id="emulating-a-user-through-troposphere"><a href="#emulating-a-user-through-troposphere">Emulating a user through Troposphere</a></h3>
+<p><a name="staff_emulate_ui"></a></p>
+<p><strong>To emulate a user, you must first log in to Troposphere as a staff user.</strong> First, login normally as the staff user. Next, navigate to this page in your browser: <code>https://&lt;your_url&gt;/application/emulate/&lt;username&gt;</code></p>
+<p>After a series of redirections, you should see that the username in the Top Right corner has changed to the user you are intending to emulate. If you are unable to emulate a user after several attempts, ensure that the username exists and is spelled properly.</p>
+<p>Note: You can also emulate from &quot;Admin &gt; Manage Users&quot;.</p>
+<ol style="list-style-type: decimal">
+<li>Click on the &quot;Admin&quot; tab within the header</li>
+<li>Click on &quot;Manage Users&quot;</li>
+<li>Search by <em>username</em></li>
+<li>Click on the &quot;user&quot; icon to the left of <em>username</em></li>
+</ol>
+<div class="figure">
+<img src="./media/emulate-from-admin-tab.png" />
+</div>
+<h5 id="unemulate-a-user"><a href="#unemulate-a-user">Unemulate a user:</a></h5>
+<p><a name="staff_no_emulate_ui"></a> When done emulating a user, there are several options to 'disconnect' from the session:</p>
+<ol style="list-style-type: decimal">
+<li>navigate to <code>https://&lt;your_url&gt;/application/emulate/&lt;your_username&gt;</code></li>
+<li>navigate to <code>https://&lt;your_url&gt;/application/emulate</code> (NOTE: no username after <code>emulate</code>.)</li>
+</ol>
+<p>Or, you can also <strong>logout</strong> and upon the next login you should see your own account again.</p>
+<p>How to emulate a user on Troposphere via the URL <code>https://&lt;your_url&gt;/application/emulate/&lt;username&gt;</code>:<br /><img src="./media/staff_emulate_application.gif" alt="Troposphere Emulation" /></p>
+<h3 id="emulating-a-user-through-the-api"><a href="#emulating-a-user-through-the-api">Emulating a user through the API</a></h3>
+<p><strong>To emulate a user, you must first log in to Atmosphere API as a staff user.</strong> <a name="staff_emulate_api"></a> Note: If your site does <strong>NOT</strong> handle username/password validation (No LDAP) then a user/password combination must be created through Django first. The user must also have marked <code>is_staff</code> and <code>is_superuser</code> true.</p>
+<p>After logging in as a staff user, navigate to <code>https://&lt;your_url&gt;/api/emulate/&lt;username&gt;</code></p>
+<p>From here, you will be able to perform actions through the Troposphere UI as if you were logged in as the user you are emulating.</p>
+<h5 id="unemulate-a-user-1"><a href="#unemulate-a-user-1">Unemulate a user:</a></h5>
+<p><a name="staff_no_emulate_api"></a> When done emulating a user, you can either navigate to <code>https://&lt;your_url&gt;/api/emulate/&lt;your_username&gt;</code> or <code>https://&lt;your_url&gt;/api/emulate</code> with no username after <code>emulate.</code></p>
+<p>How to emulate a user on the Atmosphere API via the URL <code>https://&lt;your_url&gt;/api/emulate/&lt;username&gt;</code>:<br /><img src="./media/staff_emulate_api.gif" alt="Atmosphere API Emulation" /></p>
+<h2 id="checking-logs"><a href="#checking-logs">Checking logs</a></h2>
+<p><a name="staff_logs"></a> The aggregate of all <em>Atmosphere</em> log output can be found at <code>&lt;atmosphere_install_location/logs/atmosphere.log&gt;</code></p>
+<p>Individual log files can be found in the same directory with a format of <code>atmosphere_&lt;type&gt;.log</code>. This includes:</p>
+<ul>
+<li>deploy</li>
+<li>email</li>
+<li>status</li>
+<li>auth</li>
+<li>API</li>
+<li>libcloud</li>
+</ul>
+<p><em>Troposphere</em> logs can be found at <code>&lt;troposphere_install_location/logs/troposphere.log&gt;</code> <em>Celery</em> logs can be found at <code>&lt;/var/log/celery/name_of_celery_node_1.log&gt;</code></p>
+<p>Unlike Atmosphere logs, there is only one Troposphere log file. Here, you can see Troposphere authentication and API logs. Note that logrotation will be applied to most logs, so be sure you are looking in the right file relative to the date/time of the errors occurence.</p>
+<h2 id="administration-of-user-requests"><a href="#administration-of-user-requests">Administration of User Requests</a></h2>
+<p>There are serveral types of requests a user can make while using Atmosphere:</p>
+<ul>
+<li>Resource Requests - These requests, when approved, will grant a larger quota and/or allocation for the requesting user.</li>
+<li>Imaging Requests - These requests, when approved, will create a <em>new</em> image from an <em>existing</em> instance that has already been properly configured.</li>
+</ul>
+<h3 id="allocation-requests"><a href="#allocation-requests">Allocation Requests</a></h3>
+<p><a name="allocation"></a> <strong>If a user has an active resource request, their request will appear under the &quot;Resource Requests&quot; tab in the Troposphere Admin UI. Otherwise, allocation and quota increases must be handled through the Django admin UI.</strong></p>
+<h4 id="granting-a-larger-allocation-via-admin-pages"><a href="#granting-a-larger-allocation-via-admin-pages">Granting a larger Allocation via Admin Pages</a></h4>
+<p><a name="changing-allocation"></a> Navigate to <code>https://&lt;site_url&gt;/admin/core/identitymembership</code> and search for the user you are changing. The results will contain a new entry for every membership that user belongs to, which is effectively an &quot;account&quot; on every provider the user has access to. Select the appropriate identity membership based on the provider you want to change the user's allocation or quota on.</p>
+<p>To change a user's allocation, select the &quot;allocation&quot; dropdown menu and select the new allocation to assign.</p>
+<ul>
+<li>&quot;Threshold&quot;: the number of CPU minutes to allocate. Eg. 168 AU = 10080 threshold value</li>
+<li>&quot;Delta&quot;: positive to indicate an allowance that expires at the end of the month, and a -1 value indicates a permanent allowance.</li>
+</ul>
+<p>If the allocation you would like to assign is not listed, you can create it by clicking the green plus sign to the right of the dropdown.<br /><strong>Do Not</strong> edit the existing allocation.</p>
+<h4 id="granting-a-larger-quota-via-admin-pages"><a href="#granting-a-larger-quota-via-admin-pages">Granting a larger Quota via Admin Pages</a></h4>
+<p><a name="changing quota"></a></p>
+<p>To change a user's quota, select the &quot;quota&quot; dropdown menu and select the new quota to assign.</p>
+<ul>
+<li>CPU: The total number of CPUs a user's instances can utilize. Eg. A value of 16 can equal two 8 CPU instances, four 4 CPU instances, etc.</li>
+<li>MEM: The total amount of RAM a user's instances can utilize in GB.</li>
+<li>DISK: The total amount of storage a user's volumes can utilize in GB.</li>
+<li>DISK #: The total number of volumes a user can have at one time.</li>
+<li>SUSPEND #: The total number of suspended instances a user can have at one time.</li>
+</ul>
+<p>If the quota you would like to assign is not listed, you can create it by clicking the green plus sign to the right of the dropdown.<br /><strong>Do Not</strong> edit the existing quota.</p>
+<h5 id="example"><a href="#example">Example:</a></h5>
+<p><a name="allocation-example"></a> How to grant a quota or allocation from the Django Admin panel:</p>
+<div class="figure">
+<img src="./media/adjust_quota_allocation_from_admin.gif" alt="Granting Allocation/Quota via Django Admin" /><p class="caption">Granting Allocation/Quota via Django Admin</p>
+</div>
+<h3 id="imaging-requests"><a href="#imaging-requests">Imaging Requests</a></h3>
+<p>This will take you through how to login to atmosphere via the Troposphere UI admin interface and approve an imaging request. <strong>WARNING: At most one machine request should be in the 'started' or 'imaging' state at a time. Failure to follow these rules could potentially cause filesystem trouble. You have been warned.</strong></p>
+<h4 id="approving-a-pending-machine-request"><a href="#approving-a-pending-machine-request">Approving a 'pending' Machine Request</a></h4>
+<p>Describe the process, step by step, of how to login to Atmosphere via the Troposphere UI. Select the admin panel Select Machine Requests Click 'approve'</p>
+<h4 id="approving-a-machine-request-including-those-in-error"><a href="#approving-a-machine-request-including-those-in-error">Approving a Machine Request (Including those in ERROR)</a></h4>
+<ol style="list-style-type: decimal">
+<li>Login as a staff user who has access to the Troposphere Admin Panel</li>
+<li>Select 'Imaging Requests' for a list of active requests.</li>
+<li>To Approve a Machine Request that is in a state other than <em>pending</em>, first select 're-submit'</li>
+<li>To start the Machine Request immediately, Click 'approve'. Being sure to pay attention to the warning above that <em>ONLY ONE</em> request should be in the <code>imaging</code> state.</li>
+<li>After approving a machine request, return ~15-20minutes later and ensure the request was successful. If not, see &quot;Troubleshooting Imaging Requests&quot; below.</li>
+</ol>
+<div class="figure">
+<img src="./media/staff_how_to_approve_imaging_requests.gif" />
+</div>
+<h4 id="troubleshooting-imaging-requests"><a href="#troubleshooting-imaging-requests">Troubleshooting Imaging Requests</a></h4>
+<p>Usually the Imaging Request process is 100% automated. Occasionally though, you will find the request is in (ERROR).</p>
+<h5 id="fixing-an-imaging-request-in-the-error-state"><a href="#fixing-an-imaging-request-in-the-error-state">Fixing an Imaging Request in the (ERROR) state</a></h5>
+<ul>
+<li>If the MachineRequest throws an exception and the (Status Message) shows: (validating) Error ...</li>
+<li>Including the text: &quot;Maximum number of instances exceeded&quot;</li>
+</ul>
+<p>Ask a System Administrator to remove the instances from the <code>atmosphere admin</code> user and tenant. (This problem will be automated away shortly)</p>
+<ul>
+<li>If the MachineRequest throws an exception and the (Status Message) shows: (processing - <IMAGE_ID>) Error ... (validating) Error ...</li>
+<li>Especially: <code>AttributeError: \'NoneType\' object has no attribute \'id\'\n'</code></li>
+</ul>
+<p>See 'Fixing a request in the <code>processing</code> or <code>validating</code> state.'.</p>
+<ul>
+<li>If the MachineRequest throws an exception and the Status Message shows: (imaging) Exception ...</li>
+</ul>
+<p>See 'Fixing an Imaging Problem'.</p>
+<h5 id="fixing-a-request-in-the-processing-or-validating-state."><a href="#fixing-a-request-in-the-processing-or-validating-state.">Fixing a request in the <code>processing</code> or <code>validating</code> state.</a></h5>
+<p>These errors are the result of an old way of handling 'caching' on our celery nodes.</p>
+<ul>
+<li>To fix a Cache problem, see 'Restarting the Imaging service on the Atmosphere Server'</li>
+<li>Alternatively, celery processes will naturally turn over after some length of time. If the MachineRequest has been in error for &gt;12 hours, simply re-running the task can solve the problem.</li>
+</ul>
+<p>If the Image Request is having trouble with Atmospheres internal Cache, you will see errors that look like this: If the MachineRequest throws an exception and the (Status Message) shows:</p>
+<ul>
+<li><code>processing - &lt;IMAGE_ID&gt;</code> + <code>serverRef... does not exist</code></li>
+<li><code>validating</code> + <code>ERROR - AttributeError(&quot;'NoneType' object has no attribute 'id'&quot;,)</code></li>
+</ul>
+<p>First attempt:</p>
+<ul>
+<li>See 'Restarting the Imaging Service'</li>
+</ul>
+<p>If you receive the same error:</p>
+<ul>
+<li>See 'Making contact with the Atmosphere Support Team'.</li>
+</ul>
+<h5 id="fixing-an-error-in-the-imaging-state."><a href="#fixing-an-error-in-the-imaging-state.">Fixing an error in the <code>imaging</code> state.</a></h5>
+<p>NOTE: On average, it takes 20-40minutes to go through 'imaging' of a 10GB disk. The larger the disk size, the longer the entire process will take.</p>
+<p>If the MachineRequest throws an exception and the (Status Message) shows: (imaging)</p>
+<p>If an image throws an exception while it is in the 'imaging' step, pay attention to the exception message, and you can generally deduce how/why an error occurred. These errors occur outside the flow of Atmosphere, in Chromogenic, and as such simply repeating the image request will do you no good here.</p>
+<p>Common reasons for failure:</p>
+<ul>
+<li>Bad Filesystem type (Rare – usually introduced by staff trying out new img files)</li>
+<li>Missing modules (Ex: <code>/dev/nbd</code> is usually missing after reboot. To restore: <code>modprobe nbd max_part=16</code>)</li>
+<li>Out of Disk space (Free up disk space by cleaning out logs or the storage directory)</li>
+<li>Running more than one imaging task at the same time may cause problems with OS stability.</li>
+</ul>
+<h4 id="taking-action-to-restart-the-imaging-services"><a href="#taking-action-to-restart-the-imaging-services">Taking action to restart the Imaging Services</a></h4>
+<p>After working through the troubleshooting above, you may be required to restart the imaging service for Atmosphere. That process is described below.</p>
+<h5 id="restarting-the-celery-async-task-service-on-the-atmosphere-server"><a href="#restarting-the-celery-async-task-service-on-the-atmosphere-server">Restarting the Celery Async task service on the Atmosphere Server</a></h5>
+<p>To restart <em>all</em> celery workers, use this command:</p>
+<pre><code>service celeryd restart</code></pre>
+<h5 id="restarting-the-imaging-service-on-the-atmosphere-server"><a href="#restarting-the-imaging-service-on-the-atmosphere-server">Restarting the Imaging service on the Atmosphere Server</a></h5>
+<p><strong>WARNING:</strong> Before you restart the service, double-check (via flower) that the <code>imaging</code> queue is empty before you continue..</p>
+<pre><code># Kill all of the celery workers that are listening to &#39;imaging&#39; (Note, this is *forceful* for a *clean* restart, see &#39;Restarting the Celery Async task service on the Atmosphere Server&#39;)
+ps auxww | grep &#39;celery worker&#39; | grep &#39;imaging&#39; | awk &#39;{print $2}&#39; | xargs kill -9
+# This will only start the imaging service, which is no longer running.
+service celeryd start</code></pre>
+<h5 id="problem-a-machinerequest-has-been-processed-as-a-new-application-but-we-would-rather-it-be-a-second-version-of-application-x"><a href="#problem-a-machinerequest-has-been-processed-as-a-new-application-but-we-would-rather-it-be-a-second-version-of-application-x">Problem: A MachineRequest has been processed as a &quot;New Application&quot;, but we would rather it be &quot;A second version of Application X&quot;</a></h5>
+<pre><code>from core.models import Application, ApplicationVersion, ProviderMachine
+mach = ProviderMachine.objects.get(instance_source__provider__id=4, instance_source__identifier=&quot;f77cb286-d5fc-4a3e-b15b-98e5a9dd2a86&quot;)
+version = mach.application_version
+move_to_app = Application.objects.get(id=1144) # this ID can be found in the Troposphere GUI when you are &quot;viewing&quot; the image you want to move your version to...
+version.application = move_to_app
+# NOTE: you *must* have a unique combination of &#39;version name&#39; and &#39;application ID&#39;, so you will likely need to rename one of the versions from the default (1.0) name.
+version.name = &quot;1.2&quot;
+version.save()</code></pre>
+<h5 id="problem-a-machinerequest-has-been-processed-as-private-but-i-would-like-to-now-make-it-publicly-available."><a href="#problem-a-machinerequest-has-been-processed-as-private-but-i-would-like-to-now-make-it-publicly-available.">Problem: A MachineRequest has been processed as &quot;private&quot; but I would like to now make it publicly available.</a></h5>
+<p>Step 1: Update the glance image visibility for each provider</p>
+<pre><code>from core.models import Identity
+from service.driver import get_account_driver
+ident = Identity.objects.filter(provider__id=4).first()
+accounts = get_account_driver(ident.provider)
+glance_img = accounts.get_image(&quot;f77cb286-d5fc-4a3e-b15b-98e5a9dd2a86&quot;)
+accounts.image_manager.glance.images.update(glance_img[&#39;id&#39;], visibility=&#39;public&#39;)</code></pre>
+<p>Step 2: Update the application from 'private' to 'public':</p>
+<pre><code>from core.models import Application
+app_to_change = Application.objects.get(id=X)
+app_to_change.private = False  # public
+app_to_change.save()</code></pre>
+<h4 id="making-contact-with-the-atmosphere-support-team"><a href="#making-contact-with-the-atmosphere-support-team">Making contact with the Atmosphere Support Team</a></h4>
+<p>If the information in this guide was not enough to help you solve the users imaging problem, you will need to contact the Atmosphere Support Team. To ensure that your end user requests are resolved as quickly as possible, it is highly encouraged that you first colelct the following &quot;Level two triage information&quot;.</p>
+<p>When making contact with Atmosphere support team:</p>
+<ul>
+<li>Copy/Paste the traceback that is included with the Machine Request</li>
+<li>Instance ID of the machine that was imaged (Communicate to the user that they should <em>NOT</em> delete the image until the entire process is completed.)</li>
+<li>Username and Instance IP related to the machine.</li>
+<li>Any additional information about the MachineRequest that may be different (User was trying to upgrade kernel, etc.)</li>
+</ul>
+<p>Example request that a staff member would write after triaging a problem:</p>
+<pre><code>Username: joetest
+Instance ID: 1111-222-3344-4567
+Traceback : (validating) ERROR - AttributeError(&quot;&#39;NoneType&#39; object has no attribute &#39;id&#39;&quot;,) Exception:&#39;Traceback (most recent call last):\n File &quot;/opt/env/atmo_mm/local/lib/python2.7/site-packages/celery/app/trace.py&quot;, line 240, in trace_task\n R = retval = fun(*args, **kwargs)\n File &quot;/opt/env/atmo_mm/local/lib/python2.7/site-packages/celery/app/trace.py&quot;, line 438, in __protected_call__\n return self.run(*args, **kwargs)\n File &quot;service/tasks/machine.py&quot;, line 319, in validate_new_image\n using_admin=True)\n File &quot;service/instance.py&quot;, line 959, in launch_machine_instance\n name, userdata, network, **kwargs)\n File &quot;service/instance.py&quot;, line 1014, in _launch_machine\n **kwargs)\n File &quot;/opt/env/atmo_mm/local/lib/python2.7/site-packages/rtwo/driver.py&quot;, line 277, in create_instance\n super(EshDriver, self).create_instance(*args, **kwargs),\n File &quot;/opt/env/atmo_mm/local/lib/python2.7/site-packages/rtwo/driver.py&quot;, line 176, in create_instance\n return self._connection.create_node(*args, **kwargs)\n File &quot;/opt/env/atmo_mm/local/lib/python2.7/site-packages/rtwo/drivers/openstack_facade.py&quot;, line 424, in create_node\n server_params = self._create_args_to_params(None, **kwargs)\n File &quot;/opt/env/atmo_mm/local/lib/python2.7/site-packages/rtwo/drivers/openstack_facade.py&quot;, line 380, in _create_args_to_params\n ._create_args_to_params(node, **kwargs)\n File &quot;/opt/env/atmo_mm/local/lib/python2.7/site-packages/libcloud/compute/drivers/openstack.py&quot;, line 1363, in _create_args_to_params\n server_params[\&#39;imageRef\&#39;] = kwargs.get(\&#39;image\&#39;).id\nAttributeError: \&#39;NoneType\&#39; object has no attribute \&#39;id\&#39;\n&#39;
+
+Other Notes from Triage:
+- I attempted to re-approve the request after a few hours had passed.
+- I asked one of the system administrators who could connect to the production server to restart celery
+- After restarting celery and re-approving the request a second time, the failure came back.</code></pre>
+<h2 id="troubleshooting-common-errors-on-instance-launchdeployment"><a href="#troubleshooting-common-errors-on-instance-launchdeployment">Troubleshooting common errors on Instance Launch/Deployment</a></h2>
+<h2 id="the-problem-after-completing-the-launch-instance-dialog-the-instance-immediately-goes-to-error-state."><a href="#the-problem-after-completing-the-launch-instance-dialog-the-instance-immediately-goes-to-error-state.">The Problem: After completing the launch instance dialog, the instance immediately goes to <code>error</code> state.</a></h2>
+<p>In most cases, the &quot;Error&quot; state is the result of a problem on the backend cloud provider.</p>
+<p>Triaging an instance in the error state: * Use the nova CLI tools to determine the <code>fault</code> message on the instance by running these commands:</p>
+<pre><code>nova show &lt;instance_id&gt;</code></pre>
+<ul>
+<li>Lookup the fault message below and determine the appropriate solution. If no obvious solution can be found, see <a href="#">Contacting the Atmosphere Team</a></li>
+</ul>
+<p>Common reasons the cloud may launch an instance in error: - Build Scheduling Failed: No host could be found: - These errors appear when the cloud is nearing capacity. - If the instance flavor/size launched was &quot;large&quot; you can try a smaller size and see if the error persists. - If the smaller size launches, your cloud is likely full. Contact the Cloud System Administrator to be sure.</p>
+<h2 id="the-problem-instance-is-stuck-in-networking"><a href="#the-problem-instance-is-stuck-in-networking">The Problem: Instance is &quot;stuck&quot; in <code>networking</code></a></h2>
+<p>Note that we define 'stuck' as being in the state for &gt;20 minutes, but for some older clouds it can take as long as 2 hours to move from <code>networking</code> to <code>deploying</code>.</p>
+<p>An instance will be stuck in networking if one of the following conditions is true:</p>
+<ul>
+<li>The instance was recently launched and has not yet completed the 'boot' process. These instances are <em>offline</em></li>
+<li>The instance was recently assigned a floating IP and it has not yet &quot;stuck&quot; to the instance. These instances are <em>not reachable via SSH</em></li>
+<li>The instance is <em>online</em> and <em>reachable via SSH</em>, but the SSH key did not properly deploy to the instance on first boot.</li>
+<li>If after &gt;2 hours, one of these three conditions is still resulting in failure, the instance will move to <a href="#deploy_error">deploy_error</a>.</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>A common resolution to an instance stuck in networking is to reboot it from the Tropospere UI while <a href="#">emulating</a> as the user experiencing the issue. If the instance gets stuck in networking again, proceed to step 2.</li>
+<li>If an instance is stuck in networking, you can check <a href="#">flower</a> to see current celery tasks and find the instance in question. If there is an error, flower will display it and you can diagnore the issue from there.</li>
+</ol>
+<h2 id="the-problem-instance-is-stuck-in-deploying"><a href="#the-problem-instance-is-stuck-in-deploying">The Problem: Instance is &quot;stuck&quot; in <code>deploying</code></a></h2>
+<p>When an instance has made it to <code>deploying</code> it is an indication that Ansible code is being run on the device via SSH.</p>
+<p>Instances that are in <code>deploying</code> should be diagnosed with <a href="#">flower</a> to see if there is a task currently being run on the instance. If an error is encountered, the task will be retried. Ansible will try a few times to get a 100% success from the list of playbooks.</p>
+<p>If it cannot do so, then the instance will be moved to the final state: <code>deploy_error</code>. If the instance goes to <code>deploy_error</code>, see <a href="">Contacting the Atmosphere Team</a> to provide a fix for the instance. Once a hotfix is in place, the user should be <a href="#">emulated</a> and then the instance should be <code>re-deployed</code> so that the instance will make it to green-light active and the user can begin their work.</p>
+<h2 id="resolving-an-instance-that-is-stuck-in-deploy_error"><a href="#resolving-an-instance-that-is-stuck-in-deploy_error">Resolving an instance that is stuck in <code>deploy_error</code></a></h2>
+<p><a name='deploy_error'></a> 1. In the case of a deploy error, the most common course of action is to emulate as the user facing the issue and click the &quot;Redeploy&quot; button from the instance in question's detail page. If the instance reaches another deploy error, move on to step 2. 2. In some cases, a reboot of the instance will resolve a deploy error. You can try rebooting the instance from the instance's detail page by clicking on the &quot;reboot&quot; button. If for some reason a soft reboot fails, try a hard reboot. If the instance comes back to deploy error, move on to step 3. 3. Check the <a href="#logs">deploy logs</a> and look for the instance ID to see the output of which specifc tasks failed. From here, you can try to resolve the issue manually and redeploy. To easily check the realtime status of an instance's deploy process, you can use <code>tail -f &lt;deploy_log_file&gt; | grep &lt;instance_alias&gt;</code></p>
+<h2 id="contacting-the-atmosphere-team"><a href="#contacting-the-atmosphere-team">Contacting the Atmosphere Team</a></h2>
+<ul>
+<li><p>You will likely need to contact the system administrator of the cloud and/or the atmosphere team for futher intervention. Please be sure to provide this information <strong>at a minimum</strong> to ensure your request can be answered in a timely fashion:</p>
+<pre><code>Username:
+Instance ID:
+IP Address:
+Cloud Provider:
+Image/Application selected: (UUID of ProviderMachine would be great, too)
+Size selected:
+Fault message from nova:
+Additional notes from triage:</code></pre>
+<p>This information will allow more advanced users to reproduce your problem and find a solution without contacting you a second/third time.</p></li>
+</ul>
+<h2 id="argo-workflow"><a href="#argo-workflow">Argo Workflow</a></h2>
+<h3 id="what-is-argo"><a href="#what-is-argo">What is Argo</a></h3>
+<p>Argo Workflows is an open source container-native workflow engine for orchestrating parallel jobs on Kubernetes.</p>
+<h3 id="why-argo"><a href="#why-argo">Why Argo</a></h3>
+<p>Argo will eventually be replacing celery in Atmosphere. It offers more visibility into the tasks that used to performed by celery.</p>
+<h3 id="usage-in-atmosphere"><a href="#usage-in-atmosphere">Usage in Atmosphere</a></h3>
+<p>As of Atmosphere <code>v37-0</code>, Argo is only used for instance deployment.</p>
+<h4 id="instance-deployment"><a href="#instance-deployment">Instance Deployment</a></h4>
+<ul>
+<li><p>Instead of running the deployment ansible playbooks as a celery task, an Argo workflow is created to run the ansible playbooks.</p></li>
+<li><p>There will be one step in the workflow for each playbook.</p></li>
+<li><p>The creation and polling for the workflow is done in the same place in a celery task.</p></li>
+<li><p>Necessary arguments are passing to the workflow when it is created.</p></li>
+<li>There are 3 levels of retries
+<ol style="list-style-type: decimal">
+<li>the ansible retry, but only for tasks that defines it (usually package install)</li>
+<li>the workflow step retry, if a step in the workflow fails, it will be retried up to a certain times as defined in the workflow definition</li>
+<li>the celery retry, since the creation and polling of the workflow are still part of a celery task, celery task retry still applies here, and this retry will submit a new workflow to Argo each time.</li>
+</ol></li>
+<li><p>Deployment logs for a workflow are located at <code>/opt/dev/atmosphere-docker/logs/atmosphere/atmosphere_deploy.d/&lt;USERNAME&gt;/&lt;INSTANCE_UUID&gt;/&lt;DEPLOYMENT_DATE_TIME&gt;/</code> on the host. Each steps/nodes in the workflow will have its own log file in the directory. The logs here are pulled after the workflow is completed (not realtime). &gt; Note: only logs for playbooks that run in Argo Workflow are in those directories, the logs for other playbooks remain where they were.</p></li>
+</ul>
+<h3 id="troubleshooting"><a href="#troubleshooting">Troubleshooting</a></h3>
+<ul>
+<li>Most troubleshooting will be done via <code>argo</code> cli and <code>kubectl</code>.</li>
+</ul>
+<h4 id="list-workflows"><a href="#list-workflows">List workflows</a></h4>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">argo</span> list -n <span class="kw">&lt;</span>NAMESPACE<span class="kw">&gt;</span></code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">argo</span> list -n <span class="kw">&lt;</span>NAMESPACE<span class="kw">&gt;</span> --status <span class="kw">&lt;</span>WORKFLOW_STATUS<span class="kw">&gt;</span> --since <span class="kw">&lt;</span>DURATION<span class="kw">&gt;</span></code></pre>
+<h4 id="find-workflow-name-for-a-deployment"><a href="#find-workflow-name-for-a-deployment">Find Workflow Name for a deployment</a></h4>
+<p>As of <code>v37-2</code> there isn't a convenient way to lookup workflow name in real time other than check the parmeter of individual workflows, and look for username and the IP of the instance. However the workflow name will be part of the log filename that gets pulled after workflow completes, e.g. <code>ansible-deploy-xxxxx.log</code></p>
+<p>From <code>v37-3</code>, workflows will have labels attached to them as metadata.</p>
+<p>So to search for workflows for instance with a id of <code>00000000-0000-0000-0000-000000000000</code>.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">argo</span> list -n <span class="kw">&lt;</span>NAMESPACE<span class="kw">&gt;</span> -l instance_uuid=00000000-0000-0000-0000-000000000000</code></pre>
+<p>To search for workflows for a particular user</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">argo</span> list -n <span class="kw">&lt;</span>NAMESPACE<span class="kw">&gt;</span> -l username=<span class="kw">&lt;</span>USERNAME<span class="kw">&gt;</span></code></pre>
+<h4 id="get-details-of-a-workflow"><a href="#get-details-of-a-workflow">Get details of a workflow</a></h4>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">argo</span> get -n <span class="kw">&lt;</span>NAMESPACE<span class="kw">&gt;</span> <span class="kw">&lt;</span>WORKFLOW_NAME<span class="kw">&gt;</span></code></pre>
+<p>get the workflow definition as YAML</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">argo</span> get -n <span class="kw">&lt;</span>NAMESPACE<span class="kw">&gt;</span> <span class="kw">&lt;</span>WORKFLOW_NAME<span class="kw">&gt;</span> -o yaml</code></pre>
+<p>get the instance id of a workflow</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">argo</span> get -n <span class="kw">&lt;</span>NAMESPACE<span class="kw">&gt;</span> <span class="kw">&lt;</span>WORKFLOW_NAME<span class="kw">&gt;</span> -o json <span class="kw">|</span> <span class="kw">jq</span> .metadata.labels.instance_uuid</code></pre>
+<p>get the username of a workflow</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">argo</span> get -n <span class="kw">&lt;</span>NAMESPACE<span class="kw">&gt;</span> <span class="kw">&lt;</span>WORKFLOW_NAME<span class="kw">&gt;</span> -o json <span class="kw">|</span> <span class="kw">jq</span> .metadata.labels.username</code></pre>
+<h4 id="get-logs-of-a-workflow-all-pods-within-the-workflow"><a href="#get-logs-of-a-workflow-all-pods-within-the-workflow">Get logs of a workflow (all pods within the workflow)</a></h4>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">argo</span> logs -n <span class="kw">&lt;</span>NAMESPACE<span class="kw">&gt;</span> <span class="kw">&lt;</span>WORKFLOW_NAME<span class="kw">&gt;</span></code></pre>
+<p><code>-f</code> to follow the logs</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">argo</span> logs -n <span class="kw">&lt;</span>NAMESPACE<span class="kw">&gt;</span> <span class="kw">&lt;</span>WORKFLOW_NAME<span class="kw">&gt;</span> -f</code></pre>
+<h4 id="get-logs-of-a-pod"><a href="#get-logs-of-a-pod">Get logs of a pod</a></h4>
+<p>Each pod in an argo workflow will usually consist of 2 containers, <code>main</code> and <code>wait</code>, <code>main</code> container will be the one that executes the actual workload.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">kubectl</span> logs -n <span class="kw">&lt;</span>NAMESPACE<span class="kw">&gt;</span> <span class="kw">&lt;</span>POD_NAME<span class="kw">&gt;</span> main</code></pre>
+<p><code>-f</code> to follow the logs</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">kubectl</span> logs -n <span class="kw">&lt;</span>NAMESPACE<span class="kw">&gt;</span> <span class="kw">&lt;</span>POD_NAME<span class="kw">&gt;</span> main -f</code></pre>
+<h4 id="resubmit-a-workflow"><a href="#resubmit-a-workflow">Resubmit a workflow</a></h4>
+<p>There is a command that will resubmit a workflow with the exact workflow definition and parameters.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">argo</span> resubmit -n <span class="kw">&lt;</span>NAMESPACE<span class="kw">&gt;</span> <span class="kw">&lt;</span>WORKFLOW_NAME<span class="kw">&gt;</span></code></pre>
+<h2 id="flower"><a href="#flower">Flower</a></h2>
+<p><a name='flower'>Flower</a> is a web based tool for monitoring and administrating Celery workers and tasks.</p>
+<h3 id="logging-in-to-flower"><a href="#logging-in-to-flower">Logging in to flower</a></h3>
+<p>To check flower, navigate to <code>https://&lt;your_url&gt;/flower</code> and log in using your flower credentials.</p>
+<h4 id="what-are-the-flower-credentials"><a href="#what-are-the-flower-credentials">What are the flower credentials?</a></h4>
+<p>On the atmosphere server, run the command:</p>
+<pre><code>$ ps aux | grep flower
+# OUTPUT example:
+root     23488  0.0  1.9 611340 81872 pts/7    Sl   Jun03   4:11 python /opt/dev/atmosphere/manage.py celery flower --certfile=/etc/ssl/certs/server.org.crt --keyfile=/etc/ssl/private/server.key --port=8443 --log_file_prefix=/var/log/celery/flower.log --logging=warn --url_prefix=flower --basic_auth=USERNAME:PASSWORD</code></pre>
+<p>the <code>USERNAME:PASSWORD</code> is the same values that will be required when logging in to flower.</p>
+<p><strong>If you don't have the flower credentials or server access, ask your site operators for more information.</strong></p>
+<h3 id="checking-the-status-of-a-running-task"><a href="#checking-the-status-of-a-running-task">Checking the status of a running task</a></h3>
+<p>View the status of recent celery tasks by clicking on the &quot;Tasks&quot; tab.</p>
+<p>Search over the list of celery tasks by writing the <code>instance_id</code> or <code>username</code> into the search bar on the Top-Right corner. View the fine-grained details of a task by clicking on the task <code>Name</code>. The most important details are: <code>Traceback</code> (Finding the bug/failure), <code>Worker</code> (Finding the logs).</p>
+<p>You can view tasks by status by clicking on the &quot;Monitor&quot; tab and clicking on your desired task state.</p>
+<div class="figure">
+<img src="./media/staff_flower_login.gif" alt="Example login to flower" /><p class="caption">Example login to flower</p>
+</div>
+<h2 id="administering-applications-and-images"><a href="#administering-applications-and-images">Administering Applications and Images</a></h2>
+<h3 id="migrating-applicationimage-to-a-new-cloud-provider"><a href="#migrating-applicationimage-to-a-new-cloud-provider">Migrating Application/Image to a New Cloud Provider</a></h3>
+<p>You may have multiple cloud providers connected to your deployment, and you wish to make an existing Application (a.k.a. image) available on a new provider. This process is automated by <code>application_to_provider.py</code> in Atmosphere(2)'s <code>scripts/</code> folder.</p>
+<p>This script will create image objects on the new provider, populate image data and metadata, and create appropriate records in the Atmosphere(2) database. Run <code>./application_to_provider.py --help</code> for more information on usage.</p>
+<p>Example usage:</p>
+<pre><code>export PYTHONPATH=/opt/dev/atmosphere:$PYTHONPATH
+export DJANGO_SETTINGS_MODULE=atmosphere.settings
+source /opt/env/atmo/bin/activate
+/opt/dev/atmosphere/scripts/application_to_provider.py 1378 7 --source-provider-id 4 --ignore-missing-owner --ignore-missing-members</code></pre>
+<h3 id="synchronizing-applicationsimages-across-cloud-providers"><a href="#synchronizing-applicationsimages-across-cloud-providers">Synchronizing Applications/Images across Cloud Providers</a></h3>
+<p><code>application_sync_providers.py</code> is a script which uses <code>application_to_provider</code> to synchronize all Applications (a.k.a. images) from a designated master provider to one or more replica providers. Run <code>./application_sync_providers.py --help</code> for more information on usage.</p>
+<p>Example usage which synchronizes applications from Provider ID 7 (master) to 4 and 5 (replicas):</p>
+<pre><code>export PYTHONPATH=/opt/dev/atmosphere:$PYTHONPATH
+export DJANGO_SETTINGS_MODULE=atmosphere.settings
+source /opt/env/atmo/bin/activate
+/opt/dev/atmosphere/scripts/application_sync_providers.py 7 4 5</code></pre>
+<h3 id="troubleshooting-images-that-arent-copying-to-replica-providers"><a href="#troubleshooting-images-that-arent-copying-to-replica-providers">Troubleshooting images that aren't copying to replica providers</a></h3>
+<p>Sometimes images are not correctly copied to replica providers. This leaves the system in a state in which Atmosphere has database records for the image on that provider and therefore doesn't attempt to copy the image but the provider can't actually launch and instance with that image because it's either been partially copied or has some other error.</p>
+<p>If you're ever in a situation where a particular image doesn't seem to ever get copied to a provider despite running the <code>aplication_sync_providers.py</code> script, use the following steps to troubleshoot:</p>
+<ol start="0" style="list-style-type: decimal">
+<li>Delete the image in the destination provider cloud (e.g. using OpenStack)</li>
+<li>Visit the page for the image that's not being copied in your browser and retrieve its application id (<code>application/images/&lt;app_id&gt;</code>)</li>
+<li><p>Open a Django shell in the main Atmosphere container:</p>
+<pre><code>./manage.py shell</code></pre></li>
+<li><p>Import the necessary models and store the Application in question in a variable for later use:</p>
+<pre><code>from core.models import Application, ApplicationVersion, InstanceSource, ProviderMachine
+app = Application.objects.get(id=&lt;app_id&gt;)</code></pre></li>
+<li><p>Retrieve the ApplicationVersion that's not being copied over. You can get a list of all ApplicationVersions that are active for an application by doing:</p>
+<pre><code>app.active_versions()</code></pre></li>
+<li>Store the ApplicationVersion that's not being copied over in a variable. We'll call this variable <code>bad_version</code>.</li>
+<li><p>Find the corresponding <code>ProviderMachines</code> for that <code>ApplicationVersion</code>:</p></li>
+</ol>
+<pre><code>ProviderMachine.objects.filter(application_version=bad_version.id)</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li>Take note of the UUIDs for the <code>ProviderMachines</code> on the replica <code>Provider</code> and put it somewhere safe. Then delete the <code>ProviderMachines</code> on the replica <code>Provider</code>.</li>
+<li><p>Use the UUID from the previous step to find and delete the <code>InstanceSources</code> that have that UUID <em>and</em> are on the replica <code>Provider</code>:</p>
+<pre><code>$ InstanceSource.objects.filter(identifier=&lt;uuid_from_last_step&gt;)</code></pre></li>
+<li><p>Run the <code>application_sync_providers.py</code> script as mentioned above for the correct providers and replicas. This should copy the image to the replica provider.</p></li>
+</ol>
+<h2 id="setting-maintenance-records"><a href="#setting-maintenance-records">Setting Maintenance Records</a></h2>
+<p>Maintenance records are set separately for Atmosphere(2) and Troposphere. During maintenance, a configurable message is displayed to users, and user login is disabled.</p>
+<p>To begin maintenance, enter the following commands on the Atmosphere(2) server:</p>
+<pre><code>tropomanage maintenance start --title &quot;2017-12-12 - v30 Deployment&quot; --message &quot;Atmosphere is down for a Scheduled Maintenance, Today between 10am - 4pm MST.&quot;
+atmomanage maintenance start --title &quot;2017-12-12 - v30 Deployment&quot; --message &quot;Atmosphere is down for a Scheduled Maintenance, Today between 10am - 4pm MST.&quot;</code></pre>
+<p>To end maintenance, enter these commands:</p>
+<pre><code>atmomanage maintenance stop
+tropomanage maintenance stop</code></pre>
+              </article>
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+                <div class="footer-container">
+            <footer class="wrapper">
+                    <footer class="footer"> <!-- Needs to be a `include-after` -->
+          		<div class="container">
+          		  <div class="region region-footer">
+          		    <section id="block-block-25" class="block block-block clearfix">
+          		      <p><img alt="Cyverse" src="./media/cyverse_icon_transp2.png" style="width: 25px; height: 24px;">&nbsp;<a href="http://www.cyverse.org/">CyVerse</a> | <a href="http://www.cyverse.org/open-source">Open Source</a> | <img alt="NSF" src="./media/nsf1.gif" style="width: 25px; height: 25px;">&nbsp;</p>
+          		    </section>
+          		  </div>
+          		</div>
+        	    </footer>
+            </footer>
+        </div>
+        <!-- Included at the end of body -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="themes/cyverse/media/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        
+        <script src="themes/cyverse/media/js/main.js"></script>
+            </body>
+</html>

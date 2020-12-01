@@ -1,0 +1,228 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="generator" content="pandoc" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+                    <title></title>
+        <style type="text/css">code{white-space: pre;}</style>
+                          <link rel="stylesheet" href="./themes/cyverse/templates/main.css" type="text/css" />
+                    <link rel="icon" href="themes/cyverse/media/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="themes/cyverse/media/css/normalize.min.css">
+        <link rel="stylesheet" href="themes/cyverse/media/css/main.css">
+        <script src="themes/cyverse/media/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+          </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+                <div class="header-container">
+            <header class="wrapper clearfix">
+                <div class="logo"><img src="themes/cyverse/media/cyverse_logo.png" alt="Staff Guide"></div>
+                <h1 class="title"></h1>
+            </header>
+        </div>
+        
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+              <!-- TABLE OF CONTENTS -->
+                                  <aside>
+                      <h3> TABLE OF CONTENTS </h3>
+                      <ul>
+                      <li><a href="#installation-of-atmosphere-and-troposphere">Installation of Atmosphere and Troposphere</a><ul>
+                      <li><a href="#overview">Overview</a><ul>
+                      <li><a href="#system-dependencies">System Dependencies</a></li>
+                      <li><a href="#requirements-for-configuration">Requirements for Configuration</a></li>
+                      <li><a href="#installation">Installation</a></li>
+                      <li><a href="#advanced-configuration">Advanced Configuration</a></li>
+                      <li><a href="#advanced-installation">Advanced Installation</a></li>
+                      </ul></li>
+                      <li><a href="#what-to-do-after-installing-clank">What to do after installing Clank</a><ul>
+                      <li><a href="#starting-the-atmosphere-service-and-logging-in">Starting the Atmosphere service and logging in</a></li>
+                      <li><a href="#setting-your-user-as-staff-and-superuser">Setting your user as staff and superuser</a></li>
+                      <li><a href="#connecting-to-a-cloud-provider">Connecting to a Cloud Provider</a></li>
+                      <li><a href="#creating-accounts-using-troposphere">Creating Accounts using Troposphere</a><ul>
+                      <li><a href="#describing-the-create-account-modal">Describing the 'Create Account' modal:</a></li>
+                      <li><a href="#adding-the-admin-account-to-your-new-provider">Adding the admin account to your new provider</a></li>
+                      <li><a href="#adding-a-new-user-account-to-your-new-provider">Adding a new user account to your new provider</a></li>
+                      </ul></li>
+                      </ul></li>
+                      </ul></li>
+                      </ul>
+                  </aside>
+                              <!-- MAIN CONTENT -->
+              <article>
+<h1 id="installation-of-atmosphere-and-troposphere"><a href="#installation-of-atmosphere-and-troposphere">Installation of Atmosphere and Troposphere</a></h1>
+<h3 id="overview"><a href="#overview">Overview</a></h3>
+<p>The installation of Atmosphere and Troposphere can be a complex task when done manually. Fortunately, the team behind the stack has created a deployment tool that attempts to remove some of the frustrations that one could come across. <a href="https://github.com/iPlantCollaborativeOpenSource/clank">Clank</a> is a deployment tool that uses <a href="https://www.ansible.com/">ansible</a> technology. It deploys the Atmosphere and Troposphere infrastructure within a Linux environment (perferably Ubuntu) to make using OpenStack fo on-demanding computing needs easy.</p>
+<h4 id="system-dependencies"><a href="#system-dependencies">System Dependencies</a></h4>
+<p>Clank perfoms a local install of Atmosphere and Troposphere, and as a result, a few dependencies are required to allow clank to properly run.</p>
+<p>The lines below allow clank to run its own series of commands to get ansible to run locally:</p>
+<pre><code>apt-get update
+apt-get install -y python python-pip python-dev libffi-dev libssl-dev python-virtualenv git</code></pre>
+<p>Next, create a virtualenv and activate it. This will allow us to keep our python dependencies tidy and in one place without polluting the system.</p>
+<pre><code>virtualenv clank_env
+. clank_env/bin/activate</code></pre>
+<p>Once the virtualenv has been created, clone down clank and install its dependencies in our virtualenv.</p>
+<pre><code>git clone https://github.com/cyverse/clank.git
+pip install -r clank/clank_requirements.txt</code></pre>
+<p>If you perform a pip freeze, you should see new libraries added.</p>
+<pre><code>pip freeze</code></pre>
+<h4 id="requirements-for-configuration"><a href="#requirements-for-configuration">Requirements for Configuration</a></h4>
+<p>A few files are required to be filled out in order for clank to properly function. You can find all the files below in the dist_files directory.</p>
+<ul>
+<li><p>variables.yml (See <a href="https://github.com/cyverse/clank/blob/master/dist_files/variables.yml.dist">variables dist</a> for blank template)</p></li>
+<li><p>hosts for <code>atmosphere-ansible</code> (See <a href="https://github.com/cyverse/clank/blob/master/dist_files/atmosphere-ansible/hosts.yml.dist">hosts dist</a> for blank template)</p></li>
+<li><p>group_vars for <code>atmosphere-ansible</code> (See <a href="https://github.com/cyverse/clank/tree/master/dist_files/atmosphere-ansible/group_vars">group_vars dist</a> for two 'provider' templates)</p></li>
+</ul>
+<p>Your hosts file and group_vars directory should reflect one another. This would include renaming the dist file to reflect the groups you wish to create with ansible.</p>
+<p>When you fill out your hosts file and the provider templates in the group_vars directory, be sure to link the location of these files in the variable.yml file. At the current moment, the only vars that need to be filled in the new variable.yml are:</p>
+<pre><code>SERVER_URL:                       # myhostname.org
+
+ANSIBLE_HOSTS_FILE:               #Absolute Path Recommended e.g. /path/to/my/hostfile/hosts
+ANSIBLE_GROUP_VARS_FOLDER:        #Absolute Path Recommended e.g. /path/to/my/groupvars/dir/group_vars</code></pre>
+<!--
+TODO:
+- Condense variables.yml.dist and explain the other vars needed by user (e.g. openstack, ldap, ELK, etc).
+-->
+
+<h4 id="installation"><a href="#installation">Installation</a></h4>
+<p>Once you have the completed files, its time to run clank! Change directories into the clank repo.</p>
+<pre><code>cd clank</code></pre>
+<p>In order to override the default arguments for clank, we will need to pass in the variables.yml file we worked on previously.</p>
+<pre><code>VARIABLES_YML_FILE=/path/to/our/completed/variables.yml</code></pre>
+<p>And now we select the <code>playbooks/deploy_stack.yml</code> playbook to install the entire Atmosphere stack. Use --limit to define the target-host you wish to install atmosphere to.</p>
+<h5 id="calling-ansible-playbook"><a href="#calling-ansible-playbook">Calling ansible-playbook</a></h5>
+<p>By default, Clank is configured to deploy against localhost. To deploy to a remote target, modify <a href="https://github.com/cyverse/clank/blob/master/hosts">the <code>hosts</code> file</a>, replacing the target-host: <code>localhost</code> to the correct Server/IP address.</p>
+<pre><code># Note the &#39;@&#39; required when calling ansible-playbook
+# playbooks/deploy_stack.yml will install the full Atmosphere Stack (Atmosphere, Troposphere, and atmosphere-ansible).
+ansible-playbook playbooks/deploy_stack.yml -e @$VARIABLES_YML_FILE</code></pre>
+<h4 id="advanced-configuration"><a href="#advanced-configuration">Advanced Configuration</a></h4>
+<h5 id="ssl-certs"><a href="#ssl-certs">SSL CERTS</a></h5>
+<h6 id="installation-of-self-signed-ssl-certs"><a href="#installation-of-self-signed-ssl-certs">Installation of self-signed SSL certs</a></h6>
+<p>By default, clank will install self-signed SSL certificates. While this is fine for evaluation, it is encouraged to use letsencrypt or bring your own SSL certificates when running the Atmosphere platform in a production setting.</p>
+<h6 id="bringing-your-own-ssl-certs"><a href="#bringing-your-own-ssl-certs">Bringing your own SSL certs</a></h6>
+<p>To have clank install your own ssl certs, rather than create the self signed certs, the following changes should be included in your variables.yml file:</p>
+<pre><code># SSL RELATED VARS
+CREATE_SSL: false                           # Set this to false if you wish to pass in your own certs
+
+# If the above variable is set to true, do not edit next three vars below
+
+TLS_BYO_PRIVKEY_SRC: /location/to/my/ssl/private/key/we/would/like/to/use/example.server.key         #Absolute Path Recommended
+TLS_BYO_CERT_SRC: /location/to/my/ssl/cert/we/would/like/to/use/example.server.crt                   #Absolute Path Recommended
+TLS_BYO_CACHAIN_SRC: /location/to/my/ssl/bundle_cert/we/would/like/to/use/example.server.cachain.crt #Absolute Path Recommended</code></pre>
+<h6 id="using-letsencrypt-to-generate-ssl-certs"><a href="#using-letsencrypt-to-generate-ssl-certs">Using letsencrypt to generate SSL certs</a></h6>
+<p>To have clank run letsencrypt, rather than create self-signed certs, the following changes should be included in your variables.yml file:</p>
+<pre><code># NOTE: At least one valid email is requried for admin. If given, this user will be emailed when errors occur in Atmosphere, Troposphere, and for user contact/feedback.
+ADMINS_EMAIL_TUPLE: [[&#39;Atmosphere Admin&#39;, &#39;valid-email@required&#39;], [&#39;Admin Two&#39;, &#39;valid-email@required&#39;]]
+
+# SSL RELATED VARS
+CREATE_SSL: false                           # Set this to false if you wish to pass in your own certs
+
+TLS_LETSENCRYPT_ENABLE: true
+TLS_LETSENCRYPT_EMAIL: &quot;{{ ADMINS_EMAIL_TUPLE[0][1] }}&quot;</code></pre>
+<h5 id="ssh-keys"><a href="#ssh-keys">SSH Keys</a></h5>
+<p>You can have clank install your previously created ssh keys of choice, rather than create new ones. To do so, make the changes to your variables.yml file:</p>
+<pre><code># SSH KEYS
+CREATE_SSH_KEYS: false                     # Set this to false if you wish to pass in your own ssh keys     
+ID_RSA:  /location/to/my/id_rsa_key/my_key_id_rsa                      #Absolute Path Recommended
+ID_RSA_PUB: /location/to/my/id_rsa_public_key/my_key_id_rsa.pub        #Absolute Path Recommended</code></pre>
+<h5 id="atmosphere-plugins"><a href="#atmosphere-plugins">Atmosphere Plugins</a></h5>
+<p>The Atmosphere API has support for a few different types of plugins, that can be included or changed by changing the variables.yml file. Described below are the most commonly configured plugins, related to account and machine validation. For a full list, check the <a href="https://github.com/cyverse/atmosphere/blob/master/atmosphere/settings/local.py.j2">atmosphere settings dist file</a></p>
+<h6 id="creating-a-new-plugin-for-atmosphere"><a href="#creating-a-new-plugin-for-atmosphere">Creating a new plugin for Atmosphere</a></h6>
+<p>If you are interested in creating a new plugins for atmosphere: 1) Fork atmosphere 2) Create the file and Class name in question. Most plugins will have a specific method signature that is expected, be sure thats included. 3) To install that plugin with clank, you will need to point to <em>your repository and branch</em> when filling out the contents of the <code>variables.yml</code> file. 4) Follow the instructions below and include 'your.plugin.path.ClassName' instead of one from the list.</p>
+<h6 id="account-validation-plugins"><a href="#account-validation-plugins">Account Validation Plugins</a></h6>
+<p>Account validation plugins determine what users (after being authenticated by CAS/LDAP/Openstack/etc.) are authorized to use the Atmosphere platform. By default, the 'AlwaysAllow' plugin is used, ensuring that any user who is authenticated will be authorized to use atmosphere.</p>
+<p><strong>IMPORTANT NOTE</strong>:Account validation takes <em>a list of plugins</em>, <strong>ALL</strong> plugins will be tested for a given user. A user is only denied access when <strong>ALL</strong> Plugins fail for that user.</p>
+<p>Additional choices for the Account validation plugin are: - 'atmosphere.plugins.auth.validation.LDAPGroupRequired' # Require that the user has a valid LDAP group - 'jetstream.plugins.auth.validation.XsedeProjectRequired' # Require that the user has a valid XSede project in TAS external API To select a non-default account validation plugin, include this line in your variables.yml</p>
+<pre><code>VALIDATION_PLUGINS = [&#39;atmosphere.plugins.auth.validation.LDAPGroupRequired&#39;,]</code></pre>
+<h6 id="machine-validation-plugin"><a href="#machine-validation-plugin">Machine Validation Plugin</a></h6>
+<p>Machine validation plugins determine what cloud provider 'machines' will be included in the Atmosphere imaging catalog (and viewable by users of Atmosphere). By default, the 'BasicValidation' plugin is used, ensuring that any machine that is found by the Admin user of the cloud provider will be included in the atmosphere image catalog.</p>
+<p><strong>IMPORTANT NOTE</strong>: Machine validation takes <em>a single plugin</em>.</p>
+<p>Additional choices for the Machine validation plugin are: - &quot;atmosphere.plugins.machine_validation.WhitelistValidation&quot; # Accept images with specific metadata, (reject all other images) - &quot;atmosphere.plugins.machine_validation.BlacklistValidation&quot; # Reject images with specific metadata - &quot;atmosphere.plugins.machine_validation.CyverseValidation&quot; # Reject images with specific metadata &amp; require author to be admin user.</p>
+<p>To select a non-default machine validation plugin, include this line in your variables.yml</p>
+<pre><code>MACHINE_VALIDATION_PLUGIN = &quot;atmosphere.plugins.machine_validation.CyverseValidation&quot;</code></pre>
+<h4 id="advanced-installation"><a href="#advanced-installation">Advanced Installation</a></h4>
+<p>Because clank uses <code>ansible-playbook</code> directly, there are lots of ways to break up clank's playbooks to deploy portions of the Atmosphere platform.</p>
+<h5 id="tags"><a href="#tags">Tags</a></h5>
+<p>You are able to isolate which portions of clank you want to run specifically. To do this you can pass in the tags flag to the <code>clank.py</code> script:</p>
+<pre><code># print-vars tag will print out ansible&#39;s interpretation of variables before making changes to the system
+ansible-playbook playbooks/deploy_stack.yml -e @/path/to/my/clank-variables.yml -vvvvv -e &quot;CLANK_VERBOSE=true&quot; --tags print-vars
+
+# atmosphere tag will install/update only the &#39;atmosphere&#39; portion of the Atmosphere platform.
+ansible-playbook playbooks/deploy_stack.yml -e @/path/to/my/clank-variables.yml --tags atmosphere</code></pre>
+<h5 id="skip"><a href="#skip">Skip</a></h5>
+<p>Inversely, you can skip sections of the installation by choosing tags to skip:</p>
+<pre><code># You can skip these tags to save time if you are rebuilding the Atmosphere platform.
+ansible-playbook playbooks/deploy_stack.yml -e @/path/to/my/clank-variables.yml --skip-tags &quot;clone-repo,data-load,npm,pip-install-requirements,apt-install&quot;
+
+# and you can skip these tags if you just want to install the &#39;atmosphere&#39; portion of the Atmosphere platform
+ansible-playbook playbooks/deploy_stack.yml -e @/path/to/my/clank-variables.yml --skip dependencies,troposphere # skips over the installation of dependencies and troposphere</code></pre>
+<h2 id="what-to-do-after-installing-clank"><a href="#what-to-do-after-installing-clank">What to do after installing Clank</a></h2>
+<h3 id="starting-the-atmosphere-service-and-logging-in"><a href="#starting-the-atmosphere-service-and-logging-in">Starting the Atmosphere service and logging in</a></h3>
+<p>After you have run clank.py successfully, you will need to run:</p>
+<pre><code>service atmosphere start</code></pre>
+<p>At which point you should be able to point your browser of choice to <code>https://&lt;your_server_url&gt;/</code>. Login (via Mock, CAS, or the AuthenticationBackend you are using) and you should see your username in the top-right corner. <img src="./media/troposphere_first_login.gif" alt="Troposphere first login" /></p>
+<h3 id="setting-your-user-as-staff-and-superuser"><a href="#setting-your-user-as-staff-and-superuser">Setting your user as staff and superuser</a></h3>
+<p>After you have logged in once, you will need to set your user as a staff/superuser.</p>
+<p>Because you have to be a superuser in order to access the /admin page for Atmosphere, you will have to do this by the Atmosphere Python REPL:</p>
+<pre><code># BASH:
+[11:52 root@mickey atmosphere] &gt; cd /opt/dev/atmosphere
+[11:52 root@mickey atmosphere] &gt; source /opt/env/atmo/bin/activate
+(atmo_ss) [11:52 root@mickey atmosphere] &gt; ./manage.py shell
+# In the PYTHON REPL
+from core.models import AtmosphereUser
+user = AtmosphereUser.objects.get(username=&#39;sgregory&#39;)
+user.is_superuser = True
+user.is_staff = True
+user.save()</code></pre>
+<h3 id="connecting-to-a-cloud-provider"><a href="#connecting-to-a-cloud-provider">Connecting to a Cloud Provider</a></h3>
+<p>Now that you have logged in and marked your user an administrator, you are ready to connect to the cloud. See <a href="./connecting_cloud_provider.html">Connecting a Cloud Provider</a>.</p>
+<h3 id="creating-accounts-using-troposphere"><a href="#creating-accounts-using-troposphere">Creating Accounts using Troposphere</a></h3>
+<p>To Add an account with Troposphere, select 'Create New Account' from the 'admin'-&gt;'Manage Accounts' tabs in Troposphere. A modal should appear asking for some information about the user:</p>
+<h4 id="describing-the-create-account-modal"><a href="#describing-the-create-account-modal">Describing the 'Create Account' modal:</a></h4>
+<p>Atmosphere username - The <code>username</code> of the <code>core.AtmosphereUser</code> that will be retrieved/created and then assigned to the new identity. Atmosphere Group Name - The <code>name</code> of the <code>core.Group</code> that will be retrieved/created (connected to the Atmosphere Username) and then assigned (Membership roles) to the new identity. Provider - The Cloud Provider you wish to associate the new account with Quota - The quota you want assigned to your new openstack account (Uses Default Quota by default) Credentials - A list of key/value pairings that describe your user's openstack account. For a new account Create a new account - If true, only <code>key</code> is required as a credential, password/tenant name will be generated and saved to the identity. If False, all three credentials (key, secret, ex_project_name) are required. Is this an admin account - If true, (create a new account should be False, here) the account is provisioned differently and then linked to the provider.</p>
+<p>Upon creation, Atmosphere will test the identity. If for any reason the identity does <em>not</em> produce a valid <code>rtwo.Driver</code> the identity will be deleted and an error message will be thrown.</p>
+<h4 id="adding-the-admin-account-to-your-new-provider"><a href="#adding-the-admin-account-to-your-new-provider">Adding the admin account to your new provider</a></h4>
+<p>Before you can start adding accounts, you need to designate an identity as &quot;the admin account&quot; for the new provider. Doing this grants you access to create new accounts, manage users within openstack, as well as monitoring and imaging services through Atmosphere.</p>
+<p>After you create the account, you should see it appear in the list of &quot;Identities&quot; just below 'Create New Account' button in Troposphere.</p>
+<div class="figure">
+<img src="./media/troposphere_create_admin_account.png" alt="Troposphere admin account creation" /><p class="caption">Troposphere admin account creation</p>
+</div>
+<h4 id="adding-a-new-user-account-to-your-new-provider"><a href="#adding-a-new-user-account-to-your-new-provider">Adding a new user account to your new provider</a></h4>
+<p>Creating a new account is a simpler process, you can use the description above and the screenshot below to help answer the question of whats required.</p>
+<p>Account creation takes a few seconds more than admin account creation (to be sure all of our pieces are properly adjusted).</p>
+<p>Upon creation, Atmosphere will test this identity. If for any reason the identity does <em>not</em> produce a valid <code>rtwo.Driver</code> the identity will be deleted and an error message will be thrown.</p>
+<p>After account creation, you should see it appear in the list of &quot;Identities&quot; just below 'Create New Account' button in Troposphere.</p>
+<div class="figure">
+<img src="./media/troposphere_create_user_account.png" alt="Troposphere user account creation" /><p class="caption">Troposphere user account creation</p>
+</div>
+              </article>
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+                <div class="footer-container">
+            <footer class="wrapper">
+                    <footer class="footer"> <!-- Needs to be a `include-after` -->
+          		<div class="container">
+          		  <div class="region region-footer">
+          		    <section id="block-block-25" class="block block-block clearfix">
+          		      <p><img alt="Cyverse" src="./media/cyverse_icon_transp2.png" style="width: 25px; height: 24px;">&nbsp;<a href="http://www.cyverse.org/">CyVerse</a> | <a href="http://www.cyverse.org/open-source">Open Source</a> | <img alt="NSF" src="./media/nsf1.gif" style="width: 25px; height: 25px;">&nbsp;</p>
+          		    </section>
+          		  </div>
+          		</div>
+        	    </footer>
+            </footer>
+        </div>
+        <!-- Included at the end of body -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="themes/cyverse/media/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        
+        <script src="themes/cyverse/media/js/main.js"></script>
+            </body>
+</html>

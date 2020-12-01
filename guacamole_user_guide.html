@@ -1,0 +1,201 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="generator" content="pandoc" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+                    <title></title>
+        <style type="text/css">code{white-space: pre;}</style>
+                    <style type="text/css">
+      table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+        margin: 0; padding: 0; vertical-align: baseline; border: none; }
+      table.sourceCode { width: 100%; line-height: 100%; }
+      td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+      td.sourceCode { padding-left: 5px; }
+      code > span.kw { color: #007020; font-weight: bold; }
+      code > span.dt { color: #902000; }
+      code > span.dv { color: #40a070; }
+      code > span.bn { color: #40a070; }
+      code > span.fl { color: #40a070; }
+      code > span.ch { color: #4070a0; }
+      code > span.st { color: #4070a0; }
+      code > span.co { color: #60a0b0; font-style: italic; }
+      code > span.ot { color: #007020; }
+      code > span.al { color: #ff0000; font-weight: bold; }
+      code > span.fu { color: #06287e; }
+      code > span.er { color: #ff0000; font-weight: bold; }
+        </style>
+                    <link rel="stylesheet" href="./themes/cyverse/templates/main.css" type="text/css" />
+                    <link rel="icon" href="themes/cyverse/media/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="themes/cyverse/media/css/normalize.min.css">
+        <link rel="stylesheet" href="themes/cyverse/media/css/main.css">
+        <script src="themes/cyverse/media/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+          </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+                <div class="header-container">
+            <header class="wrapper clearfix">
+                <div class="logo"><img src="themes/cyverse/media/cyverse_logo.png" alt="Staff Guide"></div>
+                <h1 class="title"></h1>
+            </header>
+        </div>
+        
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+              <!-- TABLE OF CONTENTS -->
+                                  <aside>
+                      <h3> TABLE OF CONTENTS </h3>
+                      <ul>
+                      <li><a href="#using-web-shell-and-desktop-on-atmosphere">Using Web Shell and Desktop on Atmosphere</a><ul>
+                      <li><a href="#general">General</a><ul>
+                      <li><a href="#copypaste">Copy/Paste</a></li>
+                      <li><a href="#file-uploaddownload">File Upload/Download</a></li>
+                      </ul></li>
+                      <li><a href="#web-shell">Web Shell</a><ul>
+                      <li><a href="#persisting-session-in-web-shell">Persisting Session in Web Shell</a><ul>
+                      <li><a href="#tmuxscreen-crash-course">tmux/screen Crash Course</a></li>
+                      </ul></li>
+                      </ul></li>
+                      <li><a href="#web-desktop">Web Desktop</a><ul>
+                      <li><a href="#changing-resolution-of-web-desktop">Changing Resolution of Web Desktop</a></li>
+                      </ul></li>
+                      <li><a href="#possible-errors">Possible Errors</a><ul>
+                      <li><a href="#connection-error---closed-the-connection">Connection Error - closed the connection</a></li>
+                      <li><a href="#connection-error---do-not-have-permission">Connection Error - do not have permission</a></li>
+                      <li><a href="#connection-error---failed-to-login">Connection Error - failed to login</a></li>
+                      </ul></li>
+                      </ul></li>
+                      </ul>
+                  </aside>
+                              <!-- MAIN CONTENT -->
+              <article>
+<h1 id="using-web-shell-and-desktop-on-atmosphere"><a href="#using-web-shell-and-desktop-on-atmosphere">Using Web Shell and Desktop on Atmosphere</a></h1>
+<p>This guide will help you to understand and use the Web Desktop and Web Shell on CyVerse's Atmosphere platform. They are both powered by <a href="https://guacamole.apache.org/">Apache Guacamole</a>.</p>
+<p>The official Guacamole user guide can be found <a href="https://guacamole.apache.org/doc/gug/users-guide.html">here</a>, but please note that not all features will be available on Atmosphere.</p>
+<h2 id="general"><a href="#general">General</a></h2>
+<p>Use <code>CTRL + ALT + SHIFT</code> to open a side menu. From here, you can browse system files and</p>
+<h3 id="copypaste"><a href="#copypaste">Copy/Paste</a></h3>
+<p>The latest versions of the Chrome web browser support clipboard access. On your first time opening a connection to the Web Desktop or Web Shell, you will be prompted to grant clipboard permission. This will allow you to easily copy/paste directly into the Web Shell or Web Desktop.</p>
+<p>At the time of writing this, the latest Firefox version is 65.0 and does not directly support clipboard access. If your version does not support it yet, you can enable the beta feature by visiting the URL <code>about:config</code> and searching for <code>dom.events.testing.asyncClipboard</code>. Setting the value of this feature to <code>true</code> will enable clipboard use. However these are advanced settings so do this at your own risk.</p>
+<p>If your browser does not support clipboard access, you can still copy/paste the old way:</p>
+<blockquote>
+<p>In order to copy and paste between your local computer and your instance using our Web Desktop and Web Shell, you must use the text box in the side menu. The reason that you cannot directly copy/paste is that most browsers have strict control of clipboard access. A full explanation of this is available on the <a href="https://guacamole.apache.org/faq/#clipboard">Apache Guacamole website</a>.</p>
+</blockquote>
+<ul>
+<li>On Web Shell: text from your instance will be copied if you highlight it. Paste text into the terminal by right-clicking.</li>
+</ul>
+<div class="figure">
+<img src="./media/guac_shell_copypaste.gif" />
+</div>
+<ul>
+<li>On Web Desktop: use regular copy/paste methods: <code>CTRL+C</code>/<code>CTRL+V</code>, or right-click and find &quot;Copy&quot;/&quot;Paste&quot;. <em>Note that when using a Terminal within the Desktop, copy/paste commands change to <code>CTRL+SHIFT+C</code>/<code>CTRL+SHIFT+V</code></em></li>
+</ul>
+<div class="figure">
+<img src="./media/guac_desktop_copypaste.gif" />
+</div>
+<h3 id="file-uploaddownload"><a href="#file-uploaddownload">File Upload/Download</a></h3>
+<p>To upload a file, you can simply drag-and-drop it into the browser window. It will automatically be uploaded to your home directory.</p>
+<p>To download files, pull up the side menu and double-click on the drive under &quot;Devices&quot;. You can then navigate the filesystem by double-clicking through directories and then double-click on a file that you want to download.</p>
+<p>You can also upload files by navigating through the filesystem in the menu and clicking the upload button.</p>
+<p><em>Note: File upload can be pretty slow so it is recommended that you use a different method for files larger than 100 MB.</em></p>
+<h2 id="web-shell"><a href="#web-shell">Web Shell</a></h2>
+<ul>
+<li>Connect using the &quot;Open Web Shell&quot; button on the instance details page of Atmosphere.</li>
+<li>Uses SSH protocol with public key authentication to connect to your instance. The private keys are created and stored by Atmosphere and Guacamole.</li>
+</ul>
+<div class="figure">
+<img src="./media/guac_open_shell.gif" />
+</div>
+<h3 id="persisting-session-in-web-shell"><a href="#persisting-session-in-web-shell">Persisting Session in Web Shell</a></h3>
+<p>When you close a Web Shell window, your shell session ends and is not preserved. You may wish to make your shell session persistent, so that you can disconnect from it and reconnect later. For this, we recommend using a terminal multiplexer, either <a href="https://en.wikipedia.org/wiki/Tmux"><code>tmux</code></a> or <a href="https://en.wikipedia.org/wiki/GNU_Screen"><code>screen</code></a> on your instance. Both of these may already be installed. Both can be used to keep your shell session active, and connect to it later, even if your browser disconnects.</p>
+<h4 id="tmuxscreen-crash-course"><a href="#tmuxscreen-crash-course">tmux/screen Crash Course</a></h4>
+<p>Create a new terminal multiplexer session and activate it:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">tmux</span>
+<span class="kw">screen</span></code></pre>
+<p>Now you can do your work inside terminal multiplexer, and your session will be preserved even if you get disconnected.</p>
+<p>You can explicitly &quot;detach&quot; from your terminal multiplexer session by pressing <code>CTRL+B</code> in <code>tmux</code> or <code>CTRL+A</code> in <code>screen</code>, followed by pressing the <code>d</code> key – though this is not necessary when disconnecting Web Shell. You can just close the browser and your terminal multiplexer session will stay active.</p>
+<p>When you re-connect to Web shell, you can re-attach to the first available terminal multiplexer session (i.e. the one that you opened earlier) with:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">tmux</span> a
+<span class="kw">screen</span> -x</code></pre>
+<p>This should bring you back to the same shell, exactly where you were earlier! It's possible to have more than one terminal multiplexer session open, and this may cause confusion. You can list all active terminal multiplexer sessions with:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">tmux</span> ls
+<span class="kw">screen</span> -ls</code></pre>
+<p>If you see multiple sessions listed, you can connect to a named session (e.g. session 0) with</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">tmux</span> a -t 0
+<span class="kw">screen</span> -x 0</code></pre>
+<p>For more information on using <code>tmux</code>, please see <code>tmux</code> documentation (e.g. <code>man tmux</code>) and other articles on the web (e.g. <a href="https://hackernoon.com/a-gentle-introduction-to-tmux-8d784c404340">A Gentle Introduction to <code>tmux</code></a>).</p>
+<p>For more information on using <code>screen</code>, please see <code>screen</code> documentation (e.g. <code>man screen</code>) and other articles on the web (e.g. <a href="https://wiki.archlinux.org/index.php/GNU_Screen">GNU Screen on Arch Wiki</a>).</p>
+<h2 id="web-desktop"><a href="#web-desktop">Web Desktop</a></h2>
+<ul>
+<li>Connect using the &quot;Open Web Desktop&quot; button on the instance details page of Atmosphere.</li>
+<li>Uses VNC protocol.</li>
+</ul>
+<div class="figure">
+<img src="./media/guac_open_desktop.gif" />
+</div>
+<h3 id="changing-resolution-of-web-desktop"><a href="#changing-resolution-of-web-desktop">Changing Resolution of Web Desktop</a></h3>
+<p>Open a terminal and use these commands:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Show the available resolution options</span>
+<span class="kw">xrandr</span> -q
+
+<span class="co"># Change the resolution using the resolution or the corresponding number.</span>
+<span class="kw">xrandr</span> -s <span class="kw">&lt;</span>choice<span class="kw">&gt;</span>
+<span class="co"># Example: xrandr -s 1920x1080</span>
+<span class="co">#       or xrandr -s 6</span></code></pre>
+<div class="figure">
+<img src="./media/guac_change_resolution.gif" />
+</div>
+<h2 id="possible-errors"><a href="#possible-errors">Possible Errors</a></h2>
+<h4 id="connection-error---closed-the-connection"><a href="#connection-error---closed-the-connection">Connection Error - closed the connection</a></h4>
+<div class="figure">
+<img src="./media/guac_connection_error.png" />
+</div>
+<p>This means that you were successfully authenticated by the Guacamole server, but it was unable to connect to your instance. This could be an issue with the instance, or perhaps with the server. If it continues to happen after a few tries, contact support. The most likely problem is the VNC server closed.</p>
+<p>You can try to fix this yourself with these commands:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Kill the Guacamole-specific VNC server</span>
+<span class="co"># If you get an error, that means the server is already killed</span>
+<span class="kw">vncserver</span> -kill :5
+
+<span class="co"># Restart the VNC server</span>
+<span class="kw">vncserver</span> -config ~/.vnc/config.guac :5</code></pre>
+<h4 id="connection-error---do-not-have-permission"><a href="#connection-error---do-not-have-permission">Connection Error - do not have permission</a></h4>
+<div class="figure">
+<img src="./media/guac_perm_err.png" />
+</div>
+<p>This means you are not authenticated for that connection. You have been authenticated by Guacamole but the instance you are trying to connect to is not your own. If you encounter this error, contact support.</p>
+<h4 id="connection-error---failed-to-login"><a href="#connection-error---failed-to-login">Connection Error - failed to login</a></h4>
+<div class="figure">
+<img src="./media/guac_login_fail.png" />
+</div>
+<p>This error occurs on SSH connections when the user mistypes the password or there is a key mismatch. If you still cannot connect after about 3 tries, contact support through Intercom so we can fix the SSH keys.</p>
+              </article>
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+                <div class="footer-container">
+            <footer class="wrapper">
+                    <footer class="footer"> <!-- Needs to be a `include-after` -->
+          		<div class="container">
+          		  <div class="region region-footer">
+          		    <section id="block-block-25" class="block block-block clearfix">
+          		      <p><img alt="Cyverse" src="./media/cyverse_icon_transp2.png" style="width: 25px; height: 24px;">&nbsp;<a href="http://www.cyverse.org/">CyVerse</a> | <a href="http://www.cyverse.org/open-source">Open Source</a> | <img alt="NSF" src="./media/nsf1.gif" style="width: 25px; height: 25px;">&nbsp;</p>
+          		    </section>
+          		  </div>
+          		</div>
+        	    </footer>
+            </footer>
+        </div>
+        <!-- Included at the end of body -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="themes/cyverse/media/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        
+        <script src="themes/cyverse/media/js/main.js"></script>
+            </body>
+</html>

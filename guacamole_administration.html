@@ -1,0 +1,201 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="generator" content="pandoc" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+                    <title></title>
+        <style type="text/css">code{white-space: pre;}</style>
+                    <style type="text/css">
+      table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+        margin: 0; padding: 0; vertical-align: baseline; border: none; }
+      table.sourceCode { width: 100%; line-height: 100%; }
+      td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+      td.sourceCode { padding-left: 5px; }
+      code > span.kw { color: #007020; font-weight: bold; }
+      code > span.dt { color: #902000; }
+      code > span.dv { color: #40a070; }
+      code > span.bn { color: #40a070; }
+      code > span.fl { color: #40a070; }
+      code > span.ch { color: #4070a0; }
+      code > span.st { color: #4070a0; }
+      code > span.co { color: #60a0b0; font-style: italic; }
+      code > span.ot { color: #007020; }
+      code > span.al { color: #ff0000; font-weight: bold; }
+      code > span.fu { color: #06287e; }
+      code > span.er { color: #ff0000; font-weight: bold; }
+        </style>
+                    <link rel="stylesheet" href="./themes/cyverse/templates/main.css" type="text/css" />
+                    <link rel="icon" href="themes/cyverse/media/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="themes/cyverse/media/css/normalize.min.css">
+        <link rel="stylesheet" href="themes/cyverse/media/css/main.css">
+        <script src="themes/cyverse/media/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+          </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+                <div class="header-container">
+            <header class="wrapper clearfix">
+                <div class="logo"><img src="themes/cyverse/media/cyverse_logo.png" alt="Staff Guide"></div>
+                <h1 class="title"></h1>
+            </header>
+        </div>
+        
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+              <!-- TABLE OF CONTENTS -->
+                                  <aside>
+                      <h3> TABLE OF CONTENTS </h3>
+                      <ul>
+                      <li><a href="#guacamole-introduction">Guacamole Introduction</a><ul>
+                      <li><a href="#components">Components</a></li>
+                      <li><a href="#authentication">Authentication</a></li>
+                      <li><a href="#relevant-links">Relevant Links</a></li>
+                      <li><a href="#relationship-with-atmosphere">Relationship with Atmosphere</a><ul>
+                      <li><a href="#troposphere">Troposphere</a></li>
+                      <li><a href="#atmosphere">Atmosphere</a></li>
+                      <li><a href="#atmosphere-ansible">Atmosphere-Ansible</a></li>
+                      </ul></li>
+                      <li><a href="#things-to-know">Things to know</a></li>
+                      <li><a href="#step-by-step">Step-by-step</a><ul>
+                      <li><a href="#note">Note</a></li>
+                      <li><a href="#notes-for-future-docker-setup">Notes for future Docker setup</a></li>
+                      </ul></li>
+                      </ul></li>
+                      <li><a href="#troubleshooting-guacamole">Troubleshooting Guacamole</a><ul>
+                      <li><a href="#assisting-users">Assisting Users</a><ul>
+                      <li><a href="#problem-connection-error---closed-the-connection-when-attempting-a-connection.">Problem: &quot;Connection Error - closed the connection&quot; when attempting a connection.</a></li>
+                      </ul></li>
+                      <li><a href="#server-side-troubleshooting">Server-side Troubleshooting</a><ul>
+                      <li><a href="#problem-unable-to-bind-socket-to-any-addresses.-error-from-guacd">Problem: &quot;Unable to bind socket to any addresses.&quot; error from guacd</a></li>
+                      </ul></li>
+                      </ul></li>
+                      </ul>
+                  </aside>
+                              <!-- MAIN CONTENT -->
+              <article>
+<h1 id="guacamole-introduction"><a href="#guacamole-introduction">Guacamole Introduction</a></h1>
+<p><a href="https://guacamole.apache.org/">Apache Guacamole</a> is a clientless remote access gateway. At CyVerse, we use it to provide web-based VNC and SSH connections to user instances.</p>
+<h2 id="components"><a href="#components">Components</a></h2>
+<p>The Guacamole setup at CyVerse consists of a few components:</p>
+<ol style="list-style-type: decimal">
+<li><p>Tomcat7 Java web-servlet to run the webapp (Within the webapp, there is an authentication plugin and a theming plugin)</p></li>
+<li><p>Nginx reverse proxy with SSL</p></li>
+<li><p>guacd is the daemon that handles Guacamole operations</p></li>
+</ol>
+<h2 id="authentication"><a href="#authentication">Authentication</a></h2>
+<p>CyVerse's Guacamole deployment for Atmosphere uses the <a href="https://github.com/cyverse/guacamole-auth-hmac"><code>guacamole-auth-hmac</code> plugin</a>. Additional information about how this plugin works and how it is built, see the project's <a href="https://github.com/cyverse/guacamole-auth-hmac/blob/master/README.md"><code>README</code></a>.</p>
+<h2 id="relevant-links"><a href="#relevant-links">Relevant Links</a></h2>
+<ul>
+<li><a href="https://cyverse.github.io/atmosphere-guides/guacamole_user_guide.html">Atmosphere Guacamole User Guide</a></li>
+<li>this is a guide to share with users for more information on using Atmosphere's Web Desktop and Web Shell</li>
+<li><a href="https://github.com/cyverse-ansible/ansible-guacamole-server">ansible-guacamole-server</a></li>
+<li><a href="https://github.com/cyverse/guacamole-auth-hmac">guacamole-auth-hmac</a></li>
+<li>this is the authentication plugin used for Guacamole auth on Atmosphere</li>
+<li><a href="https://github.com/cyverse/guac-cyverse-theme">guac-cyverse-theme</a></li>
+<li>this is another plugin that is used to add some CyVerse branding to Guacamole. It also adds some additional help text for users and disables the Guacamole login page</li>
+<li><a href="https://github.com/cyverse/atmosphere-docker/blob/master/docker-compose.guac.yml">Guacamole <code>docker-compose</code> example in <code>atmosphere-docker</code></a></li>
+<li>this can be used as an example for future Guacamole docker deployments</li>
+</ul>
+<h2 id="relationship-with-atmosphere"><a href="#relationship-with-atmosphere">Relationship with Atmosphere</a></h2>
+<p>Additional documentation is provided in the repositories mentioned above.</p>
+<h3 id="troposphere"><a href="#troposphere">Troposphere</a></h3>
+<p>Relevant Troposphere code can be found here: - <a href="https://github.com/cyverse/troposphere/blob/1f98da2373bd0e4c93f03b6fc060a0544933404f/troposphere/static/js/components/projects/resources/instance/details/actions/InstanceActionsAndLinks.jsx#L191-L237">JavaScript UI</a> - <a href="https://github.com/cyverse/troposphere/blob/master/troposphere/views/web_desktop.py#L15-L69">Django Python API</a></p>
+<p>The Django Python API part will just make a request to the Atmosphere backend and redirect to the Web Desktop page.</p>
+<h3 id="atmosphere"><a href="#atmosphere">Atmosphere</a></h3>
+<p>Relevant Atmosphere code can be found <a href="https://github.com/cyverse/atmosphere/blob/master/api/v2/views/web_token.py">here</a></p>
+<p>In this file, the <code>guacamole_token</code> function is the most important since it uses the HMAC method to create and verify a signature and generate the URL for the instance's connection. The fields used here allow us to configure specific connection parameters.</p>
+<h3 id="atmosphere-ansible"><a href="#atmosphere-ansible">Atmosphere-Ansible</a></h3>
+<p>Relevant Atmosphere-Ansible can be found here: - <a href="https://github.com/cyverse/atmosphere-ansible/blob/master/ansible/playbooks/instance_deploy/30_post_user_install.yml#L10">Playbook for VNC</a> - <a href="https://github.com/cyverse/atmosphere-ansible/blob/master/ansible/roles/atmo-vnc/tasks/guacamole.yml">Tasks for Guacamole VNC</a> - This task will configure the Guacamole-specific settings for the VNC Server - These settings specify that this instance of the server can only be access from the Guacamole server's IP address - Runs on port <code>5905</code> - <a href="https://github.com/cyverse/atmosphere-ansible/blob/master/ansible/playbooks/instance_deploy/41_shell_access.yml">Playbook for SSH/WebShell</a> - <a href="https://github.com/cyverse/atmosphere-ansible/tree/master/ansible/roles/sshkey-host-access">Role for SSH/WebShell</a> - Since Guacamole will need a keypair to connect the the instance's SSH server, atmosphere-ansible will connect to the Guacamole server and create a keypair (if it does not exist) and save it on the server - The public key is added to the instance's <code>authorized_keys</code> - The HMAC auth plugin will then read from the filesystem on the Guacamole server to find the private key necessary for SSH access when initiating a connection # Guacamole Installation at CyVerse</p>
+<p>This guide will help you to understand and re-create the installation of <a href="https://guacamole.apache.org/">Apache Guacamole</a> at CyVerse. See Apache's official <a href="https://guacamole.apache.org/doc/gug/installing-guacamole.html">install guide</a> and <a href="https://guacamole.apache.org/doc/gug/configuring-guacamole.html">configuration guide</a>.</p>
+<h2 id="things-to-know"><a href="#things-to-know">Things to know</a></h2>
+<p>Guacamole webapp is located at <code>/var/lib/tomcat7/webapps/guacamole.war</code>.</p>
+<p>Guacamole configuration files are located in <code>/usr/share/tomcat7/.guacamole</code> which is linked to <code>/etc/guacamole</code>. Extensions (hmac auth, CyVerse theme), are located in the subdirectory <code>extensions</code>.</p>
+<p>Guacamole is proxied through Nginx with the config file in <code>/etc/nginx/sites-available/nginx-guacamole.conf</code>.</p>
+<p>Create the <code>cyverse-theme.jar</code> file by zipping the extensions contents, not the directory: <code>zip -r theme.jar *</code>. For Jetstream, checkout the 'jetstream' branch and create the jar.</p>
+<p><code>guacd</code> logs can be found in <code>/var/log/syslog</code></p>
+<p>tomcat logs can be found at <code>/var/log/tomcat7/catalina.out</code>. Some additional logging may be at <code>/var/log/tomcat7/localhost.out</code></p>
+<h2 id="step-by-step"><a href="#step-by-step">Step-by-step</a></h2>
+<ol style="list-style-type: decimal">
+<li><p>Follow the <a href="https://guacamole.apache.org/doc/gug/installing-guacamole.html">official documentation</a> to setup Guacamole webapp and <code>guacd</code> daemon. Use the default <code>/usr/share/tomcat7/.guacamole</code> <code>GUACAMOLE_HOME</code> linked to <code>/etc/guacamole/</code></p></li>
+<li><p>Get the <a href="https://github.com/cyverse/guacamole-auth-hmac"><code>guacamole-auth-hmac</code></a> jar file by either downloading from the <a href="https://github.com/cyverse/guacamole-auth-hmac/releases">releases page</a> or <a href="https://github.com/cyverse/guacamole-auth-hmac#building">building from source</a> and put it in <code>/etc/guacamole/extensions/</code></p></li>
+<li><p>Get the <a href="https://github.com/cyverse/guac-cyverse-theme"><code>guac-cyverse-theme</code></a> jar file by either downloading from the <a href="https://github.com/cyverse/guac-cyverse-theme/releases">releases page</a> or <a href="https://github.com/cyverse/guac-cyverse-theme#instructions">building from source</a> and put it in <code>/etc/guacamole/extensions/</code></p></li>
+<li><p>Create <code>/etc/guacamole/keys</code> directory and make sure it is owned by the system's tomcat user</p></li>
+<li><p>Make sure <code>/etc/guacamole/guacamole.properties</code> looks something like this: <code>guacd-hostname: localhost     guacd-port: 4822     guacd-ssl: False     secret-key: &lt;secret_from_atmosphere_secrets&gt;     timestamp-age-limit: 600000     use-local-privkey: True     key-directory: /etc/guacamole/keys/</code></p></li>
+<li><p>Configure Nginx: ``` ## location: /etc/nginx/sites-available ## link to sites-enabled: ln -s /etc/nginx/sites-enabled/nginx-guacamole /etc/nginx/sites-available/nginx-guacamole</p>
+<p>server { listen 80; return 301 https://<span class="LaTeX">$host$</span>request_uri; }</p>
+<p>server { listen 443;</p>
+<p>root /var/lib/tomcat7/webapps/guacamole;</p>
+<p>server_name {{ SERVER_ADDRESS }};</p>
+<p>ssl_certificate /{{ SSL_DIRECTORY }}/fullchain.pem; ssl_certificate_key /{{ SSL_DIRECTORY }}/privkey.pem;</p>
+<p>ssl on; ssl_session_cache builtin:1000 shared:SSL:10m; ssl_protocols TLSv1 TLSv1.1 TLSv1.2; ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4; ssl_prefer_server_ciphers on;</p>
+<p>location / { proxy_pass http://localhost:8080/guacamole/; proxy_buffering off; proxy_http_version 1.1; proxy_set_header X-Forwarded-For <span class="LaTeX">$proxy_add_x_forwarded_for;     proxy_set_header Upgrade $</span>http_upgrade; proxy_set_header Connection $http_connection; access_log off; } } ```</p></li>
+<li><p>Restart services <code>systemctl restart tomcat7     systemctl restart guacd     systemctl restart nginx</code></p></li>
+<li>In order to connect with Atmosphere, make sure to fill out the following variables in <code>atmosphere-docker-secrets</code>:
+<ul>
+<li><code>inis/atmosphere.ini</code>: <code>ini   GUACAMOLE_ENABLED = True   GUACAMOLE_SECRET_KEY = &quot;big-secret&quot;   GUACAMOLE_SERVER_URL = &quot;https://guacamole-prod.cyverse.org/&quot;</code></li>
+<li><code>inis/troposphere.ini</code>: <code>ini   GUACAMOLE_ENABLED = True</code></li>
+<li><code>atmosphere-ansible/hosts</code>: <code>guac_server ansible_host=&lt;ip_or_domain&gt; ansible_port=&lt;port&gt;</code></li>
+<li><code>atmosphere-ansible/group_vars/all</code>: <code>yaml   SETUP_GUACAMOLE: true   GUACAMOLE_SERVER_IP: &lt;ip_address&gt;</code></li>
+</ul></li>
+</ol>
+<h3 id="note"><a href="#note">Note</a></h3>
+<p>Additional information can be gathered from this ansible repository:</p>
+<p>https://github.com/CyVerse-Ansible/ansible-guacamole-server</p>
+<p>However, it may not be completely up-to-date</p>
+<h3 id="notes-for-future-docker-setup"><a href="#notes-for-future-docker-setup">Notes for future Docker setup</a></h3>
+<p>As mentioned above, there is an ansible role and playbook for setting up the server, but this is pretty out-of-date and the preferred method for future deployments should be using <code>docker-compose</code>. An example of this can be found in the <code>atmosphere-docker</code> repository: - <a href="https://github.com/cyverse/atmosphere-docker/blob/master/docker-compose.guac.yml"><code>docker-compose</code> file</a> - <a href="https://github.com/cyverse/atmosphere-docker/tree/master/guacamole">directory with additional files/configurations</a></p>
+<p>Basically, this will consist of two containers: <code>guacd</code> and <code>guacamole</code> webapp. Depending on setup, there could also be an Nginx container or non-containerized Nginx with <a href="https://github.com/CyVerse-Ansible/ansible-guacamole-server/blob/master/templates/nginx-guacamole.conf.j2">this configuration</a>.</p>
+<p>The <code>guacamole</code> webapp container will need a volume mount to give it access to a <code>guacamole.properties</code> file and an <code>extensions</code> directory containing JAR files for the theme and auth plugins. This volume or a separate volume should mount the user SSH keys (to the path specified in <code>guacamole.properties</code>).</p>
+<p>Instructions for creating the JAR files can be found in the READMEs of each plugin repository.</p>
+<h1 id="troubleshooting-guacamole"><a href="#troubleshooting-guacamole">Troubleshooting Guacamole</a></h1>
+<p>These are a few common problems we see with Guacamole on Atmosphere. See Apache Guacamole's <a href="https://guacamole.apache.org/doc/gug/troubleshooting.html">troubleshooting guide</a> for additional troubleshooting help.</p>
+<h2 id="assisting-users"><a href="#assisting-users">Assisting Users</a></h2>
+<p>Tips for troubleshooting problems that users experience.</p>
+<h3 id="problem-connection-error---closed-the-connection-when-attempting-a-connection."><a href="#problem-connection-error---closed-the-connection-when-attempting-a-connection.">Problem: &quot;Connection Error - closed the connection&quot; when attempting a connection.</a></h3>
+<p>The user was successfully authenticated by the Guacamole server, but the Guacamole server could not connect to the instance. Therefore, this is most likely a problem with the instance, not the server.</p>
+<h5 id="solution"><a href="#solution">Solution</a></h5>
+<p>If it is a VNC connection, the instance's VNC server is messed up. To fix it:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Kill the Guacamole-specific VNC server</span>
+<span class="co"># If you get an error, that means the server is already killed</span>
+<span class="kw">vncserver</span> -kill :5
+
+<span class="co"># Restart the VNC server</span>
+<span class="kw">vncserver</span> -config ~/.vnc/config.guac :5</code></pre>
+<h2 id="server-side-troubleshooting"><a href="#server-side-troubleshooting">Server-side Troubleshooting</a></h2>
+<p>Tips for troubleshooting issues on the Guacamole server.</p>
+<h3 id="problem-unable-to-bind-socket-to-any-addresses.-error-from-guacd"><a href="#problem-unable-to-bind-socket-to-any-addresses.-error-from-guacd">Problem: &quot;Unable to bind socket to any addresses.&quot; error from guacd</a></h3>
+<p>This error may appear in the syslog when trying to restart the guacd process. This error occurs when you try to start guacd while it is already running.</p>
+<h5 id="solution-1"><a href="#solution-1">Solution:</a></h5>
+<p>Manually kill the guacd process.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">pkill</span> -f guacd</code></pre>
+              </article>
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+                <div class="footer-container">
+            <footer class="wrapper">
+                    <footer class="footer"> <!-- Needs to be a `include-after` -->
+          		<div class="container">
+          		  <div class="region region-footer">
+          		    <section id="block-block-25" class="block block-block clearfix">
+          		      <p><img alt="Cyverse" src="./media/cyverse_icon_transp2.png" style="width: 25px; height: 24px;">&nbsp;<a href="http://www.cyverse.org/">CyVerse</a> | <a href="http://www.cyverse.org/open-source">Open Source</a> | <img alt="NSF" src="./media/nsf1.gif" style="width: 25px; height: 25px;">&nbsp;</p>
+          		    </section>
+          		  </div>
+          		</div>
+        	    </footer>
+            </footer>
+        </div>
+        <!-- Included at the end of body -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="themes/cyverse/media/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        
+        <script src="themes/cyverse/media/js/main.js"></script>
+            </body>
+</html>

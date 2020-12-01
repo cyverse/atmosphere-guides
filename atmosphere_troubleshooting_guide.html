@@ -1,0 +1,186 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="generator" content="pandoc" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+                    <title></title>
+        <style type="text/css">code{white-space: pre;}</style>
+                          <link rel="stylesheet" href="./themes/cyverse/templates/main.css" type="text/css" />
+                    <link rel="icon" href="themes/cyverse/media/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="themes/cyverse/media/css/normalize.min.css">
+        <link rel="stylesheet" href="themes/cyverse/media/css/main.css">
+        <script src="themes/cyverse/media/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+          </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+                <div class="header-container">
+            <header class="wrapper clearfix">
+                <div class="logo"><img src="themes/cyverse/media/cyverse_logo.png" alt="Staff Guide"></div>
+                <h1 class="title"></h1>
+            </header>
+        </div>
+        
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+              <!-- TABLE OF CONTENTS -->
+                                  <aside>
+                      <h3> TABLE OF CONTENTS </h3>
+                      <ul>
+                      <li><a href="#atmosphere-troubleshooting-guide">Atmosphere Troubleshooting Guide</a><ul>
+                      <li><a href="#common-problems">Common Problems</a><ul>
+                      <li><a href="#my-instance-wont-deploy">My Instance Won't Deploy</a></li>
+                      </ul></li>
+                      <li><a href="#troubleshooting-tools">Troubleshooting Tools</a><ul>
+                      <li><a href="#launching-instances-without-troposphere">Launching instances without Troposphere</a></li>
+                      <li><a href="#launching-instances-without-atmosphere-ansible">Launching Instances without atmosphere-ansible</a></li>
+                      <li><a href="#accessing-atmosphere-during-maintenance">Accessing Atmosphere During Maintenance</a></li>
+                      <li><a href="#emulating-another-atmosphere1-user">Emulating Another Atmosphere(1) User</a></li>
+                      <li><a href="#testing-deployments-against-multiple-distros">Testing Deployments Against Multiple Distros</a></li>
+                      <li><a href="#capturing-instance-details-for-problem-reports">Capturing Instance Details for Problem Reports</a></li>
+                      </ul></li>
+                      <li><a href="#logs">Logs</a><ul>
+                      <li><a href="#log-files-on-atmosphere-server">Log Files on Atmosphere server</a></li>
+                      <li><a href="#celery-flower">Celery Flower</a></li>
+                      </ul></li>
+                      </ul></li>
+                      </ul>
+                  </aside>
+                              <!-- MAIN CONTENT -->
+              <article>
+<h1 id="atmosphere-troubleshooting-guide"><a href="#atmosphere-troubleshooting-guide">Atmosphere Troubleshooting Guide</a></h1>
+<p>Where to look and what to do when something is broken.</p>
+<h2 id="common-problems"><a href="#common-problems">Common Problems</a></h2>
+<h3 id="my-instance-wont-deploy"><a href="#my-instance-wont-deploy">My Instance Won't Deploy</a></h3>
+<p>Check Atmosphere logs, Kibana, and Celery logs, to determine if the problem is with Atmosphere(2), the OpenStack cloud, or the Ansible code that is run during deployment.</p>
+<p>Note that resuming a suspended instance also re-deploys it.</p>
+<h2 id="troubleshooting-tools"><a href="#troubleshooting-tools">Troubleshooting Tools</a></h2>
+<h3 id="launching-instances-without-troposphere"><a href="#launching-instances-without-troposphere">Launching instances without Troposphere</a></h3>
+<p>To launch instances via atmosphere (without the use of a GUI):</p>
+<pre><code>#############1 - Setting up the environment ######################
+# Ensure that PYTHONPATH and DJANGO_SETTINGS_MODULE are pointed to atmosphere:
+export PYTHONPATH=/opt/dev/atmosphere:$PYTHONPATH
+export DJANGO_SETTINGS_MODULE=atmosphere.settings
+
+#############2 - Getting the correct arguments ######################
+# Run script with --provider-list to get providers to launch from:
+# ./scripts/launch_instances.py --provider-list
+# ID      Name
+# 1       EUCALYPTUS
+# 2       OPENSTACK
+# 3       EC2_US_EAST
+# 4       Jetstream - Indiana University
+# 5       Jetstream - TACC
+
+# Run script with --provider-id + --size-list and select a size (by ID)
+# ./scripts/launch_instances.py --size-list --provider-id 4
+# ID      Name    CPU     Memory
+# 1       m1.tiny 1       2048
+# 2       m1.small        2       4096
+# 3       m1.medium       6       16384
+# 4       m1.large        10      30720
+# 6       m1.xxlarge      44      122880
+# 8       m1.xlarge       24      61440
+# 30      m1.xlarge.paramtest     24      61440
+
+# Run script with --provider-id + --machine-list and select a machine (by alias)
+# ./scripts/launch_instances.py --skip-deploy --users sgregory --size 3 --provider-id 4 --machine-list
+# Instances Launched: 235 - 30f31162-2a7a-4ac5-be1a-45c7e579a04b (Provider:4:Jetstream - Indiana University - App:Ubuntu 14.04.3 Development GUI by jfischer - 2017-01-02 18:24:00+00:00 Version:Ubuntu 14.04.3 Development GUI - 1.3 - 2016-07-15 21:02:42.359171+00:00)
+# Instances Launched: 156 - 28235434-a4b0-4f27-ad58-e5c3052576da (Provider:4:Jetstream - Indiana University - App:CentOS 6 (6.8) Development GUI by jfischer - 2016-11-04 21:14:02+00:00 Version:CentOS 6 (6.8) Development GUI - 1.5 - 2016-04-01 18:22:33.843209+00:00)
+# Instances Launched: 264 - 01fb694b-a58c-46b2-8744-99e177f6ea34 (Provider:4:Jetstream - Indiana University - App:MAKER 2.31.8 with CCTools by upendra - 2017-01-19 18:08:58+00:00 Version:MAKER 2.31.8 with CCTools - 1.0 - END-DATED)
+# Instances Launched: 118 - 5ad04c2a-1503-4b44-9f5a-ad0abde2a685 (Provider:4:Jetstream - Indiana University - App:I435-I535-B669 Project B by atmoadmin - 2016-11-11 19:41:09+00:00 Version:I435-I535-B669 Project B - 1.0 - 2016-11-11 15:15:06.345665+00:00)
+# Instances Launched: 93 - dbfe6ffa-084f-411d-bde4-676d4ca4da0f (Provider:4:Jetstream - Indiana University - App:CentOS 7 Development by jfischer - END-DATED Version:CentOS 7 Development - 1.1 - END-DATED)
+# Instances Launched: 103 - 1c997f2c-bae9-4b53-9197-2948cd449405 (Provider:4:Jetstream - Indiana University - App:Ubuntu 14.04.3 Trusty Tahr by admin - END-DATED Version:Ubuntu 14.04.3 Trusty Tahr - 1.0 - END-DATED)
+# Instances Launched: 159 - d1126e09-9e87-4f88-914f-fa42ba256c68 (Provider:4:Jetstream - Indiana University - App:BioLinux 8 by jfischer - 2017-01-24 17:25:40+00:00 Version:BioLinux 8 - 1.0 - 2016-03-29 21:38:14.409121+00:00)
+# Instances Launched: 320 - fcc8542f-1b06-4d51-80c9-c8a505bc6eff (Provider:4:Jetstream - Indiana University - App:I535-I435-B669 Project A by luoyu - 2016-10-26 18:08:35+00:00 Version:I535-I435-B669 Project A - 1.0 - 2016-09-21 19:27:05.396602+00:00)
+# Instances Launched: 98 - 3c3db94e-377b-4583-83d7-082d1024d74a (Provider:4:Jetstream - Indiana University - App:Ubuntu 14.04.3 Development by jfischer - END-DATED Version:Ubuntu 14.04.3 Development - 1.1 - 2016-05-24 18:00:30.333275+00:00)
+# Instances Launched: 152 - bd81558e-9ba9-495e-a82c-4fbfc278a5ee (Provider:4:Jetstream - Indiana University - App:Ubuntu 14.04.3 Development GUI by jfischer - 2017-01-02 18:24:00+00:00 Version:Ubuntu 14.04.3 Development GUI - 1.1-stable - 2016-04-13 17:11:44.783177+00:00)
+
+#############3 - Launching the instance ######################
+./scripts/launch_instances.py --users sgregory --size 3 --provider-id 4 --machine-alias 66322719-5bfa-4646-93c6-0132e9a958e5 --name sgregory-testlaunch
+Using Username sgregory.
+Using Provider 4:Jetstream - Indiana University.
+Using Size m1.medium.
+.... Logging output for debug purposes
+....
+Successfully launched Machine 66322719-5bfa-4646-93c6-0132e9a958e5 : 2e90c453-7509-4442-ae28-405b4aaeca10 (Name:sgregory-testlaunch 1, Creator:sgregory, IP:0.0.0.0)
+Launched 1 instances.</code></pre>
+<h3 id="launching-instances-without-atmosphere-ansible"><a href="#launching-instances-without-atmosphere-ansible">Launching Instances without atmosphere-ansible</a></h3>
+<p>Sometimes it is useful to be able to launch instances, add their floating IP, but <strong>skip the ansible portion</strong> of instance deployment. As it turns out, the script above is perfect for this! simply include the flag <code>--skip-deploy</code> to <strong>./scripts/launch_instances.py</strong> in addition to the standard arguments and environment setup described in the section above.</p>
+<pre><code>#############1 - Setting up the environment ######################
+See above
+#############2 - Getting the correct arguments ######################
+See above
+#############3 - Launching the instance ######################
+./scripts/launch_instances.py --skip-deploy --users sgregory --size 3 --provider-id 4 --machine-alias 66322719-5bfa-4646-93c6-0132e9a958e5 --name sgregory-test-nodeploy
+Using Username sgregory.
+Using Provider 4:Jetstream - Indiana University.
+Using Size m1.medium.
+.... Logging output for debug purposes
+....
+Successfully launched Machine 66322719-5bfa-4646-93c6-0132e9a958e5 : 2e90c453-7509-4442-ae28-405b4aaeca10 (Name:sgregory-test-nodeploy 1, Creator:sgregory, IP:0.0.0.0)
+Launched 1 instances.
+
+## When you decide you would later like to run ansible by hand, via the REPL:
+from service.deploy import instance_deploy
+instance_deploy(...)</code></pre>
+<h3 id="accessing-atmosphere-during-maintenance"><a href="#accessing-atmosphere-during-maintenance">Accessing Atmosphere During Maintenance</a></h3>
+<p>There is an &quot;exception&quot; URI to access the UI when Atmosphere is in maintenance mode.</p>
+<p>Browse to <a>https://(atmosphere-url)/application_backdoor.</a></p>
+<p>In order to access the backdoor, you will need to be included in <a href="https://github.com/iPlantCollaborativeOpenSource/troposphere/blob/master/troposphere/settings/local.py.j2#L41-L43"><code>STAFF_LIST_USERNAMES</code></a> . This is set in the variables.yml (build env) for a deployed environment (dev, beta, prod). Using Jinja2 syntax for referring to YAML data structures, within the build env <code>variables.yml</code> file, the list is <code>TROPO['local.py']['STAFF_LIST_USERNAME']</code>.</p>
+<p>Or:</p>
+<pre>TROPO:
+    local.py:
+        STAFF_LIST_USERNAME: ['cmart', 'lenards']</pre>
+
+<h3 id="emulating-another-atmosphere1-user"><a href="#emulating-another-atmosphere1-user">Emulating Another Atmosphere(1) User</a></h3>
+<p>If you have a staff account in Atmosphere (i.e. you see the &quot;admin&quot; section in Troposphere), you can become (&quot;emulate&quot;) another user account. Browse to https://(atmosphere-url)/application/emulate/(username), replacing (atmosphere-url) as appropriate, and (username) with the user you want to emulate. To clear an emulated session, navigate to https://(atmosphere-url)/application/emulate.</p>
+<h3 id="testing-deployments-against-multiple-distros"><a href="#testing-deployments-against-multiple-distros">Testing Deployments Against Multiple Distros</a></h3>
+<p>See <a href="https://pods.iplantcollaborative.org/wiki/display/csmgmt/Ansible+Deployment#AnsibleDeployment-Images/AccountstotestAnsible">Images/Accounts to test Ansible</a> (TODO fix link) for a list of images known to work for various distros.</p>
+<h3 id="capturing-instance-details-for-problem-reports"><a href="#capturing-instance-details-for-problem-reports">Capturing Instance Details for Problem Reports</a></h3>
+<p>You can easily capture critical information about an instance in order to include it in a problem report. Click on the gravatar (icon), and a string will be printed to your browser's developer tools console in the following format:</p>
+<pre><code>&lt;image-name&gt; - &lt;instance-GUID&gt; - &lt;provider&gt; - &lt;ip-address&gt; - &lt;deploy-date-time&gt;</code></pre>
+<h2 id="logs"><a href="#logs">Logs</a></h2>
+<h3 id="log-files-on-atmosphere-server"><a href="#log-files-on-atmosphere-server">Log Files on Atmosphere server</a></h3>
+<p>Atmosphere(1) writes logs to several places:</p>
+<ul>
+<li>Nginx logs in /var/log/nginx</li>
+<li>uWSGI logs in /var/log/uwsgi/app (atmosphere.log and troposphere.log)</li>
+<li>&quot;Internal server error&quot; messages usually point to an error here.</li>
+<li>Django logs in /opt/dev/atmosphere/logs</li>
+<li>Celery logs in /var/log/celery</li>
+<li>atmosphere-ansible run logs in /opt/dev/atmosphere/logs/atmosphere_deploy.log</li>
+</ul>
+<h3 id="celery-flower"><a href="#celery-flower">Celery Flower</a></h3>
+<p><a href="https://flower.readthedocs.io/en/latest/">Flower</a> is installed for monitoring Celery tasks (e.g. running Ansible against new instances). Browse to https://(atmosphere-url)/flower. The authentication scheme and credentials are set in clank's variables.yml at deploy time.</p>
+              </article>
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+                <div class="footer-container">
+            <footer class="wrapper">
+                    <footer class="footer"> <!-- Needs to be a `include-after` -->
+          		<div class="container">
+          		  <div class="region region-footer">
+          		    <section id="block-block-25" class="block block-block clearfix">
+          		      <p><img alt="Cyverse" src="./media/cyverse_icon_transp2.png" style="width: 25px; height: 24px;">&nbsp;<a href="http://www.cyverse.org/">CyVerse</a> | <a href="http://www.cyverse.org/open-source">Open Source</a> | <img alt="NSF" src="./media/nsf1.gif" style="width: 25px; height: 25px;">&nbsp;</p>
+          		    </section>
+          		  </div>
+          		</div>
+        	    </footer>
+            </footer>
+        </div>
+        <!-- Included at the end of body -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="themes/cyverse/media/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        
+        <script src="themes/cyverse/media/js/main.js"></script>
+            </body>
+</html>

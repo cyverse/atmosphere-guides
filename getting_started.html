@@ -1,0 +1,222 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="generator" content="pandoc" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+                    <title></title>
+        <style type="text/css">code{white-space: pre;}</style>
+                          <link rel="stylesheet" href="./themes/cyverse/templates/main.css" type="text/css" />
+                    <link rel="icon" href="themes/cyverse/media/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="themes/cyverse/media/css/normalize.min.css">
+        <link rel="stylesheet" href="themes/cyverse/media/css/main.css">
+        <script src="themes/cyverse/media/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+          </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+                <div class="header-container">
+            <header class="wrapper clearfix">
+                <div class="logo"><img src="themes/cyverse/media/cyverse_logo.png" alt="Staff Guide"></div>
+                <h1 class="title"></h1>
+            </header>
+        </div>
+        
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+              <!-- TABLE OF CONTENTS -->
+                                  <aside>
+                      <h3> TABLE OF CONTENTS </h3>
+                      <ul>
+                      <li><a href="#getting-started">Getting Started</a><ul>
+                      <li><a href="#terminology---atmosphere">Terminology - Atmosphere</a><ul>
+                      <li><a href="#user">User</a></li>
+                      <li><a href="#group">Group</a></li>
+                      <li><a href="#provider">Provider</a></li>
+                      <li><a href="#identity">Identity</a></li>
+                      <li><a href="#projects">Projects</a></li>
+                      <li><a href="#application">Application</a></li>
+                      <li><a href="#applicationversion">ApplicationVersion</a></li>
+                      </ul></li>
+                      <li><a href="#terminology---cloud">Terminology - Cloud</a><ul>
+                      <li><a href="#cloud-resource">Cloud resource</a></li>
+                      <li><a href="#size">Size</a></li>
+                      <li><a href="#machine">Machine</a></li>
+                      <li><a href="#volume">Volume</a></li>
+                      <li><a href="#instance">Instance</a></li>
+                      </ul></li>
+                      <li><a href="#concepts-in-atmosphere-and-openstack">Concepts in Atmosphere and Openstack</a><ul>
+                      <li><a href="#concept-quota-and-allocation">Concept: Quota and Allocation</a></li>
+                      <li><a href="#conecpt-machine-requests-imaging">Conecpt: Machine Requests (Imaging)</a></li>
+                      <li><a href="#concept-projects">Concept: Projects</a></li>
+                      </ul></li>
+                      </ul></li>
+                      </ul>
+                  </aside>
+                              <!-- MAIN CONTENT -->
+              <article>
+<h1 id="getting-started"><a href="#getting-started">Getting Started</a></h1>
+<p>We're going to go over some simple terminology and concepts commonly used in Atmosphere.</p>
+<h2 id="terminology---atmosphere"><a href="#terminology---atmosphere">Terminology - Atmosphere</a></h2>
+<h3 id="user"><a href="#user">User</a></h3>
+<p>A User is an individual that has logged into Atmosphere.</p>
+<p>Users have:</p>
+<ul>
+<li>Username (unique)</li>
+<li>Name</li>
+<li>Email</li>
+</ul>
+<h3 id="group"><a href="#group">Group</a></h3>
+<p>Groups are used similar to the linux “user/group” model.</p>
+<ul>
+<li>A Group of one will exist for each User.</li>
+<li>A group can contain one or more Users</li>
+<li>Users can be in more than one Group at once</li>
+<li>Groups (not Users) are the “owners” of cloud resources</li>
+</ul>
+<h3 id="provider"><a href="#provider">Provider</a></h3>
+<p>Provider (also known as cloud, cloud provider) is a term used by atmosphere to identify a specific installation of cloud software.</p>
+<ul>
+<li>Providers have a specific set of credentials common to all users (That uniquely identifies them)
+<ul>
+<li>Ex: auth_url, version, …</li>
+</ul></li>
+<li>ProviderType
+<ul>
+<li>Ex: OpenStack, AWS, …</li>
+</ul></li>
+<li>Providers are owned by a Group (usually a staff/admin)</li>
+</ul>
+<h3 id="identity"><a href="#identity">Identity</a></h3>
+<p>Identities are a term used by atmosphere to identify a specific user on a Provider.</p>
+<ul>
+<li>Identities have a specific set of credentials for the user
+<ul>
+<li>Example: key(username), secret(password)</li>
+</ul></li>
+<li>Identities are owned by a Group</li>
+</ul>
+<h3 id="projects"><a href="#projects">Projects</a></h3>
+<p>Projects (in Atmosphere) represent a collection of Cloud Resources (not sizes) that allow users to logically group related instances/volumes.</p>
+<ul>
+<li>A project is required for new instance/volume created in Atmosphere.</li>
+<li>Projects have a name</li>
+<li>Projects are owned by a Group</li>
+</ul>
+<h3 id="application"><a href="#application">Application</a></h3>
+<p>Applications (displayed to the user in troposphere as Image) are a way to abstract a “history” of related Machines (via ApplicationVersion).</p>
+<p>Ex:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Image Name in OpenStack</th>
+<th align="left">Application</th>
+<th align="left">ApplicationVersion</th>
+<th align="left">ProviderMachines</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Ubuntu 16.04 v1 (1111-222-333-4444)</td>
+<td align="left">1 - Ubuntu 16.04</td>
+<td align="left">1.0</td>
+<td align="left">Tucson Cloud (1111-222-333-4444)</td>
+</tr>
+<tr class="even">
+<td align="left">Ubuntu 16.04 v1 (1111-222-333-4444)</td>
+<td align="left">1 - Ubuntu 16.04</td>
+<td align="left">1.0</td>
+<td align="left">Austin Cloud (1111-222-333-4444)</td>
+</tr>
+<tr class="odd">
+<td align="left">Ubuntu 16.04 v2 (2222-333-444-5555)</td>
+<td align="left">1 - Ubuntu 16.04</td>
+<td align="left">2.0</td>
+<td align="left">Tucson Cloud (2222-333-444-5555)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="applicationversion"><a href="#applicationversion">ApplicationVersion</a></h3>
+<p>ApplicationVersion (also known as Version) is a grouping of one or more Machines.</p>
+<p>(In Atmosphere, it is common to replicate a Machine (ex: Ubuntu 16.04) across several Providers (ex: iPlant - Austin, iPlant - Tucson, …).)</p>
+<p>Because the image is (mostly) identical across providers, the grouping serves as a way to simplify the cloud-agnostic nature of Atmosphere.</p>
+<ul>
+<li>ApplicationVersions have One or more ProviderMachine</li>
+<li>ApplicationVersions have a name (1.0, 2.0-alpha, beta-do-not-use, …)</li>
+<li>ApplicationVersions have a change log (that helps users understand what changed between versions)</li>
+</ul>
+<h2 id="terminology---cloud"><a href="#terminology---cloud">Terminology - Cloud</a></h2>
+<h3 id="cloud-resource"><a href="#cloud-resource">Cloud resource</a></h3>
+<p>Cloud Resources are a term used by atmosphere to identify a Volume, Instance, Size, or Machine.</p>
+<h3 id="size"><a href="#size">Size</a></h3>
+<p>Sizes (also known as flavors in Openstack) are a preset configuration of CPUs, GB of memory, and Disk space that will be allocated to a Machine when creating an Instance.</p>
+<p>Sizes have:</p>
+<ul>
+<li>CPU</li>
+<li>RAM (in GB)</li>
+<li>Disk (for the image, in GB, 0 means &quot;create disk image that is the exact size of the Machine&quot;)</li>
+<li>Ephemeral (as an additional mount, in GB)</li>
+</ul>
+<h3 id="machine"><a href="#machine">Machine</a></h3>
+<p>Machines (also known as Image, or ProviderMachine) are like a blueprint that will tell the Cloud how to create a new Instance.</p>
+<ul>
+<li>Machines, minimally, have an operating system</li>
+<li>They may also be installed and configured with additional software applications as desired.</li>
+<li>They are a fixed size (usually 8GB-60GB)</li>
+<li>Administrators and other users can create new machines from Instances via <a href="#concepts-machine_requests">Machine Requests</a> and/or downloading new image files.</li>
+</ul>
+<h3 id="volume"><a href="#volume">Volume</a></h3>
+<p>Volumes are how users can allocate additional data storage (by policy, up to 1TB) to be used with their instances.</p>
+<ul>
+<li>Volumes have a pre-set size (1-1000gb)</li>
+<li>Volumes start unformatted
+<ul>
+<li>Atmosphere handles mkfs on first attach + mounting.</li>
+</ul></li>
+<li>Can be created based on an Image and “Booted” as an instance. (Bootable volumes are not yet a part of atmosphere)</li>
+</ul>
+<h3 id="instance"><a href="#instance">Instance</a></h3>
+<p>Instances (also known as nodes, or servers) is the virtual machine that will be created by end users.</p>
+<ul>
+<li>Instances have a specific size</li>
+<li>Instances are based on an Image or Volume.</li>
+<li>Atmosphere handles the networking and pre-configuration of instances prior to handing control over to the User.</li>
+</ul>
+<h2 id="concepts-in-atmosphere-and-openstack"><a href="#concepts-in-atmosphere-and-openstack">Concepts in Atmosphere and Openstack</a></h2>
+<h3 id="concept-quota-and-allocation"><a href="#concept-quota-and-allocation">Concept: Quota and Allocation</a></h3>
+<p>Quotas are an admin-set limit on the number of resources a specific cloud user can create at any one time. - (Ex: Quota of 2 CPU, 8 GB ram) Allocations are a way for Atmosphere to track the amount of time a specific cloud user has used their resource. - (Ex: Allocation for 168 hours of compute in one month)</p>
+<h3 id="conecpt-machine-requests-imaging"><a href="#conecpt-machine-requests-imaging">Conecpt: Machine Requests (Imaging)</a></h3>
+<p>When a user launches an instance and configures it to their liking, they can create a MachineRequest that will alert staff users to their desire to create a new Machine. Staff members can then accept/reject the request which will start an automated, asynchronous &quot;imaging&quot; process.</p>
+<p>During the imaging process: - The 'machine' is created: - Create and Download a snapshot of the Instance - Mount and clean the image file to remove “User-specific” data - Upload new image to cloud - The 'machine' is processed: - Appropriate metadata is attached to the new image - Atmosphere properly catalogs the image into the right Application, Version, and ProviderMachine. - The 'machine' is validated: - Atmosphere will launch the instance and wait for it to go to &quot;green-light active&quot;. - Atmosphere will then destroy the launched instance - The 'machine' is completed: - The 'machine owner' is e-mailed - The machine is ready for launch by others.</p>
+<h3 id="concept-projects"><a href="#concept-projects">Concept: Projects</a></h3>
+<p>Project is an overloaded term, at any one time it could be referring to: - Atmosphere Project : A collection of Cloud Resources. - OpenStack “project” aka Tenant: A grouping of users inside OpenStack - TACC/Xsede project: A collection of TACC/Xsede users.</p>
+              </article>
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+                <div class="footer-container">
+            <footer class="wrapper">
+                    <footer class="footer"> <!-- Needs to be a `include-after` -->
+          		<div class="container">
+          		  <div class="region region-footer">
+          		    <section id="block-block-25" class="block block-block clearfix">
+          		      <p><img alt="Cyverse" src="./media/cyverse_icon_transp2.png" style="width: 25px; height: 24px;">&nbsp;<a href="http://www.cyverse.org/">CyVerse</a> | <a href="http://www.cyverse.org/open-source">Open Source</a> | <img alt="NSF" src="./media/nsf1.gif" style="width: 25px; height: 25px;">&nbsp;</p>
+          		    </section>
+          		  </div>
+          		</div>
+        	    </footer>
+            </footer>
+        </div>
+        <!-- Included at the end of body -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="themes/cyverse/media/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        
+        <script src="themes/cyverse/media/js/main.js"></script>
+            </body>
+</html>

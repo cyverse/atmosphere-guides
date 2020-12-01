@@ -1,0 +1,275 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="generator" content="pandoc" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+                    <title></title>
+        <style type="text/css">code{white-space: pre;}</style>
+                          <link rel="stylesheet" href="./themes/cyverse/templates/main.css" type="text/css" />
+                    <link rel="icon" href="themes/cyverse/media/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="themes/cyverse/media/css/normalize.min.css">
+        <link rel="stylesheet" href="themes/cyverse/media/css/main.css">
+        <script src="themes/cyverse/media/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+          </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+                <div class="header-container">
+            <header class="wrapper clearfix">
+                <div class="logo"><img src="themes/cyverse/media/cyverse_logo.png" alt="Staff Guide"></div>
+                <h1 class="title"></h1>
+            </header>
+        </div>
+        
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+              <!-- TABLE OF CONTENTS -->
+                                  <aside>
+                      <h3> TABLE OF CONTENTS </h3>
+                      <ul>
+                      <li><a href="#gateone-background">GateOne Background</a><ul>
+                      <li><a href="#what-is-gateone">What is GateOne?</a></li>
+                      <li><a href="#how-do-we-use-it">How do we use it?</a></li>
+                      <li><a href="#how-does-it-know-we-are-a-valid-request-origin">How does it know we are a valid request origin?</a><ul>
+                      <li><a href="#keysecret">Key/Secret</a></li>
+                      <li><a href="#origin">Origin</a></li>
+                      </ul></li>
+                      <li><a href="#how-is-gateone-deployed">How is GateOne Deployed?</a><ul>
+                      <li><a href="#ansible">Ansible</a><ul>
+                      <li><a href="#httpsgithub.comcyversegateone-server-ansible"><a href="https://github.com/cyverse/gateone-server-ansible">https://github.com/cyverse/gateone-server-ansible</a></a></li>
+                      <li><a href="#httpsgithub.comcyverse-ansibleansible-gateone-server"><a href="https://github.com/cyverse-ansible/ansible-gateone-server">https://github.com/cyverse-ansible/ansible-gateone-server</a></a></li>
+                      </ul></li>
+                      <li><a href="#customizations">Customizations</a></li>
+                      </ul></li>
+                      <li><a href="#troubleshooting-background">Troubleshooting Background</a><ul>
+                      <li><a href="#resource-serving">Resource Serving</a></li>
+                      <li><a href="#service-operation">Service Operation</a></li>
+                      <li><a href="#ports">Ports</a></li>
+                      <li><a href="#logs">Logs</a></li>
+                      <li><a href="#keys-connecting-the-dots...">Keys &amp; connecting the dots...</a></li>
+                      <li><a href="#dtach">dtach</a></li>
+                      </ul></li>
+                      <li><a href="#troubleshooting-specifics">Troubleshooting Specifics</a><ul>
+                      <li><a href="#welcome-to-nginx-page">Welcome to nginx &quot;page&quot;</a></li>
+                      <li><a href="#troposphere-source-not-in-origins">Troposphere &quot;source&quot; not in <code>origins</code></a></li>
+                      <li><a href="#gateone-is-not-defined">GateOne is not defined</a></li>
+                      </ul></li>
+                      <li><a href="#generating-a-new-api-key-secret">Generating a new API key &amp; secret</a></li>
+                      <li><a href="#references">References</a></li>
+                      </ul></li>
+                      </ul>
+                  </aside>
+                              <!-- MAIN CONTENT -->
+              <article>
+<h1 id="gateone-background"><a href="#gateone-background">GateOne Background</a></h1>
+<h2 id="what-is-gateone"><a href="#what-is-gateone">What is GateOne?</a></h2>
+<p>It's a web shell, aka terminal, emulator &amp; SSH client that uses HTML5 technologies. - another way to put it, it uses pure HTML, JavaScript and web sockets</p>
+<p>The underlying technologies? - Python + Tornado web server - JavaScript - nginx</p>
+<h2 id="how-do-we-use-it"><a href="#how-do-we-use-it">How do we use it?</a></h2>
+<p>We offer a web shell to instances in the cloud via GateOne. It appears as a view within Django [0] - the resources of GateOne as &quot;included&quot; and render as <em>embedded</em>. This impacts <em>how</em> the associated GateOne resources are served; if they're served from a domain different from Troposphere - then Cross-Origin Resource Sharing (CORS) would be happening [1]</p>
+<h2 id="how-does-it-know-we-are-a-valid-request-origin"><a href="#how-does-it-know-we-are-a-valid-request-origin">How does it know we are a valid request origin?</a></h2>
+<p>There are two aspects required here:</p>
+<ol style="list-style-type: decimal">
+<li>An API key and secret that both Troposphere &amp; GateOne know <em>about</em></li>
+<li>A white-list of valid <em>origins</em></li>
+</ol>
+<h3 id="keysecret"><a href="#keysecret">Key/Secret</a></h3>
+<p>GateOne has an Authenticated API [2]. You generate an API key and secret [3], then use them to create an HMAC signature of the required authentication info:</p>
+<pre><code>authobj = {
+  &#39;api_key&#39;: &#39;MjkwYzc3MDI2MjhhNGZkNDg1MjJkODgyYjBmN2MyMTM4M&#39;,
+  &#39;upn&#39;: &#39;joe@company.com&#39;,
+  &#39;timestamp&#39;: &#39;1323391717238&#39;,
+  &#39;signature&#39;: &quot;f6c6c82281f8d56797599aeee01a5e3efab05a63&quot;,
+  &#39;signature_method&#39;: &#39;HMAC-SHA1&#39;,
+  &#39;api_version&#39;: &#39;1.0&#39;
+}</code></pre>
+<p>source: <a href="https://liftoff.github.io/GateOne/Developer/embedding_api_auth.html#generate-an-auth-object">https://liftoff.github.io/GateOne/Developer/embedding_api_auth.html#generate-an-auth-object</a></p>
+<p>You can find this key and secret within the GateOne configration file <code>30api_keys.conf</code> [4]</p>
+<p>Note, the <code>upn</code> value was what previous prevented us from <em>emulating</em> a user.</p>
+<h3 id="origin"><a href="#origin">Origin</a></h3>
+<p>The allowed <code>origins</code> is a JSON array of either hostname or IP that are accepted.</p>
+<p><code>origins</code> appears in the <code>10server.conf</code> file [5]</p>
+<pre><code>// This is Gate One&#39;s main settings file.
+{
+  // &quot;gateone&quot; server-wide settings fall under &quot;*&quot;
+  &quot;*&quot;: {
+    &quot;gateone&quot;: { // These settings apply to all of Gate One
+        //
+        // ... omit ...
+        //
+        &quot;origins&quot;: [
+        &quot;localhost&quot;, &quot;127.0.0.1&quot;, &quot;enterprise&quot;,
+        &quot;enterprise.example.com&quot;, &quot;10.1.1.100&quot;],
+        //
+        // ... omit ...
+        //
+    }
+  }
+}</code></pre>
+<p>Note, all configuration for deployed GateOne servers appears under: <code>/etc/gateone/conf.d</code></p>
+<p>These are symlinks into the <code>/opt/gateone-config</code> directory.</p>
+<h2 id="how-is-gateone-deployed"><a href="#how-is-gateone-deployed">How is GateOne Deployed?</a></h2>
+<p>For Atmosphere(0) and Jetstream Cloud, GateOne and Atmosphere(1) are implemented on separate servers. (This may not be a strict requirement.)</p>
+<h3 id="ansible"><a href="#ansible">Ansible</a></h3>
+<p>There are currently two different sets of Ansible code that deploy GateOne.</p>
+<h4 id="httpsgithub.comcyversegateone-server-ansible"><a href="#httpsgithub.comcyversegateone-server-ansible"><a href="https://github.com/cyverse/gateone-server-ansible">https://github.com/cyverse/gateone-server-ansible</a></a></h4>
+<p>gateone-server-ansible was used to implement Jetstream Cloud's production GateOne. It has a few requirements:</p>
+<ul>
+<li>requires you to symlink to /etc/ansible/roles</li>
+<li>Assumes that SSL certificate and private key are already deployed to target server</li>
+<li>requires you to store your GateOne configuration in a separate repository</li>
+</ul>
+<h4 id="httpsgithub.comcyverse-ansibleansible-gateone-server"><a href="#httpsgithub.comcyverse-ansibleansible-gateone-server"><a href="https://github.com/cyverse-ansible/ansible-gateone-server">https://github.com/cyverse-ansible/ansible-gateone-server</a></a></h4>
+<p>ansible-gateone-server is a newer, modular Ansible role that is published on (and consumable from) Ansible Galaxy. It is used to implement GateOne for the Jetstream test cloud. ansible-gateone-server is self-contained: it does not require separate repos for your GateOne configuration files, instead you can define your configuration as Ansible variables. ansible-gateone-server will also deploy your SSL certificate and private key - in this way, it is a &quot;batteries-included&quot; way to implement a working GateOne on a brand new server.</p>
+<h3 id="customizations"><a href="#customizations">Customizations</a></h3>
+<p>We currently operate off of a fork of GateOne:</p>
+<p><a href="https://github.com/edwins/GateOne">https://github.com/edwins/GateOne</a></p>
+<p>This is fork includes added functionality for having a &quot;global&quot; SSH config file. This file appears as a symlink under <code>/etc/gateone/conf.d</code> and links to: <code>/opt/gateone-config/ssh_config_global</code>. Efforts to get this modification included by the GateOne project are underway.</p>
+<p>Both of the Ansible options deploy this fork of GateOne, by default.</p>
+<h2 id="troubleshooting-background"><a href="#troubleshooting-background">Troubleshooting Background</a></h2>
+<h3 id="resource-serving"><a href="#resource-serving">Resource Serving</a></h3>
+<p>We currently put Nginx in front of GateOne. GateOne serves resources via an Nginx location defined in under <code>/etc/nginx/locations</code></p>
+<pre><code>location /gateone {
+  #Listed as /gateone
+  proxy_pass_header Server;
+  proxy_set_header Host $http_host;
+  proxy_redirect off;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Scheme $scheme;
+  proxy_pass https://atmo-proxy.example.org:8443;
+  proxy_http_version 1.1;
+  // these be web socket headers ---v
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection &quot;upgrade&quot;;
+}</code></pre>
+<p>Note: the &quot;Connection&quot; header is present to allow for Web Socket connections</p>
+<h3 id="service-operation"><a href="#service-operation">Service Operation</a></h3>
+<p>You can verify that GateOne is running using <code>service</code>:</p>
+<pre><code>$ service gateone status
+gateone start/running, process 12634&lt;/pre&gt;</code></pre>
+<p>If the service fails to start, the init system (currently upstart) will try restarting the service several times and then give up. You can try starting GateOne outside of the service – and watch the output yourself -- by running <code>/usr/bin/python /usr/local/bin/gateone</code>. This may provide helpful information in addition to the logs.</p>
+<p>Because Nginx makes GateOne available to the outside world, you'd want to ensure that it was running as well:</p>
+<pre><code>service nginx status
+nginx start/running, process 8818</code></pre>
+<h3 id="ports"><a href="#ports">Ports</a></h3>
+<p>Ensure that GateOne is bound to the internal port for reverse proxying (e.g. 8443) and that Nginx is listening on the HTTPS port (e.g. 443):</p>
+<pre><code>root@myserver:/etc/gateone/conf.d# netstat -lntp
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      9089/rpcbind    
+tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN      5634/sendmail: MTA:
+tcp        0      0 0.0.0.0:1657            0.0.0.0:*               LISTEN      2567/sshd       
+tcp        0      0 0.0.0.0:8443            0.0.0.0:*               LISTEN      8821/python # GateOne!    
+tcp        0      0 0.0.0.0:443             0.0.0.0:*               LISTEN      28230/nginx # Nginx proxy for GateOne
+tcp        0      0 0.0.0.0:5666            0.0.0.0:*               LISTEN      10622/nrpe      
+tcp        0      0 127.0.0.1:587           0.0.0.0:*               LISTEN      5634/sendmail: MTA:
+tcp6       0      0 :::111                  :::*                    LISTEN      9089/rpcbind    
+tcp6       0      0 :::1657                 :::*                    LISTEN      2567/sshd       
+tcp6       0      0 :::8443                 :::*                    LISTEN      8821/python     
+tcp6       0      0 :::5666                 :::*                    LISTEN      10622/nrpe</code></pre>
+<p>Also ensure that communications are not blocked by ufw/iptables/firewalld on the host, nor by a border firewall on the hosting facility / campus network.</p>
+<h3 id="logs"><a href="#logs">Logs</a></h3>
+<p>All logs associated with GateOne are under <code>/var/log/gateone/</code></p>
+<p>You can change the logging level in <code>/etc/gateone/conf.d/10server.conf</code></p>
+<pre><code>// This is Gate One&#39;s main settings file.
+{
+    // &quot;gateone&quot; server-wide settings fall under &quot;*&quot;
+    &quot;*&quot;: {
+        &quot;gateone&quot;: { // These settings apply to all of Gate One
+            &quot;logging&quot;: &quot;info&quot;,
+
+            // ....</code></pre>
+<p>With a logging level of &quot;info&quot;, changes to the &quot;origins&quot; will be logged to <code>/var/log/gateone/gateone-api.log</code></p>
+<pre><code>[I 161004 13:18:48 server:4361] Connections to this server will be allowed from the following origins: &#39;localhost 127.0.0.1 ...&#39;
+[I 161004 13:18:48 server:3675] Using api authentication</code></pre>
+<p>With a logging level of &quot;info&quot;, authentication attempts (including the &quot;origin&quot;) will be logged to <code>/var/log/gateone/gateone-auth.log</code></p>
+<pre><code>[I 160502 13:50:04 server:2223] User lenards authenticated successfully via origin atmobeta.myexample.org (location 128-196-65-166).
+[I 160502 13:53:14 server:1765] {&quot;ip_address&quot;: &quot;127.0.0.1&quot;, &quot;location&quot;: &quot;128-196-65-166&quot;, &quot;upn&quot;: &quot;lenards&quot;} WebSocket closed (lenards 127.0.0.1).</code></pre>
+<p>You'd also want to investigate nginx's logs as well (<code>/var/log/nginx</code>), notably the error.log.</p>
+<h3 id="keys-connecting-the-dots..."><a href="#keys-connecting-the-dots...">Keys &amp; connecting the dots...</a></h3>
+<p>Atmosphere generates a default SSH key per user and places this key on the GateOne server. It is used for password-less connections to instances. When an instance is launched, this default key will be included.</p>
+<p>If you're troubleshooting, you may want to look for the presence of a key. You can find them under <code>/var/lib/gateone/{{atmosphere_username}}/.ssh</code>.</p>
+<h3 id="dtach"><a href="#dtach">dtach</a></h3>
+<p>This process helps preserve the state of a GateOne session (it appears as <code>dtach</code> in <code>ps aux</code>)</p>
+<p><a href="https://github.com/bogner/dtach">https://github.com/bogner/dtach</a></p>
+<p>You can look for a user's session by IP:</p>
+<pre><code># ps aux | grep dtach | grep &#39;128-196-64-13&#39;
+root 6509 0.0 0.0 4400 608 pts/33 Ss+ Oct03 0:00 /bin/sh -c dtach -c /tmp/gateone-api/MmFjYmU5OTgzZTJiNGY0ZjliNjg4OTZkYTNiY2MxNzQ0Z/dtach_128-196-64-13_1 -E -z -r none /usr/local/lib/python2.7/dist-packages/gateone-1.2.0-py2.7.egg/gateone/applications/terminal/plugins/ssh/scripts/ssh_connect.py -S &#39;/tmp/gateone-api/MmFjYmU5OTgzZTJiNGY0ZjliNjg4OTZkYTNiY2MxNzQ0Z/%SHORT_SOCKET%&#39; --sshfp --config &#39;/etc/gateone/conf.d/ssh_config_global&#39;; sleep .1
+root 6512 0.0 0.0 6228 360 pts/33 S+ Oct03 0:00 dtach -c /tmp/gateone-api/MmFjYmU5OTgzZTJiNGY0ZjliNjg4OTZkYTNiY2MxNzQ0Z/dtach_128-196-64-13_1 -E -z -r none /usr/local/lib/python2.7/dist-packages/gateone-1.2.0-py2.7.egg/gateone/applications/terminal/plugins/ssh/scripts/ssh_connect.py -S /tmp/gateone-api/MmFjYmU5OTgzZTJiNGY0ZjliNjg4OTZkYTNiY2MxNzQ0Z/%SHORT_SOCKET% --sshfp --config /etc/gateone/conf.d/ssh_config_global
+root 6513 0.0 0.0 14792 704 ? Ss Oct03 0:00 dtach -c /tmp/gateone-api/MmFjYmU5OTgzZTJiNGY0ZjliNjg4OTZkYTNiY2MxNzQ0Z/dtach_128-196-64-13_1 -E -z -r none /usr/local/lib/python2.7/dist-packages/gateone-1.2.0-py2.7.egg/gateone/applications/terminal/plugins/ssh/scripts/ssh_connect.py -S /tmp/gateone-api/MmFjYmU5OTgzZTJiNGY0ZjliNjg4OTZkYTNiY2MxNzQ0Z/%SHORT_SOCKET% --sshfp --config /etc/gateone/conf.d/ssh_config_global
+root 27455 0.0 0.0 4400 612 pts/14 Ss+ Oct03 0:00 /bin/sh -c dtach -c /tmp/gateone-api/MzAwMzZhNGNhYjJjNGRhZWEyNzU5ZWVkMjBkYWY0ZjBlZ/dtach_128-196-64-13_1 -E -z -r none /usr/local/lib/python2.7/dist-packages/gateone-1.2.0-py2.7.egg/gateone/applications/terminal/plugins/ssh/scripts/ssh_connect.py -S &#39;/tmp/gateone-api/MzAwMzZhNGNhYjJjNGRhZWEyNzU5ZWVkMjBkYWY0ZjBlZ/%SHORT_SOCKET%&#39; --sshfp --config &#39;/etc/gateone/conf.d/ssh_config_global&#39;; sleep .1
+root 27456 0.0 0.0 6228 364 pts/14 S+ Oct03 0:00 dtach -c /tmp/gateone-api/MzAwMzZhNGNhYjJjNGRhZWEyNzU5ZWVkMjBkYWY0ZjBlZ/dtach_128-196-64-13_1 -E -z -r none /usr/local/lib/python2.7/dist-packages/gateone-1.2.0-py2.7.egg/gateone/applications/terminal/plugins/ssh/scripts/ssh_connect.py -S /tmp/gateone-api/MzAwMzZhNGNhYjJjNGRhZWEyNzU5ZWVkMjBkYWY0ZjBlZ/%SHORT_SOCKET% --sshfp --config /etc/gateone/conf.d/ssh_config_global
+root 27457 0.0 0.0 14792 708 ? Ss Oct03 0:00 dtach -c /tmp/gateone-api/MzAwMzZhNGNhYjJjNGRhZWEyNzU5ZWVkMjBkYWY0ZjBlZ/dtach_128-196-64-13_1 -E -z -r none /usr/local/lib/python2.7/dist-packages/gateone-1.2.0-py2.7.egg/gateone/applications/terminal/plugins/ssh/scripts/ssh_connect.py -S /tmp/gateone-api/MzAwMzZhNGNhYjJjNGRhZWEyNzU5ZWVkMjBkYWY0ZjBlZ/%SHORT_SOCKET% --sshfp --config /etc/gateone/conf.d/ssh_config_global</code></pre>
+<h2 id="troubleshooting-specifics"><a href="#troubleshooting-specifics">Troubleshooting Specifics</a></h2>
+<h3 id="welcome-to-nginx-page"><a href="#welcome-to-nginx-page">Welcome to nginx &quot;page&quot;</a></h3>
+<p>This is a misconfigured deployment of Troposphere</p>
+<h3 id="troposphere-source-not-in-origins"><a href="#troposphere-source-not-in-origins">Troposphere &quot;source&quot; not in <code>origins</code></a></h3>
+<p>Click to accept SSL Certificate ...</p>
+<p>White screen with black background messages</p>
+<h3 id="gateone-is-not-defined"><a href="#gateone-is-not-defined">GateOne is not defined</a></h3>
+<p>This means that either the GateOne service is down or not responding.</p>
+<h2 id="generating-a-new-api-key-secret"><a href="#generating-a-new-api-key-secret">Generating a new API key &amp; secret</a></h2>
+<p>The documentation of GateOne still refers to the utility executable as <code>./gateone.py</code>. It is is <code>./run_gateone.py</code> (in <a href="https://github.com/edwins/GateOne/">our fork</a>, and in <a href="https://github.com/liftoff/GateOne/tree/master">master</a>).</p>
+<pre><code># python run_gateone.py --help
+Usage: run_gateone.py [OPTIONS]</code></pre>
+<p>From the code-base location, you can run <code>run_gateone.py</code> with <code>--new_api_key</code> to get a new API key.</p>
+<p>Because we use a custom &quot;settings_dir&quot;, you <strong>must</strong> include the path to that location or it will use <code>/opt/GateOne/conf.d</code> as the location of where the secret is written</p>
+<pre><code>/opt/GateOne$ ./run_gateone.py --new_api_key --settings_dir=/etc/gateone/conf.d/
+[I 161004 13:42:24 server:4179] Gate One License: AGPLv3 (http://www.gnu.org/licenses/agpl-3.0.html)
+[I 161004 13:42:24 server:4188] Imported applications: Terminal
+[I 161004 13:42:24 server:4323] A new API key has been generated: [redacted]
+[I 161004 13:42:24 server:4325] This key can now be used to embed Gate One into other applications.
+/opt/GateOne$ grep -c &quot;[redacted]&quot; /etc/gateone/conf.d/30api_keys.conf &amp;&amp; echo &quot;sssh ... it is still secret&quot;
+1
+sssh ... it is still secret</code></pre>
+<p>The secret will be added to /etc/gateone/conf.d/30api_keys.conf</p>
+<pre><code>{
+    &quot;*&quot;: {
+        &quot;gateone&quot;: {
+            &quot;api_keys&quot;: {
+                &quot;&lt;API Key&gt;&quot;: &quot;&lt;Secret&gt;&quot;,
+                &quot;&lt;API Key 2&gt;&quot;: &quot;&lt;Secret 2&gt;&quot;
+            }
+        }
+    }
+}</code></pre>
+<h2 id="references"><a href="#references">References</a></h2>
+<ul>
+<li>0 <a href="https://github.com/iPlantCollaborativeOpenSource/troposphere/blob/master/troposphere/views/web_shell.py">https://github.com/iPlantCollaborativeOpenSource/troposphere/blob/master/troposphere/views/web_shell.py</a></li>
+<li>1 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS</a></li>
+<li>2 <a href="https://liftoff.github.io/GateOne/Developer/embedding_api_auth.html">https://liftoff.github.io/GateOne/Developer/embedding_api_auth.html</a></li>
+<li>3 <a href="https://liftoff.github.io/GateOne/Developer/embedding_api_auth.html#generate-an-api-key-secret">https://liftoff.github.io/GateOne/Developer/embedding_api_auth.html#generate-an-api-key-secret</a></li>
+<li>4 below <em>note</em>, <a href="https://liftoff.github.io/GateOne/Developer/embedding_api_auth.html#generate-an-api-key-secret">https://liftoff.github.io/GateOne/Developer/embedding_api_auth.html#generate-an-api-key-secret</a></li>
+<li>5 <a href="https://liftoff.github.io/GateOne/About/configuration.html">https://liftoff.github.io/GateOne/About/configuration.html</a></li>
+</ul>
+              </article>
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+                <div class="footer-container">
+            <footer class="wrapper">
+                    <footer class="footer"> <!-- Needs to be a `include-after` -->
+          		<div class="container">
+          		  <div class="region region-footer">
+          		    <section id="block-block-25" class="block block-block clearfix">
+          		      <p><img alt="Cyverse" src="./media/cyverse_icon_transp2.png" style="width: 25px; height: 24px;">&nbsp;<a href="http://www.cyverse.org/">CyVerse</a> | <a href="http://www.cyverse.org/open-source">Open Source</a> | <img alt="NSF" src="./media/nsf1.gif" style="width: 25px; height: 25px;">&nbsp;</p>
+          		    </section>
+          		  </div>
+          		</div>
+        	    </footer>
+            </footer>
+        </div>
+        <!-- Included at the end of body -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="themes/cyverse/media/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        
+        <script src="themes/cyverse/media/js/main.js"></script>
+            </body>
+</html>
